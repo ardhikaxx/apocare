@@ -18,6 +18,10 @@ class ProfilController extends Controller
     public function update(Request $request)
     {
         $pengguna = Auth::user();
+        
+        if (!$pengguna) {
+            return redirect()->route('login');
+        }
 
         $request->validate([
             'nama' => 'required|string|max:100',
@@ -48,7 +52,7 @@ class ProfilController extends Controller
             $data['password'] = Hash::make($request->password_baru);
         }
 
-        $pengguna->update($data);
+        Pengguna::where('id', $pengguna->id)->update($data);
 
         return back()->with('success', 'Profil berhasil diperbarui');
     }
