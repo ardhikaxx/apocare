@@ -21,6 +21,11 @@ class Pengguna extends Authenticatable
     ];
     protected $hidden = ['password'];
 
+    protected $casts = [
+        'status_aktif' => 'boolean',
+        'login_terakhir' => 'datetime',
+    ];
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Peran::class, 'role_id');

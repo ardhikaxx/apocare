@@ -29,4 +29,14 @@ class Pembelian extends Model
     {
         return $this->hasMany(DetailPembelian::class);
     }
+
+    public function pembayaran(): HasMany
+    {
+        return $this->hasMany(PembayaranPembelian::class);
+    }
+
+    public function retur(): HasMany
+    {
+        return $this->hasMany(ReturPembelian::class);
+    }
 }

@@ -8,27 +8,31 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (Schema::hasTable('penjualan')) {
+            return;
+        }
+
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_penjualan', 30)->unique();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggan');
-            $table->foreignId('resep_id')->nullable()->constrained('resep');
+            $table->unsignedBigInteger('resep_id')->nullable()->index();
             $table->datetime('tanggal_penjualan');
             $table->enum('jenis_penjualan', ['RETAIL', 'GROSIR', 'RESEP', 'ONLINE']);
-            $table->enum('status_pembayaran', ['BELUM_BAYAR', 'SEBAGIAN', 'LUNAS']);
-            $table->enum('metode_pembayaran', ['TUNAI', 'DEBIT', 'KREDIT', 'TRANSFER', 'EWALLET', 'QRIS']);
-            $table->decimal('subtotal', 15, 2);
-            $table->enum('jenis_diskon', ['PERSENTASE', 'NOMINAL']);
-            $table->decimal('nilai_diskon', 15, 2);
-            $table->decimal('jumlah_diskon', 15, 2);
-            $table->decimal('jumlah_pajak', 15, 2);
-            $table->decimal('total_akhir', 15, 2);
-            $table->decimal('jumlah_bayar', 15, 2);
-            $table->decimal('jumlah_kembalian', 15, 2);
-            $table->string('nomor_kartu', 50);
-            $table->string('nama_pemegang_kartu', 100);
-            $table->string('kode_approval', 50);
-            $table->text('catatan');
+            $table->enum('status_pembayaran', ['BELUM_BAYAR', 'SEBAGIAN', 'LUNAS'])->default('BELUM_BAYAR');
+            $table->enum('metode_pembayaran', ['TUNAI', 'DEBIT', 'KREDIT', 'TRANSFER', 'EWALLET', 'QRIS'])->nullable();
+            $table->decimal('subtotal', 15, 2)->default(0);
+            $table->enum('jenis_diskon', ['PERSENTASE', 'NOMINAL'])->nullable();
+            $table->decimal('nilai_diskon', 15, 2)->default(0);
+            $table->decimal('jumlah_diskon', 15, 2)->default(0);
+            $table->decimal('jumlah_pajak', 15, 2)->default(0);
+            $table->decimal('total_akhir', 15, 2)->default(0);
+            $table->decimal('jumlah_bayar', 15, 2)->default(0);
+            $table->decimal('jumlah_kembalian', 15, 2)->default(0);
+            $table->string('nomor_kartu', 50)->nullable();
+            $table->string('nama_pemegang_kartu', 100)->nullable();
+            $table->string('kode_approval', 50)->nullable();
+            $table->text('catatan')->nullable();
             $table->foreignId('dilayani_oleh')->nullable()->constrained('pengguna');
             $table->foreignId('dibuat_oleh')->nullable()->constrained('pengguna');
             $table->foreignId('diubah_oleh')->nullable()->constrained('pengguna');

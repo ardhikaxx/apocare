@@ -43,4 +43,9 @@ class Produk extends Model
     {
         return $this->hasMany(PergerakanStok::class);
     }
+
+    public function satuanProduk(): HasMany
+    {
+        return $this->hasMany(SatuanProduk::class);
+    }
 }

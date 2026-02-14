@@ -4,11 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Peran extends Model
 {
-    use SoftDeletes;
 
     protected $table = 'peran';
     protected $fillable = ['nama', 'keterangan'];
@@ -20,6 +18,6 @@ class Peran extends Model
 
     public function pengguna()
     {
-        return $this->hasMany(Pengguna::class);
+        return $this->hasMany(Pengguna::class, 'role_id');
     }
 }

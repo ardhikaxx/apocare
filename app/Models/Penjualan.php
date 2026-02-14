@@ -24,8 +24,18 @@ class Penjualan extends Model
         return $this->belongsTo(Pelanggan::class);
     }
 
+    public function resep(): BelongsTo
+    {
+        return $this->belongsTo(Resep::class);
+    }
+
     public function details(): HasMany
     {
         return $this->hasMany(DetailPenjualan::class);
+    }
+
+    public function retur(): HasMany
+    {
+        return $this->hasMany(ReturPenjualan::class);
     }
 }

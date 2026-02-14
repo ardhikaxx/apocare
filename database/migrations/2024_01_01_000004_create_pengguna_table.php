@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('username', 50)->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->foreignId('role_id')->constrained('peran');
             $table->string('telepon', 20)->nullable();
             $table->text('alamat')->nullable();

@@ -14,8 +14,8 @@ return new class extends Migration
             $table->decimal('jumlah', 10, 2)->default(0);
             $table->decimal('jumlah_reservasi', 10, 2)->default(0);
             $table->decimal('jumlah_tersedia', 10, 2)->default(0);
-            $table->decimal('harga_beli_terakhir', 15, 2);
-            $table->decimal('harga_beli_rata', 15, 2);
+            $table->decimal('harga_beli_terakhir', 15, 2)->nullable();
+            $table->decimal('harga_beli_rata', 15, 2)->nullable();
             $table->timestamp('terakhir_diubah')->nullable();
             $table->timestamps();
         });

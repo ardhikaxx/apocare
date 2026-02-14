@@ -11,7 +11,7 @@ class DetailPenjualan extends Model
     protected $fillable = [
         'penjualan_id', 'produk_id', 'satuan_produk_id', 'batch_id', 'jumlah', 'harga_satuan',
         'persentase_diskon', 'jumlah_diskon', 'persentase_pajak', 'jumlah_pajak', 'subtotal',
-        'total', 'harga_pokok', 'keuntungan', 'catatan'
+        'total', 'catatan'
     ];
 
     public function penjualan(): BelongsTo
