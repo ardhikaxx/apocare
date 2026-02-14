@@ -171,10 +171,10 @@ Akses aplikasi di `http://localhost:8000`
 
 | Email | Password | Role |
 |-------|----------|------|
-| admin@apocare.test | password | Admin |
-| apoteker@apocare.test | password | Apoteker |
-| kasir@apocare.test | password | Kasir |
-| gudang@apocare.test | password | Gudang |
+| admin@apocare.com | password | Admin |
+| apoteker@apocare.com | password | Apoteker |
+| kasir@apocare.com | password | Kasir |
+| gudang@apocare.com | password | Gudang |
 
 ---
 
