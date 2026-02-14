@@ -1,4 +1,4 @@
-﻿<nav class="app-navbar">
+<nav class="app-navbar">
     <div class="d-flex align-items-center gap-3">
         <button class="btn btn-soft" data-sidebar-toggle>
             <i class="fa-solid fa-bars"></i>
@@ -9,10 +9,6 @@
         </div>
     </div>
     <div class="d-flex align-items-center gap-3">
-        <div class="d-none d-md-flex align-items-center gap-2">
-            <span class="data-pill"><i class="fa-solid fa-circle-info"></i> Shift Pagi</span>
-            <span class="data-pill"><i class="fa-solid fa-signal"></i> Online</span>
-        </div>
         <div class="dropdown">
             <button class="btn btn-soft dropdown-toggle" data-bs-toggle="dropdown">
                 <i class="fa-solid fa-user-gear"></i> {{ auth()->user()?->nama ?? 'Pengguna' }}
