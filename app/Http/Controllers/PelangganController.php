@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PelangganExport;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PelangganController extends Controller
 {
@@ -13,14 +16,14 @@ class PelangganController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nama', 'like', "%$search%")
-                  ->orWhere('kode', 'like', "%$search%")
-                  ->orWhere('telepon', 'like', "%$search%");
+                    ->orWhere('kode', 'like', "%$search%")
+                    ->orWhere('telepon', 'like', "%$search%");
             });
         }
 
-        $pelanggan = $query->orderBy('nama')->paginate(10);
+        $pelanggan = $query->orderBy('nama')->get();
         return view('pages.pelanggan.index', compact('pelanggan'));
     }
 
@@ -33,10 +36,10 @@ class PelangganController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'telepon' => 'required|string',
+            'telepon' => 'nullable|string',
         ]);
 
-        $kode = 'PLG' . str_pad(Pelanggan::count() + 1, 4, '0', STR_PAD_LEFT);
+        $kode = 'PLG-' . str_pad((Pelanggan::withTrashed()->max('id') ?? 0) + 1, 4, '0', STR_PAD_LEFT);
 
         Pelanggan::create([
             'kode' => $kode,
@@ -100,7 +103,25 @@ class PelangganController extends Controller
 
     public function destroy(Pelanggan $pelanggan)
     {
-        $pelanggan->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
+        $pelanggan->update(['diubah_oleh' => auth()->id()]);
+        $pelanggan->delete();
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new PelangganExport(), 'pelanggan.xlsx');
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(new PelangganExport(), 'pelanggan.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPdf()
+    {
+        $pelanggan = Pelanggan::orderBy('nama')->get();
+        $pdf = Pdf::loadView('print.pelanggan', compact('pelanggan'));
+        return $pdf->download('pelanggan.pdf');
     }
 }

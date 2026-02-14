@@ -1,49 +1,51 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Pelanggan')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('pelanggan.index') }}">Pelanggan</a></li>
-<li class="breadcrumb-item active">Edit</li>
-@endsection
+﻿@extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Edit Pelanggan</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Pelanggan', 'url' => route('pelanggan.index')],
+    ['label' => 'Edit']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Edit Pelanggan',
+    'subtitle' => 'Perbarui data pelanggan.'
+])
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('pelanggan.update', $pelanggan->id) }}" method="POST">
+        <form method="POST" action="{{ route('pelanggan.update', $pelanggan) }}">
             @csrf
             @method('PUT')
-            <div class="row">
-                <div class="col-md-6 mb-3">
+            <div class="row g-3">
+                <div class="col-md-6">
                     <label class="form-label">Nama</label>
-                    <input type="text" name="nama" class="form-control" value="{{ $pelanggan->nama }}" required>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama', $pelanggan->nama) }}" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Telepon</label>
-                    <input type="text" name="telepon" class="form-control" value="{{ $pelanggan->telepon }}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ $pelanggan->email }}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" class="form-select">
-                        <option value="PRIA" {{ $pelanggan->jenis_kelamin == 'PRIA' ? 'selected' : '' }}>PRIA</option>
-                        <option value="WANITA" {{ $pelanggan->jenis_kelamin == 'WANITA' ? 'selected' : '' }}>WANITA</option>
+                <div class="col-md-6">
+                    <label class="form-label">Jenis Pelanggan</label>
+                    <select name="jenis_pelanggan" class="form-select">
+                        @foreach(['REGULAR','RESELLER','KESEHATAN','PERUSAHAAN'] as $jenis)
+                            <option value="{{ $jenis }}" @selected($pelanggan->jenis_pelanggan == $jenis)>{{ $jenis }}</option>
+                        @endforeach
                     </select>
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Telepon</label>
+                    <input type="text" name="telepon" class="form-control" value="{{ old('telepon', $pelanggan->telepon) }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ old('email', $pelanggan->email) }}">
+                </div>
+                <div class="col-12">
                     <label class="form-label">Alamat</label>
-                    <textarea name="alamat" class="form-control" rows="2">{{ $pelanggan->alamat }}</textarea>
+                    <textarea name="alamat" class="form-control" rows="3">{{ old('alamat', $pelanggan->alamat) }}</textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Simpan</button>
-            <a href="{{ route('pelanggan.index') }}" class="btn btn-secondary">Kembali</a>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-1"></i>Simpan</button>
+                <a href="{{ route('pelanggan.index') }}" class="btn btn-soft">Batal</a>
+            </div>
         </form>
     </div>
 </div>

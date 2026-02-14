@@ -17,7 +17,7 @@ class PenggunaController extends Controller
             $query->where('role_id', $request->role);
         }
 
-        $pengguna = $query->orderBy('nama')->paginate(10);
+        $pengguna = $query->orderBy('nama')->get();
         $peran = Peran::all();
         return view('pages.pengguna.index', compact('pengguna', 'peran'));
     }
@@ -65,6 +65,7 @@ class PenggunaController extends Controller
             'nama' => 'required|string|max:100',
             'email' => 'required|email|unique:pengguna,email,' . $pengguna->id,
             'username' => 'required|string|unique:pengguna,username,' . $pengguna->id,
+            'role_id' => 'required|exists:peran,id',
         ]);
 
         $data = [
@@ -89,7 +90,8 @@ class PenggunaController extends Controller
 
     public function destroy(Pengguna $pengguna)
     {
-        $pengguna->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
+        $pengguna->update(['diubah_oleh' => auth()->id()]);
+        $pengguna->delete();
         return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus');
     }
 }

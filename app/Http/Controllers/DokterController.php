@@ -19,7 +19,7 @@ class DokterController extends Controller
             });
         }
 
-        $dokter = $query->orderBy('nama')->paginate(10);
+        $dokter = $query->orderBy('nama')->get();
         return view('pages.dokter.index', compact('dokter'));
     }
 
@@ -32,10 +32,10 @@ class DokterController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'spesialisasi' => 'required|string|max:100',
+            'spesialisasi' => 'nullable|string|max:100',
         ]);
 
-        $kode = 'DKT' . str_pad(Dokter::count() + 1, 4, '0', STR_PAD_LEFT);
+        $kode = 'DKT-' . str_pad((Dokter::withTrashed()->max('id') ?? 0) + 1, 4, '0', STR_PAD_LEFT);
 
         Dokter::create([
             'kode' => $kode,
@@ -83,7 +83,8 @@ class DokterController extends Controller
 
     public function destroy(Dokter $dokter)
     {
-        $dokter->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
+        $dokter->update(['diubah_oleh' => auth()->id()]);
+        $dokter->delete();
         return redirect()->route('dokter.index')->with('success', 'Dokter berhasil dihapus');
     }
 }

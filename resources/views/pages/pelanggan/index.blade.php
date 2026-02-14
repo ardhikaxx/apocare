@@ -1,60 +1,47 @@
 @extends('layouts.app')
 
-@section('title', 'Pelanggan')
-
-@section('breadcrumb')
-<li class="breadcrumb-item active">Pelanggan</li>
-@endsection
-
 @section('content')
-<div class="page-header d-flex justify-content-between align-items-center">
-    <h1 class="page-title">Pelanggan</h1>
-    <a href="{{ route('pelanggan.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Tambah Pelanggan
-    </a>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Pelanggan']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Manajemen Pelanggan',
+    'subtitle' => 'Kelola pelanggan retail, reseller, dan healthcare.',
+    'actions' => [
+        ['label' => 'Export Excel', 'icon' => 'fa-solid fa-file-excel', 'class' => 'btn btn-soft', 'href' => route('pelanggan.export.excel')],
+        ['label' => 'Export CSV', 'icon' => 'fa-solid fa-file-csv', 'class' => 'btn btn-soft', 'href' => route('pelanggan.export.csv')],
+        ['label' => 'Export PDF', 'icon' => 'fa-solid fa-file-pdf', 'class' => 'btn btn-soft', 'href' => route('pelanggan.export.pdf')],
+        ['label' => 'Tambah Pelanggan', 'icon' => 'fa-solid fa-plus', 'class' => 'btn btn-primary', 'href' => route('pelanggan.create')]
+    ]
+])
 
 <div class="card">
+    <div class="card-header">Daftar Pelanggan</div>
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Telepon</th>
-                    <th>Jenis</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pelanggan as $item)
-                <tr>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->telepon }}</td>
-                    <td>{{ $item->jenis_pelanggan }}</td>
-                    <td>
-                        <span class="badge bg-{{ $item->status_aktif ? 'success' : 'danger' }}">
-                            {{ $item->status_aktif ? 'Aktif' : 'Nonaktif' }}
-                        </span>
-                    </td>
-                    <td>
-                        <a href="{{ route('pelanggan.edit', $item->id) }}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('pelanggan.destroy', $item->id) }}" method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $pelanggan->links() }}
+        @php
+            $columns = ['Kode', 'Nama', 'Kategori', 'Telepon', 'Status', 'Aksi'];
+            $rows = $pelanggan->map(function ($item) {
+                $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $aksi = '<div class="d-flex gap-2">'
+                    . '<a class="btn btn-sm btn-soft" href="' . route('pelanggan.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
+                    . '<form method="POST" action="' . route('pelanggan.destroy', $item) . '" onsubmit="return confirm(\'Hapus pelanggan ini?\')">'
+                    . csrf_field() . method_field('DELETE')
+                    . '<button class="btn btn-sm btn-soft" type="submit"><i class="fa-solid fa-trash"></i></button>'
+                    . '</form>'
+                    . '</div>';
+                return [
+                    $item->kode,
+                    $item->nama,
+                    $item->jenis_pelanggan,
+                    $item->telepon ?? '-',
+                    $status,
+                    $aksi
+                ];
+            })->toArray();
+        @endphp
+        @include('pages.shared.table', compact('columns', 'rows'))
     </div>
 </div>
 @endsection
+
