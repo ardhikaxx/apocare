@@ -378,4 +378,22 @@ h1, h2, h3, h4, h5 {
   display: block;
 }
 
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(14, 111, 100, 0.3);
+}
+
+.avatar-initials {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Fraunces', serif;
+}
+
 

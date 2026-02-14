@@ -13,11 +13,9 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
-            <div class="card-body text-center">
-                <div class="avatar avatar-xl mx-auto mb-3">
-                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle fs-1">
-                        {{ strtoupper(substr($pengguna->nama, 0, 1)) }}
-                    </span>
+            <div class="card-body text-center py-4">
+                <div class="profile-avatar mx-auto mb-3">
+                    <span class="avatar-initials">{{ strtoupper(substr($pengguna->nama, 0, 2)) }}</span>
                 </div>
                 <h5 class="mb-1">{{ $pengguna->nama }}</h5>
                 <p class="text-muted mb-2">{{ $pengguna->role->nama ?? '-' }}</p>
