@@ -1,4 +1,4 @@
-# Apocare - Sistem Informasi Apotek
+# Apocare - Integrated Pharmacy Management System
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-blue.svg)
 ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg)
