@@ -1,57 +1,53 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Kategori')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('kategori.index') }}">Kategori</a></li>
-<li class="breadcrumb-item active">Edit</li>
-@endsection
+﻿@extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Edit Kategori</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Data Master'],
+    ['label' => 'Kategori', 'url' => route('master.kategori.index')],
+    ['label' => 'Edit']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Edit Kategori',
+    'subtitle' => 'Perbarui informasi kategori produk.'
+])
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('kategori.update', $kategori->id) }}" method="POST">
+        <form method="POST" action="{{ route('master.kategori.update', $kategori) }}">
             @csrf
             @method('PUT')
-            <div class="row">
-                <div class="col-md-6 mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
                     <label class="form-label">Kode</label>
-                    <input type="text" name="kode" class="form-control" value="{{ $kategori->kode }}" required>
+                    <input type="text" name="kode" class="form-control" value="{{ old('kode', $kategori->kode) }}" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Nama</label>
-                    <input type="text" name="nama" class="form-control" value="{{ $kategori->nama }}" required>
+                <div class="col-md-8">
+                    <label class="form-label">Nama Kategori</label>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama', $kategori->nama) }}" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Parent Kategori</label>
+                <div class="col-md-6">
+                    <label class="form-label">Parent</label>
                     <select name="parent_id" class="form-select">
-                        <option value="">-</option>
-                        @foreach($parents as $p)
-                        <option value="{{ $p->id }}" {{ $kategori->parent_id == $p->id ? 'selected' : '' }}>{{ $p->nama }}</option>
+                        <option value="">Tanpa Parent</option>
+                        @foreach($parents as $parent)
+                            <option value="{{ $parent->id }}" @selected($kategori->parent_id == $parent->id)>{{ $parent->nama }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Ikon</label>
-                    <input type="text" name="ikon" class="form-control" value="{{ $kategori->ikon }}">
+                <div class="col-md-6">
+                    <label class="form-label">Icon</label>
+                    <input type="text" name="ikon" class="form-control" value="{{ old('ikon', $kategori->ikon) }}" placeholder="fa-solid fa-pills">
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-12">
                     <label class="form-label">Keterangan</label>
-                    <textarea name="keterangan" class="form-control" rows="3">{{ $kategori->keterangan }}</textarea>
-                </div>
-                <div class="col-12 mb-3">
-                    <div class="form-check">
-                        <input type="checkbox" name="status_aktif" value="1" class="form-check-input" id="statusAktif" {{ $kategori->status_aktif ? 'checked' : '' }}>
-                        <label class="form-check-label" for="statusAktif">Aktif</label>
-                    </div>
+                    <textarea name="keterangan" class="form-control" rows="3">{{ old('keterangan', $kategori->keterangan) }}</textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Simpan</button>
-            <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Kembali</a>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-1"></i>Simpan</button>
+                <a href="{{ route('master.kategori.index') }}" class="btn btn-soft">Batal</a>
+            </div>
         </form>
     </div>
 </div>

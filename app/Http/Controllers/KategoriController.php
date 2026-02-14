@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KategoriExport;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::with('parent')->orderBy('kode')->paginate(10);
+        $kategori = Kategori::with('parent')->orderBy('kode')->get();
         return view('pages.master.kategori.index', compact('kategori'));
     }
 
@@ -25,13 +26,15 @@ class KategoriController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'kode' => 'required|string|max:20|unique:kategori',
+            'kode' => 'nullable|string|max:20|unique:kategori,kode',
             'parent_id' => 'nullable|exists:kategori,id',
         ]);
 
+        $kode = $request->kode ?: ('KTG-' . str_pad((Kategori::withTrashed()->max('id') ?? 0) + 1, 4, '0', STR_PAD_LEFT));
+
         Kategori::create([
             'nama' => $request->nama,
-            'kode' => $request->kode,
+            'kode' => $kode,
             'parent_id' => $request->parent_id,
             'keterangan' => $request->keterangan,
             'ikon' => $request->ikon,
@@ -39,7 +42,7 @@ class KategoriController extends Controller
             'dibuat_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
     public function show(Kategori $kategori)
@@ -70,12 +73,30 @@ class KategoriController extends Controller
             'diubah_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui');
+        return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil diperbarui');
     }
 
     public function destroy(Kategori $kategori)
     {
-        $kategori->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
-        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
+        $kategori->update(['diubah_oleh' => auth()->id()]);
+        $kategori->delete();
+        return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new KategoriExport(), 'kategori.xlsx');
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(new KategoriExport(), 'kategori.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPdf()
+    {
+        $kategori = Kategori::with('parent')->orderBy('kode')->get();
+        $pdf = Pdf::loadView('print.kategori', compact('kategori'));
+        return $pdf->download('kategori.pdf');
     }
 }

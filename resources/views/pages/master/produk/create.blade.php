@@ -1,49 +1,69 @@
-@extends('layouts.app')
-
-@section('title', 'Tambah Produk')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('produk.index') }}">Produk</a></li>
-<li class="breadcrumb-item active">Tambah</li>
-@endsection
+﻿@extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Tambah Produk</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Data Master'],
+    ['label' => 'Produk', 'url' => route('master.produk.index')],
+    ['label' => 'Tambah']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Tambah Produk',
+    'subtitle' => 'Masukkan data produk baru.'
+])
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('produk.store') }}" method="POST">
+        <form method="POST" action="{{ route('master.produk.store') }}">
             @csrf
-            <div class="row">
-                <div class="col-md-6 mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Kode</label>
+                    <input type="text" name="kode" class="form-control" value="{{ old('kode') }}" placeholder="PRD-000001">
+                </div>
+                <div class="col-md-8">
                     <label class="form-label">Nama Produk</label>
-                    <input type="text" name="nama" class="form-control" required>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama') }}" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Barcode</label>
-                    <input type="text" name="barcode" class="form-control" required>
-                </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6">
                     <label class="form-label">Kategori</label>
                     <select name="kategori_id" class="form-select" required>
-                        <option value="">Pilih Kategori</option>
-                        @foreach($kategori as $k)
-                        <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                        <option value="">Pilih kategori</option>
+                        @foreach($kategori as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Satuan</label>
+                <div class="col-md-6">
+                    <label class="form-label">Satuan Dasar</label>
                     <select name="satuan_id" class="form-select" required>
-                        <option value="">Pilih Satuan</option>
-                        @foreach($satuan as $s)
-                        <option value="{{ $s->id }}">{{ $s->nama }}</option>
+                        <option value="">Pilih satuan</option>
+                        @foreach($satuan as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Harga Beli</label>
+                    <input type="number" step="0.01" name="harga_beli" class="form-control" value="{{ old('harga_beli', 0) }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Harga Jual</label>
+                    <input type="number" step="0.01" name="harga_jual" class="form-control" value="{{ old('harga_jual', 0) }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Stok Minimum</label>
+                    <input type="number" name="stok_minimum" class="form-control" value="{{ old('stok_minimum', 0) }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Stok Maksimum</label>
+                    <input type="number" name="stok_maksimum" class="form-control" value="{{ old('stok_maksimum', 0) }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Titik Pesan Ulang</label>
+                    <input type="number" name="titik_pesan_ulang" class="form-control" value="{{ old('titik_pesan_ulang', 0) }}">
+                </div>
+                <div class="col-md-6">
                     <label class="form-label">Jenis Produk</label>
                     <select name="jenis_produk" class="form-select">
                         <option value="Obat">Obat</option>
@@ -53,31 +73,22 @@
                         <option value="Umum">Umum</option>
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Golongan Obat</label>
-                    <select name="golongan_obat" class="form-select">
-                        <option value="Obat Bebas">Obat Bebas</option>
-                        <option value="Obat Bebas Terbatas">Obat Bebas Terbatas</option>
-                        <option value="Obat Keras">Obat Keras</option>
+                <div class="col-md-6">
+                    <label class="form-label">Perlu Resep</label>
+                    <select name="perlu_resep" class="form-select">
+                        <option value="0">Tidak</option>
+                        <option value="1">Ya</option>
                     </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Harga Beli</label>
-                    <input type="number" name="harga_beli" class="form-control" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Harga Jual</label>
-                    <input type="number" name="harga_jual" class="form-control" required>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <div class="form-check">
-                        <input type="checkbox" name="perlu_resep" value="1" class="form-check-input" id="perluResep">
-                        <label class="form-check-label" for="perluResep">Perlu Resep Dokter</label>
-                    </div>
+                <div class="col-12">
+                    <label class="form-label">Keterangan</label>
+                    <textarea name="keterangan" class="form-control" rows="3">{{ old('keterangan') }}</textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Simpan</button>
-            <a href="{{ route('produk.index') }}" class="btn btn-secondary">Kembali</a>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-1"></i>Simpan</button>
+                <a href="{{ route('master.produk.index') }}" class="btn btn-soft">Batal</a>
+            </div>
         </form>
     </div>
 </div>

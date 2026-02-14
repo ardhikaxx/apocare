@@ -2,25 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PemasokExport;
 use App\Models\Pemasok;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PemasokController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pemasok::query();
-
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%$search%")
-                  ->orWhere('kode', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%");
-            });
-        }
-
-        $pemasok = $query->orderBy('nama')->paginate(10);
+        $pemasok = Pemasok::orderBy('nama')->get();
         return view('pages.master.pemasok.index', compact('pemasok'));
     }
 
@@ -33,11 +25,11 @@ class PemasokController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'email' => 'required|email|unique:pemasok',
-            'telepon' => 'required|string',
+            'email' => 'nullable|email|unique:pemasok,email',
+            'telepon' => 'nullable|string',
         ]);
 
-        $kode = 'SUP' . str_pad(Pemasok::count() + 1, 4, '0', STR_PAD_LEFT);
+        $kode = 'SUP-' . str_pad((Pemasok::withTrashed()->max('id') ?? 0) + 1, 4, '0', STR_PAD_LEFT);
 
         Pemasok::create([
             'kode' => $kode,
@@ -57,7 +49,7 @@ class PemasokController extends Controller
             'dibuat_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('pemasok.index')->with('success', 'Pemasok berhasil ditambahkan');
+        return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil ditambahkan');
     }
 
     public function edit(Pemasok $pemasok)
@@ -69,7 +61,7 @@ class PemasokController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:100',
-            'email' => 'required|email|unique:pemasok,email,' . $pemasok->id,
+            'email' => 'nullable|email|unique:pemasok,email,' . $pemasok->id,
         ]);
 
         $pemasok->update([
@@ -89,12 +81,30 @@ class PemasokController extends Controller
             'diubah_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('pemasok.index')->with('success', 'Pemasok berhasil diperbarui');
+        return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil diperbarui');
     }
 
     public function destroy(Pemasok $pemasok)
     {
-        $pemasok->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
-        return redirect()->route('pemasok.index')->with('success', 'Pemasok berhasil dihapus');
+        $pemasok->update(['diubah_oleh' => auth()->id()]);
+        $pemasok->delete();
+        return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new PemasokExport(), 'pemasok.xlsx');
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(new PemasokExport(), 'pemasok.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPdf()
+    {
+        $pemasok = Pemasok::orderBy('nama')->get();
+        $pdf = Pdf::loadView('print.pemasok', compact('pemasok'));
+        return $pdf->download('pemasok.pdf');
     }
 }

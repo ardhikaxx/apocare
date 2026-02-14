@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SatuanExport;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SatuanController extends Controller
 {
     public function index()
     {
-        $satuan = Satuan::orderBy('kode')->paginate(10);
+        $satuan = Satuan::orderBy('kode')->get();
         return view('pages.master.satuan.index', compact('satuan'));
     }
 
@@ -32,7 +35,7 @@ class SatuanController extends Controller
             'status_aktif' => $request->status_aktif ?? true,
         ]);
 
-        return redirect()->route('satuan.index')->with('success', 'Satuan berhasil ditambahkan');
+        return redirect()->route('master.satuan.index')->with('success', 'Satuan berhasil ditambahkan');
     }
 
     public function edit(Satuan $satuan)
@@ -54,12 +57,29 @@ class SatuanController extends Controller
             'status_aktif' => $request->status_aktif ?? true,
         ]);
 
-        return redirect()->route('satuan.index')->with('success', 'Satuan berhasil diperbarui');
+        return redirect()->route('master.satuan.index')->with('success', 'Satuan berhasil diperbarui');
     }
 
     public function destroy(Satuan $satuan)
     {
         $satuan->delete();
-        return redirect()->route('satuan.index')->with('success', 'Satuan berhasil dihapus');
+        return redirect()->route('master.satuan.index')->with('success', 'Satuan berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new SatuanExport(), 'satuan.xlsx');
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(new SatuanExport(), 'satuan.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPdf()
+    {
+        $satuan = Satuan::orderBy('kode')->get();
+        $pdf = Pdf::loadView('print.satuan', compact('satuan'));
+        return $pdf->download('satuan.pdf');
     }
 }

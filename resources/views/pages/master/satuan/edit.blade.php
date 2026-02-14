@@ -1,44 +1,40 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Satuan')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('satuan.index') }}">Satuan</a></li>
-<li class="breadcrumb-item active">Edit</li>
-@endsection
+﻿@extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Edit Satuan</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Data Master'],
+    ['label' => 'Satuan', 'url' => route('master.satuan.index')],
+    ['label' => 'Edit']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Edit Satuan',
+    'subtitle' => 'Perbarui data satuan.'
+])
 
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('satuan.update', $satuan->id) }}" method="POST">
+        <form method="POST" action="{{ route('master.satuan.update', $satuan) }}">
             @csrf
             @method('PUT')
-            <div class="row">
-                <div class="col-md-6 mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
                     <label class="form-label">Kode</label>
-                    <input type="text" name="kode" class="form-control" value="{{ $satuan->kode }}" required>
+                    <input type="text" name="kode" class="form-control" value="{{ old('kode', $satuan->kode) }}" required>
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-8">
                     <label class="form-label">Nama</label>
-                    <input type="text" name="nama" class="form-control" value="{{ $satuan->nama }}" required>
+                    <input type="text" name="nama" class="form-control" value="{{ old('nama', $satuan->nama) }}" required>
                 </div>
-                <div class="col-12 mb-3">
+                <div class="col-12">
                     <label class="form-label">Keterangan</label>
-                    <textarea name="keterangan" class="form-control" rows="3">{{ $satuan->keterangan }}</textarea>
-                </div>
-                <div class="col-12 mb-3">
-                    <div class="form-check">
-                        <input type="checkbox" name="status_aktif" value="1" class="form-check-input" id="statusAktif" {{ $satuan->status_aktif ? 'checked' : '' }}>
-                        <label class="form-check-label" for="statusAktif">Aktif</label>
-                    </div>
+                    <textarea name="keterangan" class="form-control" rows="3">{{ old('keterangan', $satuan->keterangan) }}</textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Simpan</button>
-            <a href="{{ route('satuan.index') }}" class="btn btn-secondary">Kembali</a>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-1"></i>Simpan</button>
+                <a href="{{ route('master.satuan.index') }}" class="btn btn-soft">Batal</a>
+            </div>
         </form>
     </div>
 </div>

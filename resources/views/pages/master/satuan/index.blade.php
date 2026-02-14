@@ -1,59 +1,47 @@
 @extends('layouts.app')
 
-@section('title', 'Satuan Produk')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="#">Data Master</a></li>
-<li class="breadcrumb-item active">Satuan</li>
-@endsection
-
 @section('content')
-<div class="page-header d-flex justify-content-between align-items-center">
-    <h1 class="page-title">Satuan Produk</h1>
-    <a href="{{ route('satuan.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Tambah Satuan
-    </a>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Data Master'],
+    ['label' => 'Satuan']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Manajemen Satuan',
+    'subtitle' => 'Kelola satuan dasar dan satuan konversi produk.',
+    'actions' => [
+        ['label' => 'Export Excel', 'icon' => 'fa-solid fa-file-excel', 'class' => 'btn btn-soft', 'href' => route('master.satuan.export.excel')],
+        ['label' => 'Export CSV', 'icon' => 'fa-solid fa-file-csv', 'class' => 'btn btn-soft', 'href' => route('master.satuan.export.csv')],
+        ['label' => 'Export PDF', 'icon' => 'fa-solid fa-file-pdf', 'class' => 'btn btn-soft', 'href' => route('master.satuan.export.pdf')],
+        ['label' => 'Tambah Satuan', 'icon' => 'fa-solid fa-plus', 'class' => 'btn btn-primary', 'href' => route('master.satuan.create')]
+    ]
+])
 
 <div class="card">
+    <div class="card-header">Daftar Satuan</div>
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Keterangan</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($satuan as $item)
-                <tr>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->keterangan }}</td>
-                    <td>
-                        <span class="badge bg-{{ $item->status_aktif ? 'success' : 'danger' }}">
-                            {{ $item->status_aktif ? 'Aktif' : 'Nonaktif' }}
-                        </span>
-                    </td>
-                    <td>
-                        <a href="{{ route('satuan.edit', $item->id) }}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('satuan.destroy', $item->id) }}" method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $satuan->links() }}
+        @php
+            $columns = ['Kode', 'Nama', 'Keterangan', 'Status', 'Aksi'];
+            $rows = $satuan->map(function ($item) {
+                $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $aksi = '<div class="d-flex gap-2">'
+                    . '<a class="btn btn-sm btn-soft" href="' . route('master.satuan.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
+                    . '<form method="POST" action="' . route('master.satuan.destroy', $item) . '" onsubmit="return confirm(\'Hapus satuan ini?\')">'
+                    . csrf_field() . method_field('DELETE')
+                    . '<button class="btn btn-sm btn-soft" type="submit"><i class="fa-solid fa-trash"></i></button>'
+                    . '</form>'
+                    . '</div>';
+                return [
+                    $item->kode,
+                    $item->nama,
+                    $item->keterangan ?? '-',
+                    $status,
+                    $aksi
+                ];
+            })->toArray();
+        @endphp
+        @include('pages.shared.table', compact('columns', 'rows'))
     </div>
 </div>
 @endsection
+

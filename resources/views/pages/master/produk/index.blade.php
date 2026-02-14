@@ -1,80 +1,49 @@
 @extends('layouts.app')
 
-@section('title', 'Produk')
-
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="#">Data Master</a></li>
-<li class="breadcrumb-item active">Produk</li>
-@endsection
-
 @section('content')
-<div class="page-header d-flex justify-content-between align-items-center">
-    <h1 class="page-title">Daftar Produk</h1>
-    <a href="{{ route('produk.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Tambah Produk
-    </a>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Data Master'],
+    ['label' => 'Produk']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Manajemen Produk',
+    'subtitle' => 'Kelola produk, batch, harga, dan multi satuan.',
+    'actions' => [
+        ['label' => 'Export Excel', 'icon' => 'fa-solid fa-file-excel', 'class' => 'btn btn-soft', 'href' => route('master.produk.export.excel')],
+        ['label' => 'Export CSV', 'icon' => 'fa-solid fa-file-csv', 'class' => 'btn btn-soft', 'href' => route('master.produk.export.csv')],
+        ['label' => 'Export PDF', 'icon' => 'fa-solid fa-file-pdf', 'class' => 'btn btn-soft', 'href' => route('master.produk.export.pdf')],
+        ['label' => 'Tambah Produk', 'icon' => 'fa-solid fa-plus', 'class' => 'btn btn-primary', 'href' => route('master.produk.create')]
+    ]
+])
 
 <div class="card">
+    <div class="card-header">Daftar Produk</div>
     <div class="card-body">
-        <form action="{{ route('produk.index') }}" method="GET" class="row mb-3">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="kategori" class="form-select">
-                    <option value="">Semua Kategori</option>
-                    @foreach($kategori as $k)
-                    <option value="{{ $k->id }}" {{ request('kategori') == $k->id ? 'selected' : '' }}>{{ $k->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Kategori</th>
-                    <th>Harga Beli</th>
-                    <th>Harga Jual</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($produk as $item)
-                <tr>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->kategori->nama }}</td>
-                    <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                    <td>
-                        <span class="badge bg-{{ $item->status_aktif ? 'success' : 'danger' }}">
-                            {{ $item->status_aktif ? 'Aktif' : 'Nonaktif' }}
-                        </span>
-                    </td>
-                    <td>
-                        <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('produk.destroy', $item->id) }}" method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus?')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $produk->links() }}
+        @php
+            $columns = ['Kode', 'Nama Produk', 'Kategori', 'Harga Jual', 'Stok Minimum', 'Status', 'Aksi'];
+            $rows = $produk->map(function ($item) {
+                $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $aksi = '<div class="d-flex gap-2">'
+                    . '<a class="btn btn-sm btn-soft" href="' . route('master.produk.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
+                    . '<form method="POST" action="' . route('master.produk.destroy', $item) . '" onsubmit="return confirm(\'Hapus produk ini?\')">'
+                    . csrf_field() . method_field('DELETE')
+                    . '<button class="btn btn-sm btn-soft" type="submit"><i class="fa-solid fa-trash"></i></button>'
+                    . '</form>'
+                    . '</div>';
+                return [
+                    $item->kode,
+                    $item->nama,
+                    $item->kategori ? $item->kategori->nama : '-',
+                    'Rp ' . number_format($item->harga_jual ?? 0, 0, ',', '.'),
+                    $item->stok_minimum ?? 0,
+                    $status,
+                    $aksi
+                ];
+            })->toArray();
+        @endphp
+        @include('pages.shared.table', compact('columns', 'rows'))
     </div>
 </div>
 @endsection
+

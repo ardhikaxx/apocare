@@ -2,34 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProdukExport;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProdukController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Produk::with(['kategori', 'satuan']);
-
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nama', 'like', "%$search%")
-                  ->orWhere('kode', 'like', "%$search%")
-                  ->orWhere('barcode', 'like', "%$search%");
-            });
-        }
-
-        if ($request->has('kategori')) {
-            $query->where('kategori_id', $request->kategori);
-        }
-
-        $produk = $query->orderBy('nama')->paginate(10);
-        $kategori = Kategori::where('status_aktif', true)->get();
-        return view('pages.master.produk.index', compact('produk', 'kategori'));
+        $produk = Produk::with(['kategori', 'satuan'])->orderBy('nama')->get();
+        return view('pages.master.produk.index', compact('produk'));
     }
 
     public function create()
@@ -43,13 +29,13 @@ class ProdukController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:200',
-            'kode' => 'required|string|max:30|unique:produk',
-            'barcode' => 'required|string|max:50|unique:produk',
+            'kode' => 'nullable|string|max:30|unique:produk,kode',
+            'barcode' => 'nullable|string|max:50|unique:produk,barcode',
             'kategori_id' => 'required|exists:kategori,id',
             'satuan_id' => 'required|exists:satuan,id',
         ]);
 
-        $kode = 'PR' . str_pad(Produk::count() + 1, 6, '0', STR_PAD_LEFT);
+        $kode = $request->kode ?: ('PRD-' . str_pad((Produk::withTrashed()->max('id') ?? 0) + 1, 6, '0', STR_PAD_LEFT));
 
         Produk::create([
             'kode' => $kode,
@@ -60,7 +46,7 @@ class ProdukController extends Controller
             'satuan_id' => $request->satuan_id,
             'produsen' => $request->produsen,
             'keterangan' => $request->keterangan,
-            'jenis_produk' => $request->jenis_produk,
+            'jenis_produk' => $request->jenis_produk ?? 'Obat',
             'golongan_obat' => $request->golongan_obat,
             'perlu_resep' => $request->perlu_resep ?? false,
             'harga_beli' => $request->harga_beli,
@@ -75,7 +61,7 @@ class ProdukController extends Controller
             'dibuat_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan');
+        return redirect()->route('master.produk.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
     public function edit(Produk $produk)
@@ -90,7 +76,7 @@ class ProdukController extends Controller
         $request->validate([
             'nama' => 'required|string|max:200',
             'kode' => 'required|string|max:30|unique:produk,kode,' . $produk->id,
-            'barcode' => 'required|string|max:50|unique:produk,barcode,' . $produk->id,
+            'barcode' => 'nullable|string|max:50|unique:produk,barcode,' . $produk->id,
             'kategori_id' => 'required|exists:kategori,id',
             'satuan_id' => 'required|exists:satuan,id',
         ]);
@@ -104,7 +90,7 @@ class ProdukController extends Controller
             'satuan_id' => $request->satuan_id,
             'produsen' => $request->produsen,
             'keterangan' => $request->keterangan,
-            'jenis_produk' => $request->jenis_produk,
+            'jenis_produk' => $request->jenis_produk ?? $produk->jenis_produk,
             'golongan_obat' => $request->golongan_obat,
             'perlu_resep' => $request->perlu_resep ?? false,
             'harga_beli' => $request->harga_beli,
@@ -119,12 +105,30 @@ class ProdukController extends Controller
             'diubah_oleh' => auth()->id(),
         ]);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui');
+        return redirect()->route('master.produk.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     public function destroy(Produk $produk)
     {
-        $produk->update(['deleted_at' => now(), 'diubah_oleh' => auth()->id()]);
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus');
+        $produk->update(['diubah_oleh' => auth()->id()]);
+        $produk->delete();
+        return redirect()->route('master.produk.index')->with('success', 'Produk berhasil dihapus');
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new ProdukExport(), 'produk.xlsx');
+    }
+
+    public function exportCsv()
+    {
+        return Excel::download(new ProdukExport(), 'produk.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    public function exportPdf()
+    {
+        $produk = Produk::with(['kategori', 'satuan'])->orderBy('nama')->get();
+        $pdf = Pdf::loadView('print.produk', compact('produk'));
+        return $pdf->download('produk.pdf');
     }
 }
