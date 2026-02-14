@@ -2,49 +2,58 @@
 
 @section('title', 'Pembelian')
 
-@section('breadcrumb')
-<li class="breadcrumb-item active">Pembelian</li>
-@endsection
-
 @section('content')
-<div class="page-header d-flex justify-content-between align-items-center">
-    <h1 class="page-title">Pembelian</h1>
-    <a href="{{ route('pembelian.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Pembelian Baru
+<div class="page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+        <h1 class="page-title">Pembelian</h1>
+        <p class="text-muted mb-0">Daftar PO dan penerimaan barang.</p>
+    </div>
+    <a href="{{ route('transaksi.pembelian.create') }}" class="btn btn-primary">
+        <i class="fa-solid fa-plus me-2"></i>Tambah PO
     </a>
 </div>
 
 <div class="card">
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Nomor</th>
-                    <th>Tanggal</th>
-                    <th>Pemasok</th>
-                    <th>Status</th>
-                    <th>Total</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pembelian as $item)
-                <tr>
-                    <td>{{ $item->nomor_pembelian }}</td>
-                    <td>{{ $item->tanggal_pembelian }}</td>
-                    <td>{{ $item->pemasok ? $item->pemasok->nama : '-' }}</td>
-                    <td>{{ $item->status }}</td>
-                    <td>Rp {{ number_format($item->total_akhir, 0, ',', '.') }}</td>
-                    <td>
-                        <a href="{{ route('pembelian.show', $item->id) }}" class="btn btn-sm btn-info">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $pembelian->links() }}
+        <div class="table-responsive">
+            <table class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Nomor</th>
+                        <th>Tanggal</th>
+                        <th>Pemasok</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th class="text-end">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($pembelian as $item)
+                        <tr>
+                            <td>{{ $item->nomor_pembelian }}</td>
+                            <td>{{ $item->tanggal_pembelian ? \Carbon\Carbon::parse($item->tanggal_pembelian)->format('d/m/Y') : '-' }}</td>
+                            <td>{{ $item->pemasok->nama ?? '-' }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ $item->status }}</span>
+                            </td>
+                            <td>Rp {{ number_format($item->total_akhir, 0, ',', '.') }}</td>
+                            <td class="text-end">
+                                <a href="{{ route('transaksi.pembelian.show', $item) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <form action="{{ route('transaksi.pembelian.destroy', $item) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus PO ini?')">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection
