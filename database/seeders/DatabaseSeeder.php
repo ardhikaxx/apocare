@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             PembelianSeeder::class,
             PenjualanSeeder::class,
             ReturSeeder::class,
+            ReturPembelianSeeder::class,
+            ReturPenjualanSeeder::class,
             PenyesuaianSeeder::class,
             OpnameSeeder::class,
             ResepSeeder::class,
