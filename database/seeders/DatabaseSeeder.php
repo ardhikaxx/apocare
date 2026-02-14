@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ReturSeeder::class,
             PenyesuaianSeeder::class,
             OpnameSeeder::class,
+            ResepSeeder::class,
         ]);
     }
 }
