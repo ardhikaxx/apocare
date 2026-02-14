@@ -1,59 +1,237 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Apocare - Sistem Informasi Apotek
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12.x-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-## About Laravel
+**Apocare** adalah aplikasi Sistem Informasi Apotek (Integrated Pharmacy Management System) yang dibangun menggunakan Laravel 12. Aplikasi ini mengelola seluruh aspek operasional apotek mulai dari penjualan, pembelian, pengelolaan stok, hingga laporan keuangan.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Authentication & Authorization
+- Login & Register
+- Forgot Password & Reset Password
+- Role-Based Access Control (RBAC)
+- Manajemen Hak Akses per modul
 
-## Learning Laravel
+### 2. Master Data
+- **Produk** - Kelola data obat & produk farmasi
+- **Kategori** - Kategori produk (obat bebas, obat keras, dll)
+- **Satuan** - Satuan produk (tablet, kapsul, ml, dll)
+- **Pemasok** - Kelola data supplier
+- **Pelanggan** - Kelola data pelanggan
+- **Dokter** - Kelola data dokter
+- **Karyawan** - Kelola data karyawan/apoteker
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 3. Transaksi
+- **Penjualan** - Transaksi penjualan obat (POS)
+- **Pembelian** - Transaksi pembelian dari pemasok
+- **Resep** - Kelola resep dokter
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Persediaan (Inventory)
+- **Stok Produk** - Monitoring stok per produk & batch
+- **Stok Opname** - Pencocokan stok fisik dengan sistem
+- **Penyesuaian Stok** - Koreksi stok (rusak, expired, dll)
 
-## Laravel Sponsors
+### 5. Retur
+- **Retur Penjualan** - Retur dari pelanggan
+- **Retur Pembelian** - Retur ke pemasok
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 6. Laporan & Export
+- Laporan Penjualan
+- Laporan Pembelian
+- Laporan Persediaan/Stok
+- Laporan Keuangan
+- Laporan Pelanggan
+- **Export ke Excel** menggunakan Maatwebsite Excel
+- **Export ke PDF** menggunakan DomPDF
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## User Roles (Peran)
 
-## Contributing
+| Peran | Deskripsi |
+|-------|-----------|
+| **Admin** | Akses penuh ke semua fitur sistem |
+| **Apoteker** | Mengelola penjualan, resep, dan konsultasi obat |
+| **Kasir** | Mengelola transaksi penjualan |
+| **Gudang** | Mengelola stok, pembelian, dan persediaan |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Detail Hak Akses per Modul
 
-## Code of Conduct
+#### Dashboard
+- `dashboard.view` - Lihat Dashboard
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Master Data
+- **Pemasok**: view, create, update, delete, export
+- **Kategori**: view, create, update, delete, export
+- **Satuan**: view, create, update, delete, export
+- **Produk**: view, create, update, delete, export
 
-## Security Vulnerabilities
+#### Pelanggan & Dokter & Karyawan
+- **Pelanggan**: view, create, update, delete, export
+- **Dokter**: view, create, update, delete
+- **Karyawan**: view, create, update, delete
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Persediaan
+- **Stok**: view
+- **Penyesuaian**: view, create, delete
+- **Opname**: view, create, delete
+
+#### Transaksi
+- **Penjualan**: view, create, delete
+- **Pembelian**: view, create, delete
+- **Retur**: view, create, delete
+- **Resep**: view, create, delete
+
+#### Laporan
+- **Penjualan**: view, export
+- **Pembelian**: view, export
+- **Persediaan**: view, export
+- **Keuangan**: view, export
+
+#### Pengguna
+- **Pengguna**: view, create, update, delete
+- **Peran**: Kelola peran
+- **Hak Akses**: Kelola hak akses
+
+---
+
+## Tech Stack
+
+- **Backend**: Laravel 12.x (PHP 8.2+)
+- **Frontend**: Bootstrap 5, Vanilla JS
+- **Database**: MySQL/MariaDB
+- **Export**: Maatwebsite Excel, DomPDF
+- **Authentication**: Laravel Breeze / Custom Auth
+
+---
+
+## Installation
+
+### Prerequisites
+- PHP 8.2+
+- Composer
+- MySQL/MariaDB
+- Node.js & NPM
+
+### Steps
+
+1. **Clone Repository**
+```bash
+git clone https://github.com/ardhikaxx/apocare.git
+cd apocare
+```
+
+2. **Install Dependencies**
+```bash
+composer install
+npm install
+```
+
+3. **Setup Environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. **Configure Database**
+Edit file `.env` dengan konfigurasi database:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=apocare
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+5. **Run Migration & Seeder**
+```bash
+php artisan migrate --seed
+```
+
+6. **Build Assets**
+```bash
+npm run build
+```
+
+7. **Run Server**
+```bash
+php artisan serve
+```
+
+Akses aplikasi di `http://localhost:8000`
+
+---
+
+## Default Users (After Seeding)
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@apocare.test | password | Admin |
+| apoteker@apocare.test | password | Apoteker |
+| kasir@apocare.test | password | Kasir |
+| gudang@apocare.test | password | Gudang |
+
+---
+
+## Project Structure
+
+```
+apocare/
+├── app/
+│   ├── Exports/           # Excel Export Classes
+│   ├── Http/
+│   │   └── Controllers/   # Controllers
+│   └── Models/            # Eloquent Models
+├── database/
+│   ├── migrations/        # Database Migrations
+│   └── seeders/          # Database Seeders
+├── resources/
+│   └── views/            # Blade Templates
+│       ├── auth/         # Authentication Views
+│       ├── layouts/      # Layout Templates
+│       ├── pages/        # Page Views
+│       ├── partials/     # Partial Components
+│       └── print/        # Print Templates
+├── routes/
+│   └── web.php           # Web Routes
+└── public/
+    └── assets/           # CSS, JS, Images
+```
+
+---
+
+## Screenshots
+
+Aplikasi ini menyediakan antarmuka untuk:
+- Dashboard dengan statistik penjualan dan stok
+- Transaksi POS yang intuitif
+- Laporan yang dapat di-export
+- Print template untuk faktur dan laporan
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## Author
+
+- **Developer**: Apocare Team
+- **GitHub**: [ardhikaxx/apocare](https://github.com/ardhikaxx/apocare)
+
+---
+
+**Apocare** - Integrated Pharmacy Management System
