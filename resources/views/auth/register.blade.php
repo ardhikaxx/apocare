@@ -1,11 +1,13 @@
-﻿@extends('layouts.auth')
+@extends('layouts.auth')
 
 @section('content')
 <div class="brand">
-    <div class="brand-icon"><i class="fa-solid fa-user-plus"></i></div>
+    <div class="brand-icon">
+        <img src="{{ asset('images/logo-color.png') }}" alt="Apocare" style="width: 40px; height: 40px; object-fit: contain;">
+    </div>
     <div>
-        <h4 class="mb-0">Buat Akun</h4>
-        <small class="text-muted">Lengkapi data untuk daftar</small>
+        <h4 class="mb-0">APOCARE</h4>
+        <small class="text-muted">Create New Account</small>
     </div>
 </div>
 <form method="POST" action="{{ route('register') }}">

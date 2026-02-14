@@ -1,11 +1,13 @@
-﻿@extends('layouts.auth')
+@extends('layouts.auth')
 
 @section('content')
 <div class="brand">
-    <div class="brand-icon"><i class="fa-solid fa-unlock"></i></div>
+    <div class="brand-icon">
+        <img src="{{ asset('images/logo-color.png') }}" alt="Apocare" style="width: 40px; height: 40px; object-fit: contain;">
+    </div>
     <div>
-        <h4 class="mb-0">Reset Password</h4>
-        <small class="text-muted">Buat password baru</small>
+        <h4 class="mb-0">APOCARE</h4>
+        <small class="text-muted">Create New Password</small>
     </div>
 </div>
 <form>

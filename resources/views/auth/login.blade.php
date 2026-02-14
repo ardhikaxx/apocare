@@ -1,11 +1,13 @@
-﻿@extends('layouts.auth')
+@extends('layouts.auth')
 
 @section('content')
 <div class="brand">
-    <div class="brand-icon"><i class="fa-solid fa-pills"></i></div>
+    <div class="brand-icon">
+        <img src="{{ asset('images/logo-color.png') }}" alt="Apocare" style="width: 40px; height: 40px; object-fit: contain;">
+    </div>
     <div>
         <h4 class="mb-0">APOCARE</h4>
-        <small class="text-muted">Masuk ke sistem apotek</small>
+        <small class="text-muted">Integrated Pharmacy Management</small>
     </div>
 </div>
 <form method="POST" action="{{ route('login') }}">
