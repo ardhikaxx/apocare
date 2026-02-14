@@ -4,19 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
 {
     public function edit()
     {
-        $pengguna = auth()->user();
+        $pengguna = Auth::user();
         return view('pages.pengguna.profil', compact('pengguna'));
     }
 
     public function update(Request $request)
     {
-        $pengguna = auth()->user();
+        $pengguna = Auth::user();
 
         $request->validate([
             'nama' => 'required|string|max:100',
@@ -32,7 +33,7 @@ class ProfilController extends Controller
             'username' => $request->username,
             'telepon' => $request->telepon,
             'alamat' => $request->alamat,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ];
 
         if ($request->password_lama && $request->password_baru) {
