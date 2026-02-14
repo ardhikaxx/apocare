@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\PelangganExport;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -60,7 +61,7 @@ class PelangganController extends Controller
             'termin_pembayaran' => $request->termin_pembayaran ?? 0,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil ditambahkan');
@@ -95,7 +96,7 @@ class PelangganController extends Controller
             'termin_pembayaran' => $request->termin_pembayaran ?? 0,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil diperbarui');
@@ -103,7 +104,7 @@ class PelangganController extends Controller
 
     public function destroy(Pelanggan $pelanggan)
     {
-        $pelanggan->update(['diubah_oleh' => auth()->id()]);
+        $pelanggan->update(['diubah_oleh' => Auth::id()]);
         $pelanggan->delete();
         return redirect()->route('pelanggan.index')->with('success', 'Pelanggan berhasil dihapus');
     }

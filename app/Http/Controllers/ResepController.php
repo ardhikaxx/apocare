@@ -13,6 +13,7 @@ use App\Models\Produk;
 use App\Models\Resep;
 use App\Models\StokProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -85,9 +86,9 @@ class ResepController extends Controller
                 'total_item' => count($items),
                 'total_harga' => $totalHarga,
                 'catatan' => $request->catatan,
-                'apoteker_id' => auth()->id(),
+                'apoteker_id' => Auth::id(),
                 'waktu_verifikasi' => now(),
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -176,8 +177,8 @@ class ResepController extends Controller
                 'jumlah_bayar' => $jumlahBayar,
                 'jumlah_kembalian' => max(0, $jumlahBayar - $totalAkhir),
                 'catatan' => $request->catatan,
-                'dilayani_oleh' => auth()->id(),
-                'dibuat_oleh' => auth()->id(),
+                'dilayani_oleh' => Auth::id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($resep->details as $detail) {
@@ -228,7 +229,7 @@ class ResepController extends Controller
                     'jumlah_sesudah' => $stok->jumlah,
                     'harga_satuan' => $harga,
                     'catatan' => 'Penjualan resep',
-                    'dibuat_oleh' => auth()->id(),
+                    'dibuat_oleh' => Auth::id(),
                 ]);
             }
 

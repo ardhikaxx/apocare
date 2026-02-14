@@ -9,6 +9,7 @@ use App\Models\PergerakanStok;
 use App\Models\ReturPembelian;
 use App\Models\StokProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -73,7 +74,7 @@ class ReturPembelianController extends Controller
                 'metode_refund' => $request->metode_refund,
                 'jumlah_refund' => $total,
                 'catatan' => $request->catatan,
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -136,7 +137,7 @@ class ReturPembelianController extends Controller
                     'jumlah_sesudah' => $stok->jumlah,
                     'harga_satuan' => $harga,
                     'catatan' => 'Retur pembelian',
-                    'dibuat_oleh' => auth()->id(),
+                    'dibuat_oleh' => Auth::id(),
                 ]);
             }
         });

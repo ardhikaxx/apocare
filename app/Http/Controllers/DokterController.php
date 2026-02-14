@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DokterController extends Controller
 {
@@ -48,7 +49,7 @@ class DokterController extends Controller
             'alamat' => $request->alamat,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('dokter.index')->with('success', 'Dokter berhasil ditambahkan');
@@ -75,7 +76,7 @@ class DokterController extends Controller
             'alamat' => $request->alamat,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('dokter.index')->with('success', 'Dokter berhasil diperbarui');
@@ -83,7 +84,7 @@ class DokterController extends Controller
 
     public function destroy(Dokter $dokter)
     {
-        $dokter->update(['diubah_oleh' => auth()->id()]);
+        $dokter->update(['diubah_oleh' => Auth::id()]);
         $dokter->delete();
         return redirect()->route('dokter.index')->with('success', 'Dokter berhasil dihapus');
     }

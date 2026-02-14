@@ -10,6 +10,7 @@ use App\Models\StokOpname;
 use App\Models\StokProduk;
 use App\Models\BatchProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -85,7 +86,7 @@ class OpnameController extends Controller
                 'total_item_selisih' => $totalSelisih,
                 'total_nilai_selisih' => $totalNilaiSelisih,
                 'catatan' => $request->catatan,
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -114,7 +115,7 @@ class OpnameController extends Controller
                     'harga_satuan' => $harga,
                     'total_nilai_selisih' => $totalNilai,
                     'status' => $statusItem,
-                    'dihitung_oleh' => auth()->id(),
+                    'dihitung_oleh' => Auth::id(),
                     'waktu_hitung' => now(),
                     'catatan' => $item['catatan'] ?? null,
                 ]);
@@ -157,14 +158,14 @@ class OpnameController extends Controller
                         'jumlah_sesudah' => $stok->jumlah,
                         'harga_satuan' => $harga,
                         'catatan' => 'Stok opname',
-                        'dibuat_oleh' => auth()->id(),
+                        'dibuat_oleh' => Auth::id(),
                     ]);
                 }
             }
 
             if ($request->status === 'DISETUJUI') {
                 $opname->update([
-                    'disetujui_oleh' => auth()->id(),
+                    'disetujui_oleh' => Auth::id(),
                     'waktu_persetujuan' => now(),
                 ]);
             }

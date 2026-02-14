@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pengguna;
 use App\Models\Peran;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class PenggunaController extends Controller
@@ -47,7 +48,7 @@ class PenggunaController extends Controller
             'telepon' => $request->telepon,
             'alamat' => $request->alamat,
             'status_aktif' => $request->status_aktif ?? true,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil ditambahkan');
@@ -76,7 +77,7 @@ class PenggunaController extends Controller
             'telepon' => $request->telepon,
             'alamat' => $request->alamat,
             'status_aktif' => $request->status_aktif ?? true,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ];
 
         if ($request->password) {
@@ -90,7 +91,7 @@ class PenggunaController extends Controller
 
     public function destroy(Pengguna $pengguna)
     {
-        $pengguna->update(['diubah_oleh' => auth()->id()]);
+        $pengguna->update(['diubah_oleh' => Auth::id()]);
         $pengguna->delete();
         return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus');
     }

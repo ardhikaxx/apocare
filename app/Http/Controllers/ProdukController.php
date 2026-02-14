@@ -7,6 +7,7 @@ use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -58,7 +59,7 @@ class ProdukController extends Controller
             'kondisi_penyimpanan' => $request->kondisi_penyimpanan,
             'status_aktif' => $request->status_aktif ?? true,
             'persentase_pajak' => $request->persentase_pajak ?? 0,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.produk.index')->with('success', 'Produk berhasil ditambahkan');
@@ -102,7 +103,7 @@ class ProdukController extends Controller
             'kondisi_penyimpanan' => $request->kondisi_penyimpanan,
             'status_aktif' => $request->status_aktif ?? true,
             'persentase_pajak' => $request->persentase_pajak ?? 0,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.produk.index')->with('success', 'Produk berhasil diperbarui');
@@ -110,7 +111,7 @@ class ProdukController extends Controller
 
     public function destroy(Produk $produk)
     {
-        $produk->update(['diubah_oleh' => auth()->id()]);
+        $produk->update(['diubah_oleh' => Auth::id()]);
         $produk->delete();
         return redirect()->route('master.produk.index')->with('success', 'Produk berhasil dihapus');
     }

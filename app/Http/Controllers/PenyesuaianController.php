@@ -9,6 +9,7 @@ use App\Models\Produk;
 use App\Models\StokProduk;
 use App\Models\BatchProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -65,7 +66,7 @@ class PenyesuaianController extends Controller
                 'status' => $request->status,
                 'total_item' => count($items),
                 'catatan' => $request->catatan,
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -132,14 +133,14 @@ class PenyesuaianController extends Controller
                         'jumlah_sesudah' => $stok->jumlah,
                         'harga_satuan' => $harga,
                         'catatan' => 'Penyesuaian stok',
-                        'dibuat_oleh' => auth()->id(),
+                        'dibuat_oleh' => Auth::id(),
                     ]);
                 }
             }
 
             if ($request->status === 'DISETUJUI') {
                 $penyesuaian->update([
-                    'disetujui_oleh' => auth()->id(),
+                    'disetujui_oleh' => Auth::id(),
                     'waktu_persetujuan' => now(),
                 ]);
             }

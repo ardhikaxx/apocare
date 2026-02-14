@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\KategoriExport;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -39,7 +40,7 @@ class KategoriController extends Controller
             'keterangan' => $request->keterangan,
             'ikon' => $request->ikon,
             'status_aktif' => $request->status_aktif ?? true,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil ditambahkan');
@@ -70,7 +71,7 @@ class KategoriController extends Controller
             'keterangan' => $request->keterangan,
             'ikon' => $request->ikon,
             'status_aktif' => $request->status_aktif ?? true,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil diperbarui');
@@ -78,7 +79,7 @@ class KategoriController extends Controller
 
     public function destroy(Kategori $kategori)
     {
-        $kategori->update(['diubah_oleh' => auth()->id()]);
+        $kategori->update(['diubah_oleh' => Auth::id()]);
         $kategori->delete();
         return redirect()->route('master.kategori.index')->with('success', 'Kategori berhasil dihapus');
     }

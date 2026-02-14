@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KaryawanController extends Controller
 {
@@ -36,7 +37,7 @@ class KaryawanController extends Controller
             'tanggal_bergabung' => $request->tanggal_bergabung,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil ditambahkan');
@@ -64,7 +65,7 @@ class KaryawanController extends Controller
             'tanggal_bergabung' => $request->tanggal_bergabung,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil diperbarui');
@@ -72,7 +73,7 @@ class KaryawanController extends Controller
 
     public function destroy(Karyawan $karyawan)
     {
-        $karyawan->update(['diubah_oleh' => auth()->id()]);
+        $karyawan->update(['diubah_oleh' => Auth::id()]);
         $karyawan->delete();
         return redirect()->route('karyawan.index')->with('success', 'Karyawan berhasil dihapus');
     }

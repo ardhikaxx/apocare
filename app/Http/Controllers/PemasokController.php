@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\PemasokExport;
 use App\Models\Pemasok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -46,7 +47,7 @@ class PemasokController extends Controller
             'limit_kredit' => $request->limit_kredit ?? 0,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'dibuat_oleh' => auth()->id(),
+            'dibuat_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil ditambahkan');
@@ -78,7 +79,7 @@ class PemasokController extends Controller
             'limit_kredit' => $request->limit_kredit ?? 0,
             'status_aktif' => $request->status_aktif ?? true,
             'catatan' => $request->catatan,
-            'diubah_oleh' => auth()->id(),
+            'diubah_oleh' => Auth::id(),
         ]);
 
         return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil diperbarui');
@@ -86,7 +87,7 @@ class PemasokController extends Controller
 
     public function destroy(Pemasok $pemasok)
     {
-        $pemasok->update(['diubah_oleh' => auth()->id()]);
+        $pemasok->update(['diubah_oleh' => Auth::id()]);
         $pemasok->delete();
         return redirect()->route('master.pemasok.index')->with('success', 'Pemasok berhasil dihapus');
     }

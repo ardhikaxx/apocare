@@ -10,6 +10,7 @@ use App\Models\PergerakanStok;
 use App\Models\Produk;
 use App\Models\StokProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -126,7 +127,7 @@ class PembelianController extends Controller
                 'jumlah_bayar' => $jumlahBayar,
                 'sisa_bayar' => max(0, $totalAkhir - $jumlahBayar),
                 'catatan' => $request->catatan,
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -202,7 +203,7 @@ class PembelianController extends Controller
                         'jumlah_sesudah' => $stok->jumlah,
                         'harga_satuan' => $harga,
                         'catatan' => 'Penerimaan barang',
-                        'dibuat_oleh' => auth()->id(),
+                        'dibuat_oleh' => Auth::id(),
                     ]);
                 }
             }

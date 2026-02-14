@@ -9,6 +9,7 @@ use App\Models\PergerakanStok;
 use App\Models\ReturPenjualan;
 use App\Models\StokProduk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReturPenjualanController extends Controller
@@ -72,7 +73,7 @@ class ReturPenjualanController extends Controller
                 'metode_refund' => $request->metode_refund,
                 'jumlah_refund' => $total,
                 'catatan' => $request->catatan,
-                'dibuat_oleh' => auth()->id(),
+                'dibuat_oleh' => Auth::id(),
             ]);
 
             foreach ($items as $item) {
@@ -129,7 +130,7 @@ class ReturPenjualanController extends Controller
                     'jumlah_sesudah' => $stok->jumlah,
                     'harga_satuan' => $harga,
                     'catatan' => 'Retur penjualan',
-                    'dibuat_oleh' => auth()->id(),
+                    'dibuat_oleh' => Auth::id(),
                 ]);
             }
         });
