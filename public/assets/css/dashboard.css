@@ -1,0 +1,23 @@
+.dashboard-hero {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.chart-card canvas { max-height: 240px; }
+
+.chart-card {
+  background: #ffffff;
+}
+
+.activity-scroll {
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.activity-scroll .timeline {
+  margin-bottom: 0;
+}
+
+
+
