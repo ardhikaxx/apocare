@@ -2,53 +2,65 @@
 
 @section('title', 'Detail Stok')
 
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{ route('stok.index') }}">Stok</a></li>
-<li class="breadcrumb-item active">Detail</li>
-@endsection
-
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">{{ $stok->produk->nama }}</h1>
+<div class="page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+        <h1 class="page-title">Detail Stok</h1>
+        <p class="text-muted mb-0">{{ $stok->produk->nama ?? '-' }}</p>
+    </div>
+    <a href="{{ route('persediaan.stok.index') }}" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-2"></i>Kembali
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">Stok Tersedia</h6>
-                        <h3 class="text-success">{{ $stok->jumlah_tersedia }}</h3>
-                    </div>
-                </div>
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="text-uppercase text-muted">Informasi Produk</h6>
+                <div class="mb-2"><strong>Kode:</strong> {{ $stok->produk->kode ?? '-' }}</div>
+                <div class="mb-2"><strong>Kategori:</strong> {{ $stok->produk->kategori->nama ?? '-' }}</div>
+                <div class="mb-2"><strong>Lokasi:</strong> {{ $stok->produk->lokasi_rak ?? '-' }}</div>
+                <div class="mb-2"><strong>Stok:</strong> {{ number_format($stok->jumlah, 2, ',', '.') }}</div>
+                <div class="mb-2"><strong>Reserved:</strong> {{ number_format($stok->jumlah_reservasi, 2, ',', '.') }}</div>
+                <div class="mb-0"><strong>Tersedia:</strong> {{ number_format($stok->jumlah_tersedia, 2, ',', '.') }}</div>
             </div>
-            <div class="col-md-3">
-                <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">Stok Reservasi</h6>
-                        <h3 class="text-warning">{{ $stok->jumlah_reservasi }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">Harga Beli</h6>
-                        <h3 class="text-primary">Rp {{ number_format($stok->harga_beli_terakhir, 0, ',', '.') }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <h6 class="text-muted">Nilai Stok</h6>
-                        <h3 class="text-info">Rp {{ number_format($stok->jumlah * $stok->harga_beli_terakhir, 0, ',', '.') }}</h3>
-                    </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="text-uppercase text-muted">Batch Produk</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Batch</th>
+                                <th>Produksi</th>
+                                <th>Exp</th>
+                                <th>Jumlah</th>
+                                <th>Harga Beli</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($stok->produk->batchProduk as $batch)
+                                <tr>
+                                    <td>{{ $batch->nomor_batch }}</td>
+                                    <td>{{ $batch->tanggal_produksi ? \Carbon\Carbon::parse($batch->tanggal_produksi)->format('d/m/Y') : '-' }}</td>
+                                    <td>{{ $batch->tanggal_kadaluarsa ? \Carbon\Carbon::parse($batch->tanggal_kadaluarsa)->format('d/m/Y') : '-' }}</td>
+                                    <td>{{ number_format($batch->jumlah, 2, ',', '.') }}</td>
+                                    <td>Rp {{ number_format($batch->harga_beli, 0, ',', '.') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Belum ada batch.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        <a href="{{ route('stok.index') }}" class="btn btn-secondary mt-3">Kembali</a>
     </div>
 </div>
 @endsection
