@@ -329,6 +329,15 @@ h1, h2, h3, h4, h5 {
   box-shadow: var(--shadow-soft);
 }
 
+.auth-card .brand-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-card .brand-logo img {
+  border-radius: 12px;
+}
+
 .auth-card .brand {
   display: flex;
   align-items: center;
