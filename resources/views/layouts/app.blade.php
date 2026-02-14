@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo-color.png') }}" type="image/x-icon">
     @stack('styles')
 </head>
 <body>
