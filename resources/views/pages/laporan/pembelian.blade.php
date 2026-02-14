@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Penjualan')
+@section('title', 'Laporan Pembelian')
 
 @section('content')
 @include('partials.breadcrumb', ['breadcrumbs' => [
     ['label' => 'Laporan'],
-    ['label' => 'Penjualan']
+    ['label' => 'Pembelian']
 ]])
 
 @include('pages.shared.page-header', [
-    'title' => 'Laporan Penjualan',
-    'subtitle' => 'Ringkasan transaksi penjualan.',
+    'title' => 'Laporan Pembelian',
+    'subtitle' => 'Ringkasan transaksi pembelian.',
     'actions' => [
-        ['label' => 'Export Excel', 'icon' => 'fa-solid fa-file-excel', 'class' => 'btn btn-soft', 'href' => route('laporan.penjualan.export.excel', request()->query())],
-        ['label' => 'Export CSV', 'icon' => 'fa-solid fa-file-csv', 'class' => 'btn btn-soft', 'href' => route('laporan.penjualan.export.csv', request()->query())],
-        ['label' => 'Export PDF', 'icon' => 'fa-solid fa-file-pdf', 'class' => 'btn btn-soft', 'href' => route('laporan.penjualan.export.pdf', request()->query())],
+        ['label' => 'Export Excel', 'icon' => 'fa-solid fa-file-excel', 'class' => 'btn btn-soft', 'href' => route('laporan.pembelian.export.excel', request()->query())],
+        ['label' => 'Export CSV', 'icon' => 'fa-solid fa-file-csv', 'class' => 'btn btn-soft', 'href' => route('laporan.pembelian.export.csv', request()->query())],
+        ['label' => 'Export PDF', 'icon' => 'fa-solid fa-file-pdf', 'class' => 'btn btn-soft', 'href' => route('laporan.pembelian.export.pdf', request()->query())],
     ]
 ])
 
@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-4 d-flex align-items-end gap-2">
                 <button class="btn btn-primary" type="submit"><i class="fa-solid fa-filter me-2"></i>Filter</button>
-                <a href="{{ route('laporan.penjualan') }}" class="btn btn-outline-secondary">Reset</a>
+                <a href="{{ route('laporan.pembelian') }}" class="btn btn-outline-secondary">Reset</a>
             </div>
         </form>
     </div>
@@ -42,8 +42,8 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <div class="text-muted">Total Penjualan</div>
-                <h4 class="mb-0">Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</h4>
+                <div class="text-muted">Total Pembelian</div>
+                <h4 class="mb-0">Rp {{ number_format($totalPembelian, 0, ',', '.') }}</h4>
             </div>
         </div>
     </div>
@@ -58,21 +58,20 @@
 </div>
 
 <div class="card">
-    <div class="card-header">Daftar Penjualan</div>
+    <div class="card-header">Daftar Pembelian</div>
     <div class="card-body">
         @php
-            $columns = ['Nomor', 'Tanggal', 'Pelanggan', 'Metode', 'Total', 'Status'];
-            $rows = $penjualan->map(function ($item) {
-                $tanggal = $item->tanggal_penjualan
-                    ? \Carbon\Carbon::parse($item->tanggal_penjualan)->format('d/m/Y')
+            $columns = ['Nomor', 'Tanggal', 'Pemasok', 'Status', 'Total'];
+            $rows = $pembelian->map(function ($item) {
+                $tanggal = $item->tanggal_pembelian
+                    ? \Carbon\Carbon::parse($item->tanggal_pembelian)->format('d/m/Y')
                     : '-';
                 return [
-                    $item->nomor_penjualan,
+                    $item->nomor_pembelian,
                     $tanggal,
-                    $item->pelanggan->nama ?? 'Umum',
-                    $item->metode_pembayaran ?? '-',
+                    $item->pemasok->nama ?? '-',
+                    $item->status,
                     'Rp ' . number_format($item->total_akhir, 0, ',', '.'),
-                    $item->status_pembayaran,
                 ];
             })->toArray();
         @endphp

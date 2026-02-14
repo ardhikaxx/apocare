@@ -2,40 +2,35 @@
 
 @section('title', 'Laporan Stok')
 
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="#">Laporan</a></li>
-<li class="breadcrumb-item active">Stok</li>
-@endsection
-
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Laporan Stok</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Laporan'],
+    ['label' => 'Stok']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Laporan Stok',
+    'subtitle' => 'Ringkasan stok produk dan nilai persediaan.',
+])
 
 <div class="card">
+    <div class="card-header">Daftar Stok</div>
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Produk</th>
-                    <th>Kategori</th>
-                    <th>Stok</th>
-                    <th>Harga Beli</th>
-                    <th>Nilai Stok</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($stok as $item)
-                <tr>
-                    <td>{{ $item->produk->nama }}</td>
-                    <td>{{ $item->produk->kategori->nama }}</td>
-                    <td>{{ $item->jumlah }}</td>
-                    <td>Rp {{ number_format($item->harga_beli_terakhir, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->jumlah * $item->harga_beli_terakhir, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @php
+            $columns = ['Produk', 'Kategori', 'Stok', 'Harga Beli', 'Nilai Stok'];
+            $rows = $stok->map(function ($item) {
+                $harga = (float) ($item->harga_beli_terakhir ?? 0);
+                $nilai = (float) $item->jumlah * $harga;
+                return [
+                    $item->produk->nama ?? '-',
+                    $item->produk->kategori->nama ?? '-',
+                    number_format($item->jumlah, 2, ',', '.'),
+                    'Rp ' . number_format($harga, 0, ',', '.'),
+                    'Rp ' . number_format($nilai, 0, ',', '.'),
+                ];
+            })->toArray();
+        @endphp
+        @include('pages.shared.table', compact('columns', 'rows'))
     </div>
 </div>
 @endsection

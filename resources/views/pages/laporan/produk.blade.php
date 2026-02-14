@@ -2,40 +2,33 @@
 
 @section('title', 'Laporan Produk')
 
-@section('breadcrumb')
-<li class="breadcrumb-item"><a href="#">Laporan</a></li>
-<li class="breadcrumb-item active">Produk</li>
-@endsection
-
 @section('content')
-<div class="page-header">
-    <h1 class="page-title">Laporan Produk</h1>
-</div>
+@include('partials.breadcrumb', ['breadcrumbs' => [
+    ['label' => 'Laporan'],
+    ['label' => 'Produk']
+]])
+
+@include('pages.shared.page-header', [
+    'title' => 'Laporan Produk',
+    'subtitle' => 'Ringkasan data produk.',
+])
 
 <div class="card">
+    <div class="card-header">Daftar Produk</div>
     <div class="card-body">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Kategori</th>
-                    <th>Harga Beli</th>
-                    <th>Harga Jual</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($produk as $item)
-                <tr>
-                    <td>{{ $item->kode }}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->kategori->nama }}</td>
-                    <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        @php
+            $columns = ['Kode', 'Nama', 'Kategori', 'Harga Beli', 'Harga Jual'];
+            $rows = $produk->map(function ($item) {
+                return [
+                    $item->kode,
+                    $item->nama,
+                    $item->kategori->nama ?? '-',
+                    'Rp ' . number_format($item->harga_beli ?? 0, 0, ',', '.'),
+                    'Rp ' . number_format($item->harga_jual ?? 0, 0, ',', '.'),
+                ];
+            })->toArray();
+        @endphp
+        @include('pages.shared.table', compact('columns', 'rows'))
     </div>
 </div>
 @endsection
