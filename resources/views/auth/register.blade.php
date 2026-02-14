@@ -1,44 +1,51 @@
-@extends('layouts.auth')
-
-@section('title', 'Register')
+﻿@extends('layouts.auth')
 
 @section('content')
-<div class="login-card">
-    <div class="text-center mb-4">
-        <div class="login-logo"><i class="fas fa-pills"></i></div>
-        <h4 class="mb-1">APOCARE</h4>
-        <small class="text-muted">Sistem Informasi Apotek</small>
+<div class="brand">
+    <div class="brand-icon"><i class="fa-solid fa-user-plus"></i></div>
+    <div>
+        <h4 class="mb-0">Buat Akun</h4>
+        <small class="text-muted">Lengkapi data untuk daftar</small>
     </div>
-
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <div class="mb-3">
-            <label class="form-label">Nama</label>
-            <input type="text" name="nama" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Username</label>
-            <input type="text" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Konfirmasi Password</label>
-            <input type="password" name="password_confirmation" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100 btn-login">
-            <i class="fas fa-user-plus me-2"></i>Register
-        </button>
-    </form>
-
-    <div class="text-center mt-3">
-        <a href="{{ route('login') }}" class="text-decoration-none">Sudah punya akun? Login</a>
+</div>
+<form method="POST" action="{{ route('register') }}">
+    @csrf
+    <div class="mb-3">
+        <label class="form-label">Nama Lengkap</label>
+        <input type="text" name="nama" class="form-control" placeholder="Nama lengkap" value="{{ old('nama') }}" required>
+        @error('nama')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
     </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="nama@apotek.com" value="{{ old('email') }}" required>
+        @error('email')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="username" value="{{ old('username') }}" required>
+        @error('username')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="********" required>
+        @error('password')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+    </div>
+    <div class="mb-4">
+        <label class="form-label">Konfirmasi Password</label>
+        <input type="password" name="password_confirmation" class="form-control" placeholder="********" required>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Daftar</button>
+</form>
+<div class="text-center mt-3">
+    <small class="text-muted">Sudah punya akun?</small>
+    <a href="/login" class="text-decoration-none">Masuk</a>
 </div>
 @endsection
