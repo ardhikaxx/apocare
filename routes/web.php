@@ -23,6 +23,7 @@ use App\Http\Controllers\PenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfilController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -39,6 +40,9 @@ Route::view('/reset-password', 'auth.reset-password')->name('reset-password');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/profil', [ProfilController::class, 'edit'])->name('profil.edit');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
 
     Route::prefix('master')->name('master.')->group(function () {
         Route::get('pemasok/export/excel', [PemasokController::class, 'exportExcel'])->name('pemasok.export.excel');

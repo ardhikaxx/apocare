@@ -14,7 +14,7 @@
                 <i class="fa-solid fa-user-gear"></i> {{ auth()->user()?->nama ?? 'Pengguna' }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Profil</a></li>
+                <li><a class="dropdown-item" href="{{ route('profil.edit') }}"><i class="fa-solid fa-user me-2"></i>Profil</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
