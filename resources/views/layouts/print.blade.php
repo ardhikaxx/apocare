@@ -1,20 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Apocare</title>
+    <title>@yield('title', 'Cetak Dokumen')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
-        body { padding: 20px; background: #fff; }
-        .print-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
-        .print-footer { margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px; }
+        body { font-size: 12px; color: #111; }
+        .print-header { border-bottom: 1px solid #ddd; margin-bottom: 16px; padding-bottom: 8px; }
+        .kop { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+        .kop-logo img { height: 56px; width: auto; }
+        .kop-title { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+        .kop-subtitle { font-size: 12px; color: #444; }
+        .kop-line { border-bottom: 1px solid #222; margin-bottom: 16px; }
     </style>
     @stack('styles')
 </head>
 <body>
-    @yield('content')
-    <script>window.print();</script>
-    @stack('scripts')
+    <div class="container my-4">
+        @include('print.partials.kop')
+        @yield('content')
+    </div>
 </body>
 </html>
