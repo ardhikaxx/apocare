@@ -15,7 +15,6 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Profil</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Pengaturan</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
