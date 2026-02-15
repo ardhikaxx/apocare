@@ -659,6 +659,7 @@ h1, h2, h3, h4, h5 {
   font-size: 0.9rem;
   transition: all 0.2s ease;
   min-width: 200px;
+  margin-top: 8px;
 }
 
 .dataTables_wrapper .dt-search input:focus {
