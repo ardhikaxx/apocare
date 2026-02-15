@@ -640,90 +640,74 @@ h1, h2, h3, h4, h5 {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
 }
 
 .dataTables_wrapper .pagination li {
-  margin: 0;
+  margin: 0 !important;
+  padding: 0;
+  display: inline-block;
 }
 
 .dataTables_wrapper .pagination li a,
 .dataTables_wrapper .pagination li span {
   border: none !important;
-  border-radius: 10px !important;
-  color: var(--brand-ink);
-  background: transparent;
-  padding: 10px 16px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 44px;
-  display: flex;
+  border-radius: 12px !important;
+  color: var(--brand-primary) !important;
+  background: rgba(14, 111, 100, 0.08) !important;
+  padding: 12px 18px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  min-width: 48px;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.dataTables_wrapper .pagination li a::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  border-radius: 10px;
-}
-
-.dataTables_wrapper .pagination li a i {
-  position: relative;
-  z-index: 1;
+  text-decoration: none !important;
 }
 
 .dataTables_wrapper .pagination li a:hover {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%) !important;
   color: #fff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(14, 111, 100, 0.35);
-}
-
-.dataTables_wrapper .pagination li a:hover::before {
-  opacity: 1;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(14, 111, 100, 0.4) !important;
 }
 
 .dataTables_wrapper .pagination li.active span {
   background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%) !important;
   color: #fff !important;
-  box-shadow: 0 6px 20px rgba(14, 111, 100, 0.35);
-  font-weight: 700;
-}
-
-.dataTables_wrapper .pagination li.active span::before {
-  opacity: 1;
+  box-shadow: 0 8px 25px rgba(14, 111, 100, 0.4) !important;
+  font-weight: 700 !important;
 }
 
 .dataTables_wrapper .pagination li.disabled a,
 .dataTables_wrapper .pagination li.disabled span {
-  background: transparent;
-  color: var(--brand-muted);
-  cursor: not-allowed;
+  background: rgba(15, 42, 46, 0.06) !important;
+  color: var(--brand-muted) !important;
+  cursor: not-allowed !important;
   opacity: 0.5;
 }
 
 .dataTables_wrapper .pagination li.disabled a:hover {
-  transform: none;
-  box-shadow: none;
-  color: var(--brand-muted) !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .dataTables_wrapper .pagination li.first a,
 .dataTables_wrapper .pagination li.last a {
-  border-radius: 10px !important;
-  background: rgba(14, 111, 100, 0.08);
+  border-radius: 12px !important;
 }
 
 .dataTables_wrapper .pagination .ellipsis {
-  padding: 10px 8px;
-  color: var(--brand-muted);
+  padding: 12px 8px !important;
+  color: var(--brand-muted) !important;
+}
+
+.dataTables_wrapper .pagination > li:first-child a,
+.dataTables_wrapper .pagination > li:last-child a {
+  background: rgba(14, 111, 100, 0.12) !important;
 }
 
 .dataTables_wrapper .dt-search {
