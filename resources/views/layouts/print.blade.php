@@ -7,6 +7,7 @@
     <title>@yield('title', 'Cetak Dokumen')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
         body {
             font-size: 12px;
             color: #111;

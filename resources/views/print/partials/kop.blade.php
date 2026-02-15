@@ -1,6 +1,3 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
 @php
     $logoPath = public_path('assets/brand/apocare-logo.png');
     $logoExists = file_exists($logoPath);
@@ -15,7 +12,7 @@
         @else
         <td style="vertical-align: middle; text-align: left;">
         @endif
-            <div style="font-family: 'Jersey 10', sans-serif; font-size: 28px; letter-spacing: 1px;">APOCARE</div>
+            <div style="font-size: 18px; font-weight: 700; letter-spacing: 1px;">APOCARE</div>
             <div style="font-size: 11px; color: #444;">Integrated Pharmacy Management System</div>
         </td>
     </tr>
