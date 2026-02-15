@@ -288,39 +288,6 @@ apocare/
 └── phpunit.xml           # PHPUnit configuration
 ```
 
-### Penjelasan Folder Penting
-
-| Folder | Deskripsi |
-|--------|-----------|
-| `app/Http/Controllers` | Berisi semua controller yang menangani lógica bisnis aplikasi |
-| `resources/views/pages` | View untuk setiap halaman aplikasi, diorganisir per modul |
-| `resources/views/partials` | Komponen yang bisa digunakan ulang (sidebar, navbar, footer) |
-| `resources/views/print` | Template untuk export PDF menggunakan DomPDF |
-| `database/migrations` | Schema database yang mendeskripsikan struktur tabel |
-| `database/seeders` | Data awal untuk populasi database |
-| `routes/web.php` | Semua route/url untuk web aplikasi |
-apocare/
-â”œâ”€â”€ app/
-â”‚   â”œâ”€â”€ Exports/           # Excel Export Classes
-â”‚   â”œâ”€â”€ Http/
-â”‚   â”‚   â””â”€â”€ Controllers/   # Controllers
-â”‚   â””â”€â”€ Models/            # Eloquent Models
-â”œâ”€â”€ database/
-â”‚   â”œâ”€â”€ migrations/        # Database Migrations
-â”‚   â””â”€â”€ seeders/          # Database Seeders
-â”œâ”€â”€ resources/
-â”‚   â””â”€â”€ views/            # Blade Templates
-â”‚       â”œâ”€â”€ auth/         # Authentication Views
-â”‚       â”œâ”€â”€ layouts/      # Layout Templates
-â”‚       â”œâ”€â”€ pages/        # Page Views
-â”‚       â”œâ”€â”€ partials/     # Partial Components
-â”‚       â””â”€â”€ print/        # Print Templates
-â”œâ”€â”€ routes/
-â”‚   â””â”€â”€ web.php           # Web Routes
-â””â”€â”€ public/
-    â””â”€â”€ assets/           # CSS, JS, Images
-```
-
 ---
 
 ## License
