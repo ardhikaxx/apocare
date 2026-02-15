@@ -4,11 +4,23 @@
 ![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-**Apocare** adalah aplikasi Sistem Informasi Apotek (Integrated Pharmacy Management System) yang dibangun menggunakan Laravel 12. Aplikasi ini mengelola seluruh aspek operasional apotek mulai dari penjualan, pembelian, pengelolaan stok, hingga laporan keuangan.
+## Deskripsi Sistem
 
----
+**APOCARE - Integrated Pharmacy Management System** merupakan aplikasi berbasis web yang digunakan untuk mengelola data, proses bisnis, dan operasional pada sebuah apotek secara menyeluruh dan terintegrasi. Aplikasi ini dirancang untuk membantu/apoteker dan pemilik apotek dalam mengelola berbagai aktivitas operasional sehari-hari secara efisien, akurat, dan terstruktur.
 
-## Fitur Utama
+Dengan menggunakan teknologi modern berbasis Laravel 12 dan PHP 8.2+, APOCARE menawarkan antarmuka yang user-friendly serta fitur-fitur lengkap yang mendukung kebutuhan apotek modern mulai dari manajemen inventaris obat, transaksi penjualan point-of-sale (POS), pengelolaan pembelian dari supplier, hingga pembuatan laporan keuangan dan laporan-laporan strategis lainnya.
+
+Sistem ini dibangun dengan konsep Modular dan Role-Based Access Control (RBAC), sehingga setiap pengguna dapat mengakses fitur-fitur yang sesuai dengan peran dan tanggung jawabnya masing-masing. Hal ini memastikan keamanan data sekaligus meningkatkan efisiensi kerja tim dalam menjalankan tugasnya.
+
+### Tujuan Pembangunan Sistem
+
+1. **Efisiensi Operasional** - Mengotomatisasi proses-proses manual yang sebelumnya memakan waktu lama, seperti pencatatan stok, pembuatan laporan, dan pencarian data produk.
+2. **Akurasi Data** - Mengurangi risiko kesalahan manusia dalam perhitungan stok, harga, dan transaksi keuangan.
+3. **Pengambilan Keputusan** - Menyediakan laporan-laporan yang akurat dan real-time untuk mendukung pengambilan keputusan strategis.
+4. **Kepatuhan Regulasi** - Membantu apotek dalam memenuhi persyaratan regulasi yang berlaku, seperti pencatatan resep dokter dan pelaporan pajak.
+5. **Pelayanan Pelanggan** - Mempercepat proses pelayanan kepada pelanggan dengan sistem POS yang cepat dan akurat.
+
+### Fitur Utama
 
 ### 1. Authentication & Authorization
 - Login & Register
