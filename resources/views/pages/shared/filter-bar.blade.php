@@ -2,7 +2,7 @@
     $filters = $filters ?? [];
 @endphp
 <div class="filter-bar mb-4">
-    <div class="flex-grow-1">
+    <div class="grow">
         <div class="input-group">
             <span class="input-group-text bg-white"><i class="fa-solid fa-search"></i></span>
             <input type="text" class="form-control" placeholder="Cari data...">
