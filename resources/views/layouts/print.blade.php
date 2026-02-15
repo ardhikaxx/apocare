@@ -51,7 +51,7 @@
 </head>
 
 <body>
-    <div class="container my-4">
+    <div class="container my-4" style="max-width: 100%; padding: 0;">
         @include('print.partials.kop')
         @yield('content')
     </div>
