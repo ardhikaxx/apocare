@@ -18,6 +18,7 @@
     <style>
         .page-title, h1 {
             font-family: 'Jersey 10', sans-serif;
+            font-size: 2.5rem;
         }
     </style>
     @stack('styles')
