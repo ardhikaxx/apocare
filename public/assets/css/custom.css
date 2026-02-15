@@ -636,7 +636,94 @@ h1, h2, h3, h4, h5 {
 }
 
 .dataTables_wrapper .pagination {
-  margin-top: 20px;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dataTables_wrapper .pagination li {
+  margin: 0;
+}
+
+.dataTables_wrapper .pagination li a,
+.dataTables_wrapper .pagination li span {
+  border: none !important;
+  border-radius: 10px !important;
+  color: var(--brand-ink);
+  background: transparent;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dataTables_wrapper .pagination li a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  border-radius: 10px;
+}
+
+.dataTables_wrapper .pagination li a i {
+  position: relative;
+  z-index: 1;
+}
+
+.dataTables_wrapper .pagination li a:hover {
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 111, 100, 0.35);
+}
+
+.dataTables_wrapper .pagination li a:hover::before {
+  opacity: 1;
+}
+
+.dataTables_wrapper .pagination li.active span {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 20px rgba(14, 111, 100, 0.35);
+  font-weight: 700;
+}
+
+.dataTables_wrapper .pagination li.active span::before {
+  opacity: 1;
+}
+
+.dataTables_wrapper .pagination li.disabled a,
+.dataTables_wrapper .pagination li.disabled span {
+  background: transparent;
+  color: var(--brand-muted);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dataTables_wrapper .pagination li.disabled a:hover {
+  transform: none;
+  box-shadow: none;
+  color: var(--brand-muted) !important;
+}
+
+.dataTables_wrapper .pagination li.first a,
+.dataTables_wrapper .pagination li.last a {
+  border-radius: 10px !important;
+  background: rgba(14, 111, 100, 0.08);
+}
+
+.dataTables_wrapper .pagination .ellipsis {
+  padding: 10px 8px;
+  color: var(--brand-muted);
 }
 
 .dataTables_wrapper .dt-search {
