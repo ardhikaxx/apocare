@@ -6,11 +6,21 @@
 
 ## Deskripsi Sistem
 
-**APOCARE - Integrated Pharmacy Management System** merupakan aplikasi berbasis web yang digunakan untuk mengelola data, proses bisnis, dan operasional pada sebuah apotek secara menyeluruh dan terintegrasi. Aplikasi ini dirancang untuk membantu/apoteker dan pemilik apotek dalam mengelola berbagai aktivitas operasional sehari-hari secara efisien, akurat, dan terstruktur.
+**APOCARE - Integrated Pharmacy Management System** merupakan aplikasi berbasis web yang digunakan untuk mengelola data, proses bisnis, dan operasional pada sebuah apotek secara menyeluruh dan terintegrasi. Aplikasi ini dirancang untuk membantu pemilik apotek, apoteker, dan staf dalam mengelola berbagai aktivitas operasional sehari-hari secara efisien, akurat, dan terstruktur.
 
-Dengan menggunakan teknologi modern berbasis Laravel 12 dan PHP 8.2+, APOCARE menawarkan antarmuka yang user-friendly serta fitur-fitur lengkap yang mendukung kebutuhan apotek modern mulai dari manajemen inventaris obat, transaksi penjualan point-of-sale (POS), pengelolaan pembelian dari supplier, hingga pembuatan laporan keuangan dan laporan-laporan strategis lainnya.
+Sistem APOCARE memiliki empat jenis pengguna utama dengan peran dan tanggung jawab yang berbeda-beda, yaitu Admin, Apoteker, Kasir, dan Gudang. Masing-masing pengguna memiliki akses terhadap fitur-fitur yang sesuai dengan tugas dan tanggung jawabnya dalam ekosistem apotek.
 
-Sistem ini dibangun dengan konsep Modular dan Role-Based Access Control (RBAC), sehingga setiap pengguna dapat mengakses fitur-fitur yang sesuai dengan peran dan tanggung jawabnya masing-masing. Hal ini memastikan keamanan data sekaligus meningkatkan efisiensi kerja tim dalam menjalankan tugasnya.
+**Admin** memiliki tugas dan tanggung jawab untuk mengelola seluruh data dan konfigurasi sistem. Admin dapat mengakses semua fitur tanpa batasan, termasuk manajemen pengguna dan hak akses, master data produk dan supplier, pengelolaan laporan keuangan, serta pengaturan sistem secara keseluruhan. Admin juga bertanggung jawab dalam membuat dan mengelola akun pengguna lainnya serta mengatur peran dan permission untuk setiap pengguna.
+
+**Apoteker** bertanggung jawab atas pengelolaan obat-obatan dan produk farmasi yang ada di apotek. Apoteker dapat mengelola data produk, kategori, dan satuan obat, melakukan monitoring stok persediaan, memproses resep dokter, melakukan penyesuaian stok akibat kerusakan atau kadaluarsa, serta melihat laporan-laporan terkait penjualan, pembelian, dan persediaan. Apoteker juga memiliki peran penting dalam memverifikasi dan memproses resep yang diajukan oleh pelanggan.
+
+**Kasir** merupakan pengguna yang melayani langsung transaksi penjualan kepada pelanggan. Kasir dapat melakukan transaksi point-of-sale (POS), mengelola data pelanggan, memproses retur penjualan, serta melihat laporan penjualan dan laporan pelanggan. Kasir juga dapat mengakses modul resep untuk melayani pelanggan yang membawa resep dokter.
+
+**Gudang** bertanggung jawab atas pengelolaan stok barang di gudang dan proses pembelian. Pengguna dengan peran Gudang dapat mengelola master data produk, pemasok, dan kategori, melakukan purchase order atau pembelian ke supplier, menerima barang yang datang, mengelola retur pembelian ke supplier, serta melihat laporan pembelian dan laporan persediaan.
+
+Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas penting yaitu kategori produk, supplier atau pemasok, batch untuk tracking kadaluarsa, dan satuan produk untuk konversi unit. Transaksi penjualan dan pembelian terhubung dengan pelanggan dan pemasok masing-masing, sehingga setiap pergerakan barang dapat dilacak dengan akurat mulai dari masuknya barang dari supplier hingga penjualan kepada pelanggan akhir.
+
+Dengan adanya APOCARE, seluruh proses operasional apotek dapat dilakukan secara digital, terstruktur, dan mudah diakses sehingga membantu meningkatkan efektivitas pengelolaan kegiatan operasional apotek. Sistem ini juga memastikan akurasi data stok, perhitungan keuangan yang tepat, dan pelaporan yang akurat untuk mendukung pengambilan keputusan strategis dalam menjalankan bisnis apotek.
 
 ### Tujuan Pembangunan Sistem
 
