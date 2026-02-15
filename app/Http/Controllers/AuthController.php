@@ -29,10 +29,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
+
             if ($user instanceof Pengguna) {
                 $user->update(['login_terakhir' => now()]);
+                return redirect()->route($this->resolveRedirectByRole($user));
             }
-            return redirect()->intended('/dashboard');
+
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors(['login' => 'Email/username atau password salah']);
@@ -69,7 +72,7 @@ class AuthController extends Controller
         $credentials = ['username' => $request->username, 'password' => $request->password];
         Auth::attempt($credentials);
 
-        return redirect('/dashboard');
+        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request)
@@ -78,5 +81,32 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
+    }
+
+    private function resolveRedirectByRole(Pengguna $user): string
+    {
+        $role = $this->normalizeRoleName(optional($user->role)->nama);
+
+        return match ($role) {
+            'admin' => 'dashboard',
+            'apoteker' => 'resep.index',
+            'kasir' => 'transaksi.penjualan.index',
+            'gudang' => 'persediaan.stok.index',
+            default => 'dashboard',
+        };
+    }
+
+    private function normalizeRoleName(?string $roleName): string
+    {
+        if (! is_string($roleName)) {
+            return '';
+        }
+
+        $normalized = strtolower(trim(preg_replace('/\s+/', ' ', $roleName) ?? ''));
+
+        return match ($normalized) {
+            'staf gudang' => 'gudang',
+            default => $normalized,
+        };
     }
 }

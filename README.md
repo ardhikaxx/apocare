@@ -52,12 +52,12 @@
 
 ## User Roles (Peran)
 
-| Peran | Deskripsi |
-|-------|-----------|
-| **Admin** | Akses penuh ke semua fitur sistem |
-| **Apoteker** | Mengelola penjualan, resep, dan konsultasi obat |
-| **Kasir** | Mengelola transaksi penjualan |
-| **Gudang** | Mengelola stok, pembelian, dan persediaan |
+Pembagian akses fitur saat ini:
+
+- **Admin**: semua fitur
+- **Apoteker**: master, persediaan, penjualan, retur penjualan, resep, dokter, laporan terkait
+- **Kasir**: penjualan, retur penjualan, pelanggan, resep, laporan penjualan/pelanggan
+- **Gudang**: master, persediaan, pembelian, retur pembelian, laporan pembelian/persediaan
 
 ### Detail Hak Akses per Modul
 
@@ -96,7 +96,6 @@
 - **Pengguna**: view, create, update, delete
 - **Peran**: Kelola peran
 - **Hak Akses**: Kelola hak akses
-
 ---
 
 ## Tech Stack
@@ -182,36 +181,26 @@ Akses aplikasi di `http://localhost:8000`
 
 ```
 apocare/
-├── app/
-│   ├── Exports/           # Excel Export Classes
-│   ├── Http/
-│   │   └── Controllers/   # Controllers
-│   └── Models/            # Eloquent Models
-├── database/
-│   ├── migrations/        # Database Migrations
-│   └── seeders/          # Database Seeders
-├── resources/
-│   └── views/            # Blade Templates
-│       ├── auth/         # Authentication Views
-│       ├── layouts/      # Layout Templates
-│       ├── pages/        # Page Views
-│       ├── partials/     # Partial Components
-│       └── print/        # Print Templates
-├── routes/
-│   └── web.php           # Web Routes
-└── public/
-    └── assets/           # CSS, JS, Images
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ Exports/           # Excel Export Classes
+â”‚   â”œâ”€â”€ Http/
+â”‚   â”‚   â””â”€â”€ Controllers/   # Controllers
+â”‚   â””â”€â”€ Models/            # Eloquent Models
+â”œâ”€â”€ database/
+â”‚   â”œâ”€â”€ migrations/        # Database Migrations
+â”‚   â””â”€â”€ seeders/          # Database Seeders
+â”œâ”€â”€ resources/
+â”‚   â””â”€â”€ views/            # Blade Templates
+â”‚       â”œâ”€â”€ auth/         # Authentication Views
+â”‚       â”œâ”€â”€ layouts/      # Layout Templates
+â”‚       â”œâ”€â”€ pages/        # Page Views
+â”‚       â”œâ”€â”€ partials/     # Partial Components
+â”‚       â””â”€â”€ print/        # Print Templates
+â”œâ”€â”€ routes/
+â”‚   â””â”€â”€ web.php           # Web Routes
+â””â”€â”€ public/
+    â””â”€â”€ assets/           # CSS, JS, Images
 ```
-
----
-
-## Screenshots
-
-Aplikasi ini menyediakan antarmuka untuk:
-- Dashboard dengan statistik penjualan dan stok
-- Transaksi POS yang intuitif
-- Laporan yang dapat di-export
-- Print template untuk faktur dan laporan
 
 ---
 
@@ -229,7 +218,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Author
 
-- **Developer**: Apocare Team
 - **GitHub**: [ardhikaxx/apocare](https://github.com/ardhikaxx/apocare)
 
 ---

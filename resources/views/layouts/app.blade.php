@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo.png') }}" type="image/x-icon">
     @stack('styles')
 </head>
+
 <body>
     @include('partials.loading')
 
@@ -62,7 +64,10 @@
                     language: {
                         search: 'Cari:',
                         info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
-                        paginate: { previous: 'Sebelumnya', next: 'Berikutnya' }
+                        paginate: {
+                            previous: 'Sebelumnya',
+                            next: 'Berikutnya'
+                        }
                     }
                 });
                 table.dataset.dtInitialized = 'true';
@@ -73,18 +78,17 @@
             window.initDataTables();
         });
     </script>
-    @if(session('success'))
+    @if (session('success'))
         <script>
             window.showToast('success', @json(session('success')));
         </script>
     @endif
-    @if($errors->any())
+    @if ($errors->any())
         <script>
             window.showToast('error', 'Terjadi kesalahan. Periksa input Anda.');
         </script>
     @endif
     @stack('scripts')
 </body>
+
 </html>
-
-
