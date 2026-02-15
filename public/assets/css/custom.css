@@ -666,6 +666,7 @@ h1, h2, h3, h4, h5 {
   outline: none;
   border-color: var(--brand-primary);
   box-shadow: 0 0 0 3px rgba(14, 111, 100, 0.1);
+  background: #fff;
 }
 
 .dataTables_wrapper .dt-info {
