@@ -642,7 +642,7 @@ h1, h2, h3, h4, h5 {
 .dataTables_wrapper .dt-search {
   display: flex;
   align-items: center;
-  padding-bottom: 12px;
+  padding: 12px 0;
 }
 
 .dataTables_wrapper .dt-search label {
