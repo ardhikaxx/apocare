@@ -140,7 +140,7 @@
             <a class="nav-link nav-dropdown {{ request()->routeIs('pengguna*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#penggunaMenu">
                 <span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span>
-                <span class="nav-text">Pengguna & Peran</span>
+                <span class="nav-text">Pengaturan</span>
                 <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('pengguna*') ? 'show' : '' }}" id="penggunaMenu">
