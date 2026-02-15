@@ -50,19 +50,60 @@
 
 ---
 
-## User Roles (Peran)
+## User Roles (Peran) & Hak Akses
 
-Pembagian akses fitur saat ini:
+Sistem Apocare menggunakan sistem Role-Based Access Control (RBAC) untuk mengelola akses pengguna. Setiap pengguna memiliki peran (role) tertentu yang menentukan fitur dan menu apa saja yang dapat diakses.
 
-- **Admin**: semua fitur
-- **Apoteker**: master, persediaan, penjualan, retur penjualan, resep, dokter, laporan terkait
-- **Kasir**: penjualan, retur penjualan, pelanggan, resep, laporan penjualan/pelanggan
-- **Gudang**: master, persediaan, pembelian, retur pembelian, laporan pembelian/persediaan
+### Struktur Peran (Roles)
 
-### Detail Hak Akses per Modul
+Sistem terdiri dari 4 peran utama dengan pembagian tugas yang jelas:
+
+| Peran | Deskripsi |
+|-------|-----------|
+| **Admin** | Mengelola seluruh aspek sistem termasuk pengguna, hak akses, dan semua modul |
+| **Apoteker** | Bertanggung jawab atas pengelolaan obat, penjualan dengan resep, dan persediaan |
+| **Kasir** | Melakukan transaksi penjualan, melayani pelanggan, dan mengelola data pelanggan |
+| **Gudang** | Mengelola stok barang, pembelian, dan retur pembelian |
+
+### Pembagian Akses per Modul
+
+#### Admin
+- **Akses Penuh**: Semua fitur dan modul
+- **Khusus**: Manajemen pengguna, peran (roles), dan hak akses (permissions)
+
+#### Apoteker
+- Master Data: Produk, Kategori, Satuan, Pemasok, Pelanggan, Dokter, Karyawan
+- Persediaan: Monitoring stok, Penyesuaian stok, Stok opname
+- Transaksi: Penjualan (termasuk resep), Pembelian, Retur penjualan
+- Laporan: Semua jenis laporan (penjualan, pembelian, persediaan, keuangan)
+- Resep: Kelola resep dokter
+
+#### Kasir
+- Transaksi: Penjualan (POS), Retur penjualan
+- Pelanggan: Tambah, edit, lihat data pelanggan
+- Resep: Kelola resep dokter
+- Laporan: Laporan penjualan, laporan pelanggan
+
+#### Gudang
+- Master Data: Produk, Kategori, Satuan, Pemasok
+- Persediaan: Monitoring stok, Penyesuaian stok, Stok opname
+- Transaksi: Pembelian, Retur pembelian
+- Laporan: Laporan pembelian, laporan persediaan
+
+### Detail Hak Akes per Modul
+
+Setiap modul memiliki kombinasi hak akses berikut:
+
+| Hak Akses | Deskripsi |
+|-----------|-----------|
+| **view** | Melihat data/list |
+| **create** | Menambah data baru |
+| **update** | Mengubah data yang ada |
+| **delete** | Menghapus data |
+| **export** | Mengekspor data (PDF/Excel) |
 
 #### Dashboard
-- `dashboard.view` - Lihat Dashboard
+- `dashboard.view` - Melihat halaman dashboard dan statistik
 
 #### Master Data
 - **Pemasok**: view, create, update, delete, export
@@ -70,32 +111,32 @@ Pembagian akses fitur saat ini:
 - **Satuan**: view, create, update, delete, export
 - **Produk**: view, create, update, delete, export
 
-#### Pelanggan & Dokter & Karyawan
+#### Pelanggan, Dokter & Karyawan
 - **Pelanggan**: view, create, update, delete, export
 - **Dokter**: view, create, update, delete
 - **Karyawan**: view, create, update, delete
 
 #### Persediaan
-- **Stok**: view
-- **Penyesuaian**: view, create, delete
-- **Opname**: view, create, delete
+- **Stok**: view - Melihat monitoring stok per produk dan batch
+- **Penyesuaian**: view, create, delete - Mengoreksi jumlah stok (barang rusak, expired, dll)
+- **Opname**: view, create, delete - Melakukan pencocokan stok fisik dengan sistem
 
 #### Transaksi
-- **Penjualan**: view, create, delete
-- **Pembelian**: view, create, delete
-- **Retur**: view, create, delete
-- **Resep**: view, create, delete
+- **Penjualan**: view, create, delete - Transaksi POS dan penjualan dengan resep
+- **Pembelian**: view, create, delete - Purchase order ke pemasok
+- **Retur**: view, create, delete - Retur penjualan dan pembelian
+- **Resep**: view, create, delete - Kelola resep dokter
 
 #### Laporan
-- **Penjualan**: view, export
-- **Pembelian**: view, export
-- **Persediaan**: view, export
-- **Keuangan**: view, export
+- **Penjualan**: view, export - Laporan penjualan harian, mingguan, bulanan
+- **Pembelian**: view, export - Laporan pembelian dan supplier
+- **Persediaan**: view, export - Laporan stok barang
+- **Keuangan**: view, export - Laporan keuangan (pendapatan, biaya, profit)
 
-#### Pengguna
-- **Pengguna**: view, create, update, delete
-- **Peran**: Kelola peran
-- **Hak Akses**: Kelola hak akses
+#### Pengguna & Sistem
+- **Pengguna**: view, create, update, delete - Mengelola akun pengguna
+- **Peran**: view, create, update, delete - Mengelola peran pengguna
+- **Hak Akses**: view, create, update, delete - Mengelola permission per peran
 ---
 
 ## Tech Stack
