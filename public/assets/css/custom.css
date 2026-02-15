@@ -639,6 +639,38 @@ h1, h2, h3, h4, h5 {
   margin-top: 20px;
 }
 
+.dataTables_wrapper .dt-search {
+  display: flex;
+  align-items: center;
+}
+
+.dataTables_wrapper .dt-search label {
+  margin-bottom: 0;
+  margin-right: 8px;
+  font-weight: 500;
+  color: var(--brand-ink);
+}
+
+.dataTables_wrapper .dt-search input {
+  border: 1px solid rgba(15, 42, 46, 0.15);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  min-width: 200px;
+}
+
+.dataTables_wrapper .dt-search input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(14, 111, 100, 0.1);
+}
+
+.dataTables_wrapper .dt-info {
+  color: var(--brand-muted);
+  font-size: 0.875rem;
+}
+
 .dataTables_wrapper .pagination li {
   margin: 0 3px;
 }
