@@ -218,9 +218,87 @@ Akses aplikasi di `http://localhost:8000`
 
 ---
 
-## Project Structure
+## Struktur Project
+
+Struktur folder project Apocare mengikuti standar Laravel dengan beberapa penyesuaian untuk kebutuhan aplikasi:
 
 ```
+apocare/
+├── app/
+│   ├── Exports/              # Kelas untuk export Excel (Maatwebsite)
+│   ├── Http/
+│   │   ├── Controllers/      # Controller untuk lógica bisnis
+│   │   ├── Middleware/       # Middleware (auth, role, dll)
+│   │   └── Requests/        # Form request validation
+│   ├── Models/               # Eloquent models
+│   ├── Providers/            # Service providers
+│   └── Traits/              # Reusable traits
+│
+├── bootstrap/                # Bootstrap file aplikasi
+│   └── app.php              # Konfigurasi aplikasi
+│
+├── config/                  # Konfigurasi Laravel
+│
+├── database/
+│   ├── migrations/          # Schema database
+│   ├── seeders/            # Data dummy/awal
+│   └── factories/          # Factory untuk testing
+│
+├── public/                  # File publik (entry point)
+│   ├── assets/
+│   │   ├── brand/          # Logo brand
+│   │   ├── css/            # Custom CSS
+│   │   ├── images/         # Gambar/favicon
+│   │   └── js/             # Custom JavaScript
+│   └── index.php           # Entry point
+│
+├── resources/
+│   └── views/
+│       ├── auth/            # View login, register, forgot password
+│       ├── layouts/        # Template utama (app, auth, print)
+│       ├── pages/          # Halaman utama aplikasi
+│       │   ├── dashboard/  # Dashboard
+│       │   ├── laporan/    # Laporan (penjualan, pembelian, dll)
+│       │   ├── master/     # Master data (produk, kategori, dll)
+│       │   ├── pengguna/   # Manajemen用户
+│       │   └── ...
+│       ├── partials/       # Komponen parsial (sidebar, navbar, dll)
+│       └── print/          # Template print/export PDF
+│           └── partials/   # Komponen print (kop, dll)
+│
+├── routes/
+│   ├── api.php             # API routes
+│   ├── console.php         # Console commands
+│   └── web.php             # Web routes
+│
+├── storage/                 # File storage (logs, cache, dll)
+│   ├── app/
+│   ├── framework/
+│   └── logs/
+│
+├── tests/                   # Unit & feature tests
+│
+├── vendor/                  # Dependencies (Composer)
+│
+├── .env                    # Environment variables
+├── .env.example            # Contoh environment variables
+├── artisan                 # CLI commands
+├── composer.json           # Composer dependencies
+├── package.json           # NPM dependencies
+└── phpunit.xml           # PHPUnit configuration
+```
+
+### Penjelasan Folder Penting
+
+| Folder | Deskripsi |
+|--------|-----------|
+| `app/Http/Controllers` | Berisi semua controller yang menangani lógica bisnis aplikasi |
+| `resources/views/pages` | View untuk setiap halaman aplikasi, diorganisir per modul |
+| `resources/views/partials` | Komponen yang bisa digunakan ulang (sidebar, navbar, footer) |
+| `resources/views/print` | Template untuk export PDF menggunakan DomPDF |
+| `database/migrations` | Schema database yang mendeskripsikan struktur tabel |
+| `database/seeders` | Data awal untuk populasi database |
+| `routes/web.php` | Semua route/url untuk web aplikasi |
 apocare/
 â”œâ”€â”€ app/
 â”‚   â”œâ”€â”€ Exports/           # Excel Export Classes
