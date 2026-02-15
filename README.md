@@ -124,6 +124,16 @@ Setiap modul memiliki kombinasi hak akses berikut:
 | **delete** | Menghapus data |
 | **export** | Mengekspor data (PDF/Excel) |
 
+---
+
+## Perancangan dan Implementasi Basis Data
+
+Perancangan basis data APOCARE menggunakan pendekatan relasional yang terpusat pada pengelolaan data operasional apotek dengan tabel pengguna dan produk sebagai entitas utama dalam sistem. Tabel pengguna (pengguna) terhubung secara mendalam dengan tabel peran melalui relasi Foreign Key (role_id), yang memungkinkan sistem membatasi akses fitur berdasarkan peran pengguna secara otomatis. Struktur ini juga didukung oleh tabel-tabel pendukung seperti kategori, satuan, dan pemasok yang menjadi referensi utama dalam pembentukan transaksi dan pencatatan stok produk.
+
+Inti dari operasional sistem APOCARE terletak pada tabel produk yang mengintegrasikan relasi antara kategori produk, satuan produk, dan produsen dalam satu entitas barang. Data dari tabel produk tersebut kemudian digunakan sebagai landasan bagi tabel batch_produk untuk mengelola nomor batch dan tanggal kadaluarsa, tabel pergerakan_stok untuk mencatat histori perubahan stok, serta tabel detail_penjualan dan detail_pembelian untuk mencatat transaksi secara definitif. Selain itu, terdapat tabel resep yang berfungsi mengelola data resep dokter sekaligus memvalidasi produk apa saja yang diresepkan melalui relasi ke tabel dokter dan pelanggan.
+
+Struktur relasi database ini memastikan bahwa setiap pergerakan barang dapat dilacak dengan akurat mulai dari masuknya barang melalui tabel pembelian hingga penjualan kepada pelanggan melalui tabel penjualan. Sistem juga mendukung pengelolaan retur untuk kedua jenis transaksi (retur_pembelian dan retur_penjualan) serta penyesuaian stok melalui tabel penyesuaian_stok dan stok_opname untuk menjaga akurasi inventaris. Dengan adanya relasi-relasi yang terstruktur ini, APOCARE mampu memberikan informasi yang akurat untuk pengambilan keputusan strategis dalam operasional apotek.
+
 #### Dashboard
 - `dashboard.view` - Melihat halaman dashboard dan statistik
 
