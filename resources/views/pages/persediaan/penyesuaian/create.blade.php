@@ -239,7 +239,7 @@
     document.getElementById('penyesuaian-form').addEventListener('submit', (event) => {
         if (!adjustBody.querySelector('tr[data-produk-id]')) {
             event.preventDefault();
-            alert('Tambahkan minimal satu item.');
+            showAlert('warning', 'Peringatan', 'Tambahkan minimal satu item.');
         }
     });
 </script>

@@ -246,7 +246,7 @@
     document.getElementById('resep-form').addEventListener('submit', (event) => {
         if (!resepBody.querySelector('tr[data-produk-id]')) {
             event.preventDefault();
-            alert('Tambahkan minimal satu item.');
+            showAlert('warning', 'Peringatan', 'Tambahkan minimal satu item.');
         }
     });
 </script>

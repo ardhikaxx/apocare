@@ -189,7 +189,7 @@
 
         if (validCount === 0) {
             event.preventDefault();
-            alert(''Pilih minimal satu item untuk diretur.'');
+            showAlert('warning', 'Peringatan', 'Pilih minimal satu item untuk diretur.');
         }
     });
 </script>

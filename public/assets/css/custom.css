@@ -819,3 +819,362 @@ h1, h2, h3, h4, h5 {
 }
 
 
+
+/* Pagination override (Bootstrap + DataTables v2) */
+:root {
+  --bs-pagination-color: var(--brand-primary);
+  --bs-pagination-bg: rgba(14, 111, 100, 0.08);
+  --bs-pagination-border-color: transparent;
+  --bs-pagination-hover-color: #ffffff;
+  --bs-pagination-hover-bg: var(--brand-primary);
+  --bs-pagination-hover-border-color: transparent;
+  --bs-pagination-focus-color: #ffffff;
+  --bs-pagination-focus-bg: var(--brand-primary);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(14, 111, 100, 0.2);
+  --bs-pagination-active-color: #ffffff;
+  --bs-pagination-active-bg: var(--brand-primary);
+  --bs-pagination-active-border-color: transparent;
+  --bs-pagination-disabled-color: var(--brand-muted);
+  --bs-pagination-disabled-bg: rgba(15, 42, 46, 0.06);
+  --bs-pagination-disabled-border-color: transparent;
+}
+
+.pagination .page-link,
+.page-link,
+.dataTables_wrapper .pagination .page-link,
+.dataTables_wrapper .pagination button.page-link,
+div.dt-container .dt-paging .pagination .page-item .page-link,
+div.dt-container .dt-paging .pagination .dt-paging-button .page-link,
+div.dt-container .dt-paging .pagination .dt-paging-button button.page-link {
+  color: var(--brand-primary) !important;
+  background-color: rgba(14, 111, 100, 0.08) !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+}
+
+.pagination .page-item.active .page-link,
+.dataTables_wrapper .pagination .active .page-link,
+.dataTables_wrapper .pagination .dt-paging-button.active .page-link,
+div.dt-container .dt-paging .pagination .page-item.active .page-link,
+div.dt-container .dt-paging .pagination .dt-paging-button.current .page-link {
+  color: #fff !important;
+  background-color: var(--brand-primary) !important;
+}
+
+.pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+.dataTables_wrapper .pagination .dt-paging-button:not(.active):not(.disabled) .page-link:hover,
+div.dt-container .dt-paging .pagination .dt-paging-button:not(.active):not(.disabled) .page-link:hover {
+  color: #fff !important;
+  background-color: var(--brand-primary-dark) !important;
+}
+
+.pagination .page-item.disabled .page-link,
+.dataTables_wrapper .pagination .disabled .page-link,
+div.dt-container .dt-paging .pagination .dt-paging-button.disabled .page-link {
+  color: var(--brand-muted) !important;
+  background-color: rgba(15, 42, 46, 0.06) !important;
+  opacity: 0.7;
+}
+
+/* ========================
+   Custom SweetAlert2 Theme - Apocare
+   ======================== */
+:root {
+  --swal-primary: #0e6f64;
+  --swal-primary-dark: #0a4f49;
+  --swal-accent: #f6b72b;
+  --swal-danger: #d94848;
+  --swal-warning: #e58e26;
+  --swal-info: #2b8ac6;
+  --swal-success: #0e6f64;
+  --swal-ink: #0f2a2e;
+  --swal-bg: #ffffff;
+  --swal-overlay: rgba(15, 42, 46, 0.6);
+}
+
+.swal2-popup {
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 42, 46, 0.35) !important;
+  padding: 2rem !important;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+}
+
+.swal2-title {
+  font-family: 'Fraunces', serif !important;
+  color: var(--swal-ink) !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.swal2-html-container {
+  color: #4a5568 !important;
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+}
+
+.swal2-icon {
+  border-radius: 50% !important;
+  width: 80px !important;
+  height: 80px !important;
+  margin: 1.5rem auto 1rem !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: var(--swal-success) !important;
+}
+
+.swal2-icon.swal2-success .swal2-success-ring {
+  border-color: var(--swal-success) !important;
+}
+
+.swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: var(--swal-success) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--swal-danger) !important;
+}
+
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+  background-color: var(--swal-danger) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--swal-warning) !important;
+  color: var(--swal-warning) !important;
+}
+
+.swal2-icon.swal2-info {
+  border-color: var(--swal-info) !important;
+  color: var(--swal-info) !important;
+}
+
+.swal2-icon.swal2-question {
+  border-color: var(--swal-primary) !important;
+  color: var(--swal-primary) !important;
+}
+
+.swal2-actions {
+  gap: 12px !important;
+  margin-top: 1.5rem !important;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  border-radius: 12px !important;
+  padding: 12px 28px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+}
+
+.swal2-confirm {
+  background: linear-gradient(135deg, var(--swal-primary) 0%, var(--swal-primary-dark) 100%) !important;
+  border: none !important;
+}
+
+.swal2-confirm:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(14, 111, 100, 0.45) !important;
+}
+
+.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px rgba(14, 111, 100, 0.25) !important;
+}
+
+.swal2-cancel {
+  background: #fff !important;
+  border: 2px solid #e2e8f0 !important;
+  color: #4a5568 !important;
+}
+
+.swal2-cancel:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+.swal2-deny {
+  background: linear-gradient(135deg, var(--swal-danger) 0%, #b83838 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  padding: 12px 28px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-deny:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(217, 72, 72, 0.45) !important;
+}
+
+.swal2-footer {
+  border-top: 1px solid #e2e8f0 !important;
+  margin-top: 1rem !important;
+  padding-top: 1rem !important;
+}
+
+.swal2-timer-progress-bar {
+  background: linear-gradient(90deg, var(--swal-primary) 0%, var(--swal-accent) 100%) !important;
+  border-radius: 0 0 20px 20px !important;
+  height: 4px !important;
+}
+
+/* SweetAlert Toast */
+.swal2-toast {
+  border-radius: 14px !important;
+  box-shadow: 0 10px 40px rgba(15, 42, 46, 0.2) !important;
+  padding: 16px 20px !important;
+  background: #fff !important;
+}
+
+.swal2-toast .swal2-title {
+  font-size: 1rem !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.swal2-toast .swal2-icon {
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  margin-right: 12px !important;
+}
+
+.swal2-toast .swal2-icon .swal2-icon-content {
+  font-size: 1.2rem !important;
+}
+
+.swal2-toast .swal2-success-line-tip,
+.swal2-toast .swal2-success-line-long {
+  height: 3px !important;
+}
+
+.swal2-toast .swal2-timer-progress-bar {
+  height: 3px !important;
+}
+
+/* Input styling in SweetAlert */
+.swal2-input,
+.swal2-file,
+.swal2-textarea,
+.swal2-select {
+  border-radius: 12px !important;
+  border: 2px solid #e2e8f0 !important;
+  padding: 12px 16px !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.swal2-input:focus,
+.swal2-file:focus,
+.swal2-textarea:focus,
+.swal2-select:focus {
+  border-color: var(--swal-primary) !important;
+  box-shadow: 0 0 0 3px rgba(14, 111, 100, 0.15) !important;
+  outline: none !important;
+}
+
+.swal2-input::placeholder,
+.swal2-textarea::placeholder {
+  color: #a0aec0 !important;
+}
+
+/* Radio & Checkbox in SweetAlert */
+.swal2-radio label,
+.swal2-checkbox label {
+  font-size: 0.95rem !important;
+  color: #4a5568 !important;
+}
+
+.swal2-radio input,
+.swal2-checkbox input {
+  accent-color: var(--swal-primary) !important;
+}
+
+/* Loader */
+.swal2-loader {
+  border-color: rgba(14, 111, 100, 0.2) !important;
+  border-top-color: var(--swal-primary) !important;
+}
+
+/* Close button */
+.swal2-close {
+  color: #a0aec0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.swal2-close:hover {
+  color: var(--swal-danger) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Image in SweetAlert */
+.swal2-image {
+  border-radius: 16px !important;
+  margin: 1rem auto !important;
+  max-width: 90% !important;
+}
+
+/* Validation message */
+.swal2-validation-message {
+  background: #fef2f2 !important;
+  color: var(--swal-danger) !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  margin: 1rem 0 0 !important;
+}
+
+.swal2-validation-message::before {
+  color: var(--swal-danger) !important;
+}
+
+/* Progress steps */
+.swal2-progress-steps {
+  margin-bottom: 1.5rem !important;
+}
+
+.swal2-progress-step {
+  background: rgba(14, 111, 100, 0.15) !important;
+  color: var(--swal-primary) !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+}
+
+.swal2-progress-step-active {
+  background: var(--swal-primary) !important;
+  color: #fff !important;
+}
+
+.swal2-progress-step-line {
+  background: rgba(14, 111, 100, 0.15) !important;
+}
+
+/* Custom animation */
+@keyframes swal2-animate-success-line-tip {
+  0% { top: 45px; left: 14px; width: 0; }
+  54% { top: 40px; left: 4px; width: 50px; }
+  70% { top: 52px; left: 12px; width: 25px; }
+  100% { top: 56px; left: 22px; width: 35px; }
+}
+
+@keyframes swal2-animate-success-line-long {
+  0% { top: 70px; right: 20px; width: 0; }
+  65% { top: 76px; right: 10px; width: 70px; }
+  75% { top: 82px; right: 14px; width: 35px; }
+  100% { top: 86px; right: 28px; width: 50px; }
+}
+
+/* Enhanced icon backgrounds */
+.swal2-icon::before {
+  font-size: 2.5rem !important;
+  line-height: 80px !important;
+}
+
+.swal2-success::before,
+.swal2-error::before {
+  font-size: 3rem !important;
+}
