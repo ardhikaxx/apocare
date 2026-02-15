@@ -134,6 +134,8 @@ Inti dari operasional sistem APOCARE terletak pada tabel produk yang mengintegra
 
 Struktur relasi database ini memastikan bahwa setiap pergerakan barang dapat dilacak dengan akurat mulai dari masuknya barang melalui tabel pembelian hingga penjualan kepada pelanggan melalui tabel penjualan. Sistem juga mendukung pengelolaan retur untuk kedua jenis transaksi (retur_pembelian dan retur_penjualan) serta penyesuaian stok melalui tabel penyesuaian_stok dan stok_opname untuk menjaga akurasi inventaris. Dengan adanya relasi-relasi yang terstruktur ini, APOCARE mampu memberikan informasi yang akurat untuk pengambilan keputusan strategis dalam operasional apotek.
 
+---
+
 #### Dashboard
 - `dashboard.view` - Melihat halaman dashboard dan statistik
 
