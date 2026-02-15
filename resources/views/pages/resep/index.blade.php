@@ -74,10 +74,10 @@
                                         <i class="fa-solid fa-cash-register"></i>
                                     </a>
                                 @endif
-                                <form action="{{ route('resep.destroy', $item) }}" method="POST" class="d-inline">
+                                <form id="delete-form-{{ $item->id }}" action="{{ route('resep.destroy', $item) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus resep ini?')">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-{{ $item->id }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 @include('partials.breadcrumb', ['breadcrumbs' => [
@@ -23,9 +23,9 @@
                 $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
                 $aksi = '<div class="d-flex gap-2">'
                     . '<a class="btn btn-sm btn-soft" href="' . route('pengguna.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
-                    . '<form method="POST" action="' . route('pengguna.destroy', $item) . '" onsubmit="return confirm(\'Hapus pengguna ini?\')">'
+                    . '<form id="delete-form-' . $item->id . '" method="POST" action="' . route('pengguna.destroy', $item) . '">'
                     . csrf_field() . method_field('DELETE')
-                    . '<button class="btn btn-sm btn-soft" type="submit"><i class="fa-solid fa-trash"></i></button>'
+                    . '<button class="btn btn-sm btn-soft" type="button" onclick="confirmDelete(\'delete-form-' . $item->id . '\')"><i class="fa-solid fa-trash"></i></button>'
                     . '</form>'
                     . '</div>';
                 return [

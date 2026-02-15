@@ -45,10 +45,10 @@
                                 <a href="{{ route('transaksi.penjualan.show', $item) }}" class="btn btn-sm btn-outline-primary">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <form action="{{ route('transaksi.penjualan.destroy', $item) }}" method="POST" class="d-inline">
+                                <form id="delete-form-{{ $item->id }}" action="{{ route('transaksi.penjualan.destroy', $item) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus transaksi ini?')">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-{{ $item->id }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>

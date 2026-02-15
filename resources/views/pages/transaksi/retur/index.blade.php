@@ -54,10 +54,10 @@
                                         <a href="{{ route('transaksi.retur.pembelian.show', $item) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
-                                        <form action="{{ route('transaksi.retur.pembelian.destroy', $item) }}" method="POST" class="d-inline">
+                                        <form id="delete-form-pembelian-{{ $item->id }}" action="{{ route('transaksi.retur.pembelian.destroy', $item) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus retur ini?')">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-pembelian-{{ $item->id }}')">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -97,10 +97,10 @@
                                         <a href="{{ route('transaksi.retur.penjualan.show', $item) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
-                                        <form action="{{ route('transaksi.retur.penjualan.destroy', $item) }}" method="POST" class="d-inline">
+                                        <form id="delete-form-penjualan-{{ $item->id }}" action="{{ route('transaksi.retur.penjualan.destroy', $item) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Hapus retur ini?')">
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-penjualan-{{ $item->id }}')">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
