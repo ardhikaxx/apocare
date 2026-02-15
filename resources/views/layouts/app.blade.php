@@ -100,10 +100,13 @@
                         search: 'Cari:',
                         info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
                         paginate: {
-                            previous: 'Sebelumnya',
-                            next: 'Berikutnya'
+                            previous: '<i class="fa-solid fa-chevron-left"></i>',
+                            next: '<i class="fa-solid fa-chevron-right"></i>',
+                            first: '<i class="fa-solid fa-angles-left"></i>',
+                            last: '<i class="fa-solid fa-angles-right"></i>'
                         }
-                    }
+                    },
+                    dom: '<"d-flex justify-content-between align-items-center mb-3"<"dt-info">><"table-responsive"t><"d-flex justify-content-between align-items-center mt-3"p>'
                 });
                 table.dataset.dtInitialized = 'true';
             });

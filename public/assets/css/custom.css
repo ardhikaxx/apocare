@@ -635,6 +635,50 @@ h1, h2, h3, h4, h5 {
   border-radius: 10px;
 }
 
+.dataTables_wrapper .pagination {
+  margin-top: 20px;
+}
+
+.dataTables_wrapper .pagination li {
+  margin: 0 3px;
+}
+
+.dataTables_wrapper .pagination li a,
+.dataTables_wrapper .pagination li span {
+  border: none !important;
+  border-radius: 8px !important;
+  color: var(--brand-ink);
+  background: rgba(15, 42, 46, 0.06);
+  padding: 8px 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dataTables_wrapper .pagination li a:hover {
+  background: var(--brand-primary) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 111, 100, 0.3);
+}
+
+.dataTables_wrapper .pagination li.active span {
+  background: var(--brand-primary) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(14, 111, 100, 0.3);
+}
+
+.dataTables_wrapper .pagination li.disabled a,
+.dataTables_wrapper .pagination li.disabled span {
+  background: rgba(15, 42, 46, 0.04);
+  color: var(--brand-muted);
+  cursor: not-allowed;
+}
+
+.dataTables_wrapper .pagination li.first a,
+.dataTables_wrapper .pagination li.last a {
+  border-radius: 8px !important;
+}
+
 /* Sidebar logo only */
 .sidebar .brand.brand-logo-only {
   align-items: center;
