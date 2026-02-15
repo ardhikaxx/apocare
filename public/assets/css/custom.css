@@ -386,6 +386,14 @@ h1, h2, h3, h4, h5 {
     flex: 1;
   }
   
+  .navbar-greeting {
+    display: none;
+  }
+  
+  .navbar-username {
+    display: none;
+  }
+  
   .app-navbar .dropdown {
     order: -1;
     width: 100%;
