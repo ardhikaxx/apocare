@@ -292,7 +292,7 @@
             <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="0.01"></td>
             <td class="text-end line-subtotal">${formatRupiah(data.harga)}</td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-item"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-action-delete remove-item"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         cartBody.appendChild(row);

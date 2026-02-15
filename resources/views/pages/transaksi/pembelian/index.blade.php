@@ -38,13 +38,13 @@
                             </td>
                             <td>Rp {{ number_format($item->total_akhir, 0, ',', '.') }}</td>
                             <td class="text-end">
-                                <a href="{{ route('transaksi.pembelian.show', $item) }}" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ route('transaksi.pembelian.show', $item) }}" class="btn btn-sm btn-action-view">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('transaksi.pembelian.destroy', $item) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-{{ $item->id }}')">
+                                    <button type="button" class="btn btn-sm btn-action-delete" onclick="confirmDelete('delete-form-{{ $item->id }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>

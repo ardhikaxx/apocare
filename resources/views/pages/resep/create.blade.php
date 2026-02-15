@@ -205,7 +205,7 @@
             <td><input type="number" class="form-control form-control-sm resep-harga" value="${data.harga}" min="0" step="0.01"></td>
             <td class="resep-total">${formatRupiah(data.harga)}</td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-resep"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-action-delete remove-resep"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         resepBody.appendChild(row);

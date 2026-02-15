@@ -197,7 +197,7 @@
             <td class="adj-total">${formatRupiah(0)}</td>
             <td><input type="text" class="form-control form-control-sm adj-catatan" placeholder="Catatan"></td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-adjust"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-action-delete remove-adjust"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         adjustBody.appendChild(row);

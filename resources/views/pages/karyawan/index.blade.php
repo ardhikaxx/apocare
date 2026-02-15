@@ -20,11 +20,12 @@
             $columns = ['Nomor', 'Nama', 'Jabatan', 'Departemen', 'Status', 'Aksi'];
             $rows = $karyawan->map(function ($item) {
                 $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $deleteId = 'delete-form-' . $item->id;
                 $aksi = '<div class="d-flex gap-2">'
-                    . '<a class="btn btn-sm btn-soft" href="' . route('karyawan.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
-                    . '<form id="delete-form-' . $item->id . '" method="POST" action="' . route('karyawan.destroy', $item) . '">'
+                    . '<a class="btn btn-sm btn-action-edit" href="' . route('karyawan.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
+                    . '<form id="' . $deleteId . '" method="POST" action="' . route('karyawan.destroy', $item) . '">'
                     . csrf_field() . method_field('DELETE')
-                    . '<button class="btn btn-sm btn-soft" type="button" onclick="confirmDelete(\'delete-form-' . $item->id . '\')"><i class="fa-solid fa-trash"></i></button>'
+                    . '<button class="btn btn-sm btn-action-delete" type="button" onclick="confirmDelete(\'' . $deleteId . '\')"><i class="fa-solid fa-trash"></i></button>'
                     . '</form>'
                     . '</div>';
                 return [

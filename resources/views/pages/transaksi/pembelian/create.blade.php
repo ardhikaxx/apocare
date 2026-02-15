@@ -326,7 +326,7 @@
             <td><input type="date" class="form-control form-control-sm po-exp"></td>
             <td class="text-end po-line-subtotal">${formatRupiah(data.harga)}</td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-po"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-action-delete remove-po"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
 

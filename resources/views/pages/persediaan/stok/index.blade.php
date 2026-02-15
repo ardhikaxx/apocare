@@ -95,7 +95,7 @@ $stats = [
                             <td><span class="badge bg-{{ $badge }}">{{ $status }}</span></td>
                             <td>{{ $item->produk->lokasi_rak ?? '-' }}</td>
                             <td class="text-end">
-                                <a href="{{ route('persediaan.stok.show', $item->id) }}" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ route('persediaan.stok.show', $item->id) }}" class="btn btn-sm btn-action-view">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                             </td>

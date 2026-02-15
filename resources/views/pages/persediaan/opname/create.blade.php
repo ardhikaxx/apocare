@@ -197,7 +197,7 @@
             <td class="op-total">${formatRupiah(0)}</td>
             <td><input type="text" class="form-control form-control-sm op-catatan" placeholder="Catatan"></td>
             <td class="text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-opname"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="btn btn-sm btn-action-delete remove-opname"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         opnameBody.appendChild(row);

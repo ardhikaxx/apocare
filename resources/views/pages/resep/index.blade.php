@@ -66,18 +66,18 @@
                             <td>{{ $item->status }}</td>
                             <td>Rp {{ number_format($item->total_harga, 0, ',', '.') }}</td>
                             <td class="text-end">
-                                <a href="{{ route('resep.show', $item) }}" class="btn btn-sm btn-outline-primary">
+                                <a href="{{ route('resep.show', $item) }}" class="btn btn-sm btn-action-view">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
                                 @if($item->status !== 'SELESAI')
-                                    <a href="{{ route('resep.penjualan.create', $item) }}" class="btn btn-sm btn-outline-success">
+                                    <a href="{{ route('resep.penjualan.create', $item) }}" class="btn btn-sm btn-action-process">
                                         <i class="fa-solid fa-cash-register"></i>
                                     </a>
                                 @endif
                                 <form id="delete-form-{{ $item->id }}" action="{{ route('resep.destroy', $item) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-{{ $item->id }}')">
+                                    <button type="button" class="btn btn-sm btn-action-delete" onclick="confirmDelete('delete-form-{{ $item->id }}')">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>

@@ -51,13 +51,13 @@
                                     <td>{{ $item->status }}</td>
                                     <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('transaksi.retur.pembelian.show', $item) }}" class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route('transaksi.retur.pembelian.show', $item) }}" class="btn btn-sm btn-action-view">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <form id="delete-form-pembelian-{{ $item->id }}" action="{{ route('transaksi.retur.pembelian.destroy', $item) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-pembelian-{{ $item->id }}')">
+                                            <button type="button" class="btn btn-sm btn-action-delete" onclick="confirmDelete('delete-form-pembelian-{{ $item->id }}')">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -94,13 +94,13 @@
                                     <td>{{ $item->status }}</td>
                                     <td>Rp {{ number_format($item->total, 0, ',', '.') }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('transaksi.retur.penjualan.show', $item) }}" class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route('transaksi.retur.penjualan.show', $item) }}" class="btn btn-sm btn-action-view">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                         <form id="delete-form-penjualan-{{ $item->id }}" action="{{ route('transaksi.retur.penjualan.destroy', $item) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete('delete-form-penjualan-{{ $item->id }}')">
+                                            <button type="button" class="btn btn-sm btn-action-delete" onclick="confirmDelete('delete-form-penjualan-{{ $item->id }}')">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>

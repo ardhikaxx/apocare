@@ -20,11 +20,12 @@
         @php
             $columns = ['Nama', 'Kode', 'Modul', 'Aksi'];
             $rows = $hakAkses->map(function ($item) {
+                $deleteId = 'delete-form-' . $item->id;
                 $aksi = '<div class="d-flex gap-2">'
-                    . '<a class="btn btn-sm btn-soft" href="' . route('pengguna.hak-akses.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
-                    . '<form id="delete-form-' . $item->id . '" method="POST" action="' . route('pengguna.hak-akses.destroy', $item) . '">'
+                    . '<a class="btn btn-sm btn-action-edit" href="' . route('pengguna.hak-akses.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
+                    . '<form id="' . $deleteId . '" method="POST" action="' . route('pengguna.hak-akses.destroy', $item) . '">'
                     . csrf_field() . method_field('DELETE')
-                    . '<button class="btn btn-sm btn-soft" type="button" onclick="confirmDelete(\'delete-form-' . $item->id . '\')"><i class="fa-solid fa-trash"></i></button>'
+                    . '<button class="btn btn-sm btn-action-delete" type="button" onclick="confirmDelete(\'' . $deleteId . '\')"><i class="fa-solid fa-trash"></i></button>'
                     . '</form>'
                     . '</div>';
                 return [
