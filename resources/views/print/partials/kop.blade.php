@@ -5,15 +5,15 @@
 <table style="width: 100%; border: none; margin-bottom: 8px;">
     <tr>
         @if ($logoExists)
-        <td style="width: 70px; vertical-align: middle;">
-            <img src="{{ $logoPath }}" alt="Apocare Logo" style="height: 65px; width: auto;">
+        <td style="width: 50px; vertical-align: middle; padding: 0;">
+            <img src="{{ $logoPath }}" alt="Apocare Logo" style="height: 50px; width: auto;">
         </td>
-        <td style="vertical-align: middle; padding-left: 10px;">
+        <td style="vertical-align: middle; padding: 0 0 0 5px;">
         @else
         <td style="vertical-align: middle;">
         @endif
-            <div style="font-size: 20px; font-weight: 700; letter-spacing: 1px;">APOCARE</div>
-            <div style="font-size: 12px; color: #444;">Integrated Pharmacy Management System</div>
+            <div style="font-size: 18px; font-weight: 700; letter-spacing: 1px;">APOCARE</div>
+            <div style="font-size: 11px; color: #444;">Integrated Pharmacy Management System</div>
         </td>
     </tr>
 </table>
