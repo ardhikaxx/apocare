@@ -20,18 +20,20 @@
     <div class="nav-section">Data Master</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('master.*') ? 'active' : '' }}" data-bs-toggle="collapse"
+            <a class="nav-link nav-dropdown {{ request()->routeIs('master.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#masterMenu">
-                <i class="fa-solid fa-layer-group"></i> Data Master
+                <span class="nav-icon"><i class="fa-solid fa-layer-group"></i></span>
+                <span class="nav-text">Data Master</span>
+                <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('master.*') ? 'show' : '' }}" id="masterMenu">
-                <a class="nav-link" href="{{ route('master.pemasok.index') }}"><i class="fa-solid fa-truck-field"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('master.pemasok.index') }}"><i class="fa-solid fa-truck-field"></i>
                     Pemasok</a>
-                <a class="nav-link" href="{{ route('master.kategori.index') }}"><i class="fa-solid fa-tags"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('master.kategori.index') }}"><i class="fa-solid fa-tags"></i>
                     Kategori</a>
-                <a class="nav-link" href="{{ route('master.satuan.index') }}"><i class="fa-solid fa-scale-balanced"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('master.satuan.index') }}"><i class="fa-solid fa-scale-balanced"></i>
                     Satuan</a>
-                <a class="nav-link" href="{{ route('master.produk.index') }}"><i class="fa-solid fa-capsules"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('master.produk.index') }}"><i class="fa-solid fa-capsules"></i>
                     Produk</a>
             </div>
         </li>
@@ -40,16 +42,18 @@
     <div class="nav-section">Persediaan</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('persediaan.*') ? 'active' : '' }}" data-bs-toggle="collapse"
+            <a class="nav-link nav-dropdown {{ request()->routeIs('persediaan.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#persediaanMenu">
-                <i class="fa-solid fa-boxes-stacked"></i> Persediaan
+                <span class="nav-icon"><i class="fa-solid fa-boxes-stacked"></i></span>
+                <span class="nav-text">Persediaan</span>
+                <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('persediaan.*') ? 'show' : '' }}" id="persediaanMenu">
-                <a class="nav-link" href="{{ route('persediaan.stok.index') }}"><i class="fa-solid fa-warehouse"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('persediaan.stok.index') }}"><i class="fa-solid fa-warehouse"></i>
                     Stok</a>
-                <a class="nav-link" href="{{ route('persediaan.penyesuaian.index') }}"><i
+                <a class="nav-link sub-nav-link" href="{{ route('persediaan.penyesuaian.index') }}"><i
                         class="fa-solid fa-sliders"></i> Penyesuaian</a>
-                <a class="nav-link" href="{{ route('persediaan.opname.index') }}"><i
+                <a class="nav-link sub-nav-link" href="{{ route('persediaan.opname.index') }}"><i
                         class="fa-solid fa-clipboard-check"></i> Opname</a>
             </div>
         </li>
@@ -58,16 +62,18 @@
     <div class="nav-section">Transaksi</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('transaksi.*') ? 'active' : '' }}" data-bs-toggle="collapse"
+            <a class="nav-link nav-dropdown {{ request()->routeIs('transaksi.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#transaksiMenu">
-                <i class="fa-solid fa-cart-shopping"></i> Transaksi
+                <span class="nav-icon"><i class="fa-solid fa-cart-shopping"></i></span>
+                <span class="nav-text">Transaksi</span>
+                <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('transaksi.*') ? 'show' : '' }}" id="transaksiMenu">
-                <a class="nav-link" href="{{ route('transaksi.penjualan.index') }}"><i
+                <a class="nav-link sub-nav-link" href="{{ route('transaksi.penjualan.index') }}"><i
                         class="fa-solid fa-cash-register"></i> Penjualan</a>
-                <a class="nav-link" href="{{ route('transaksi.pembelian.index') }}"><i
+                <a class="nav-link sub-nav-link" href="{{ route('transaksi.pembelian.index') }}"><i
                         class="fa-solid fa-basket-shopping"></i> Pembelian</a>
-                <a class="nav-link" href="{{ route('transaksi.retur.index') }}"><i class="fa-solid fa-rotate-left"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('transaksi.retur.index') }}"><i class="fa-solid fa-rotate-left"></i>
                     Retur</a>
             </div>
         </li>
@@ -107,20 +113,22 @@
     <div class="nav-section">Laporan</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}" data-bs-toggle="collapse"
+            <a class="nav-link nav-dropdown {{ request()->routeIs('laporan.*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#laporanMenu">
-                <i class="fa-solid fa-chart-line"></i> Laporan
+                <span class="nav-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="nav-text">Laporan</span>
+                <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('laporan.*') ? 'show' : '' }}" id="laporanMenu">
-                <a class="nav-link" href="{{ route('laporan.penjualan') }}"><i class="fa-solid fa-chart-column"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('laporan.penjualan') }}"><i class="fa-solid fa-chart-column"></i>
                     Penjualan</a>
-                <a class="nav-link" href="{{ route('laporan.pembelian') }}"><i class="fa-solid fa-chart-area"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('laporan.pembelian') }}"><i class="fa-solid fa-chart-area"></i>
                     Pembelian</a>
-                <a class="nav-link" href="{{ route('laporan.persediaan') }}"><i class="fa-solid fa-chart-pie"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('laporan.persediaan') }}"><i class="fa-solid fa-chart-pie"></i>
                     Persediaan</a>
-                <a class="nav-link" href="{{ route('laporan.keuangan') }}"><i class="fa-solid fa-wallet"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('laporan.keuangan') }}"><i class="fa-solid fa-wallet"></i>
                     Keuangan</a>
-                <a class="nav-link" href="{{ route('laporan.pelanggan') }}"><i class="fa-solid fa-user-group"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('laporan.pelanggan') }}"><i class="fa-solid fa-user-group"></i>
                     Pelanggan</a>
             </div>
         </li>
@@ -129,16 +137,18 @@
     <div class="nav-section">Pengaturan</div>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link {{ request()->routeIs('pengguna*') ? 'active' : '' }}" data-bs-toggle="collapse"
+            <a class="nav-link nav-dropdown {{ request()->routeIs('pengguna*') ? 'active' : '' }}" data-bs-toggle="collapse"
                 href="#penggunaMenu">
-                <i class="fa-solid fa-user-shield"></i> Pengguna & Peran
+                <span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span>
+                <span class="nav-text">Pengguna & Peran</span>
+                <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
             </a>
             <div class="collapse {{ request()->routeIs('pengguna*') ? 'show' : '' }}" id="penggunaMenu">
-                <a class="nav-link" href="{{ route('pengguna.index') }}"><i class="fa-solid fa-user"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('pengguna.index') }}"><i class="fa-solid fa-user"></i>
                     Pengguna</a>
-                <a class="nav-link" href="{{ route('pengguna.peran.index') }}"><i class="fa-solid fa-id-badge"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('pengguna.peran.index') }}"><i class="fa-solid fa-id-badge"></i>
                     Peran</a>
-                <a class="nav-link" href="{{ route('pengguna.hak-akses.index') }}"><i class="fa-solid fa-key"></i>
+                <a class="nav-link sub-nav-link" href="{{ route('pengguna.hak-akses.index') }}"><i class="fa-solid fa-key"></i>
                     Hak Akses</a>
             </div>
         </li>
