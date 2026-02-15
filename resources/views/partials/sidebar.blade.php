@@ -1,10 +1,12 @@
 <aside class="sidebar">
-    <div class="brand brand-logo-only">
-        <img src="{{ asset('assets/images/logo-white.png') }}" alt="Apocare" class="brand-logo">
+    <div class="sidebar-header">
+        <div class="brand brand-logo-only">
+            <img src="{{ asset('assets/images/logo-white.png') }}" alt="Apocare" class="brand-logo">
+        </div>
+        <button class="sidebar-close-btn d-lg-none" data-sidebar-close>
+            <i class="fa-solid fa-times"></i>
+        </button>
     </div>
-    <button class="sidebar-close-btn d-lg-none" data-sidebar-close>
-        <i class="fa-solid fa-times"></i>
-    </button>
 
     <div class="nav-section">Utama</div>
     <ul class="nav flex-column">

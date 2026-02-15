@@ -52,6 +52,15 @@ h1, h2, h3, h4, h5 {
   overflow-y: auto;
 }
 
+.sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
+}
+
 .sidebar .brand {
   display: flex;
   align-items: start;
@@ -59,8 +68,6 @@ h1, h2, h3, h4, h5 {
   flex-direction: column;
   gap: 12px;
   padding: 10px 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 18px;
 }
 
 .sidebar .brand-icon {
@@ -320,7 +327,7 @@ h1, h2, h3, h4, h5 {
   .app-navbar { margin: 16px 16px 0; }
   .app-content { padding: 20px 16px 50px; }
   
-  .sidebar-overlay {
+.sidebar-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -328,27 +335,27 @@ h1, h2, h3, h4, h5 {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
-  }
+}
+
+.sidebar-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
   
-  .sidebar-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-left: auto;
-  }
+.sidebar-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
   
-  .sidebar-close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
-  .page-header {
+.page-header {
     flex-direction: column;
     align-items: flex-start;
   }
