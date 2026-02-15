@@ -8,7 +8,7 @@
         <td style="width: 70px; vertical-align: middle;">
             <img src="{{ $logoPath }}" alt="Apocare Logo" style="height: 65px; width: auto;">
         </td>
-        <td style="vertical-align: middle; padding-left: 16px;">
+        <td style="vertical-align: middle; padding-left: 10px;">
         @else
         <td style="vertical-align: middle;">
         @endif
