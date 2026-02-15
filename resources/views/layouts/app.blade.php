@@ -28,6 +28,7 @@
     @include('partials.loading')
 
     <div class="app-shell">
+        <div class="sidebar-overlay" data-sidebar-close></div>
         @include('partials.sidebar')
         <div class="app-main">
             @include('partials.navbar')
@@ -45,9 +46,16 @@
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
     <script>
         const body = document.body;
+        
         document.querySelectorAll('[data-sidebar-toggle]').forEach((btn) => {
             btn.addEventListener('click', () => {
                 body.classList.toggle('sidebar-open');
+            });
+        });
+        
+        document.querySelectorAll('[data-sidebar-close]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                body.classList.remove('sidebar-open');
             });
         });
 
