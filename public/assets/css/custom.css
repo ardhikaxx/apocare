@@ -139,7 +139,7 @@ h1, h2, h3, h4, h5 {
   transform: translateY(-50%) scaleY(0);
   width: 4px;
   height: 60%;
-  background: linear-gradient(180deg, #f6b72b 0%, #e5a820 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 100%);
   border-radius: 0 4px 4px 0;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -155,10 +155,10 @@ h1, h2, h3, h4, h5 {
 }
 
 .sidebar .nav-link.active {
-  background: linear-gradient(135deg, rgba(246, 183, 43, 0.25) 0%, rgba(246, 183, 43, 0.15) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
   color: #fff;
   transform: translateX(6px);
-  box-shadow: 0 4px 15px rgba(246, 183, 43, 0.25);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
 }
 
 .sidebar .nav-link.active::before {
@@ -166,8 +166,8 @@ h1, h2, h3, h4, h5 {
 }
 
 .sidebar .nav-link.active i {
-  color: #f6b72b;
-  text-shadow: 0 0 10px rgba(246, 183, 43, 0.5);
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .sidebar .collapse .nav-link {
