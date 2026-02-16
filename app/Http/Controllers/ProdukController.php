@@ -132,4 +132,11 @@ class ProdukController extends Controller
         $pdf = Pdf::loadView('print.produk', compact('produk'));
         return $pdf->download('produk.pdf');
     }
+
+    public function toggleFavorit(Produk $produk)
+    {
+        $produk->update(['is_favorit' => !$produk->is_favorit]);
+        $status = $produk->is_favorit ? 'ditambahkan ke' : 'dihapus dari';
+        return back()->with('success', 'Produk berhasil ' . $status . ' favorit');
+    }
 }

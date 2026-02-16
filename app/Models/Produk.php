@@ -16,7 +16,8 @@ class Produk extends Model
         'kode', 'barcode', 'nama', 'nama_generik', 'kategori_id', 'satuan_id', 'produsen',
         'keterangan', 'jenis_produk', 'golongan_obat', 'perlu_resep', 'harga_beli', 'harga_jual',
         'stok_minimum', 'stok_maksimum', 'titik_pesan_ulang', 'lokasi_rak', 'kondisi_penyimpanan',
-        'gambar', 'status_aktif', 'konsinyasi', 'persentase_pajak', 'catatan', 'dibuat_oleh', 'diubah_oleh'
+        'gambar', 'status_aktif', 'konsinyasi', 'persentase_pajak', 'catatan', 'is_favorit',
+        'dibuat_oleh', 'diubah_oleh'
     ];
 
     public function kategori(): BelongsTo

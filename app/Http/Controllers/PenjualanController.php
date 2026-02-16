@@ -38,6 +38,7 @@ class PenjualanController extends Controller
         $pelanggan = Pelanggan::where('status_aktif', true)->get();
         $produk = Produk::with(['kategori', 'satuan', 'stokProduk'])
             ->where('status_aktif', true)
+            ->orderByDesc('is_favorit')
             ->orderBy('nama')
             ->get();
 

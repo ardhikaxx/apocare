@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('produk/export/excel', [ProdukController::class, 'exportExcel'])->name('produk.export.excel');
         Route::get('produk/export/csv', [ProdukController::class, 'exportCsv'])->name('produk.export.csv');
         Route::get('produk/export/pdf', [ProdukController::class, 'exportPdf'])->name('produk.export.pdf');
+        Route::patch('produk/{produk}/favorit', [ProdukController::class, 'toggleFavorit'])->name('produk.favorit');
         Route::resource('produk', ProdukController::class)->except(['show']);
     });
 

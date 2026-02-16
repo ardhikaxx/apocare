@@ -41,6 +41,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="product-search" placeholder="Cari produk...">
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped datatable" id="product-table-modal">
                         <thead>
@@ -57,9 +60,14 @@
                                 @php
                                     $stok = optional($item->stokProduk->first())->jumlah ?? 0;
                                 @endphp
-                                <tr>
+                                <tr class="{{ $item->is_favorit ? 'table-warning' : '' }}">
                                     <td>
-                                        <div class="fw-semibold">{{ $item->nama }}</div>
+                                        <div class="fw-semibold">
+                                            @if($item->is_favorit)
+                                                <i class="fa-solid fa-star text-warning me-1"></i>
+                                            @endif
+                                            {{ $item->nama }}
+                                        </div>
                                         <div class="text-muted small">{{ $item->kode }}</div>
                                     </td>
                                     <td>{{ $item->kategori->nama ?? '-' }}</td>
