@@ -13,7 +13,7 @@ class Penjualan extends Model
 
     protected $table = 'penjualan';
     protected $fillable = [
-        'nomor_penjualan', 'pelanggan_id', 'resep_id', 'tanggal_penjualan', 'jenis_penjualan',
+        'nomor_penjualan', 'client_reference', 'pelanggan_id', 'resep_id', 'tanggal_penjualan', 'jenis_penjualan',
         'status_pembayaran', 'metode_pembayaran', 'subtotal', 'jenis_diskon', 'nilai_diskon',
         'jumlah_diskon', 'jumlah_pajak', 'total_akhir', 'jumlah_bayar', 'jumlah_kembalian',
         'nomor_kartu', 'nama_pemegang_kartu', 'kode_approval', 'catatan', 'dilayani_oleh', 'dibuat_oleh', 'diubah_oleh'

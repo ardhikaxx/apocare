@@ -9,10 +9,14 @@ use App\Models\Penjualan;
 use App\Models\PergerakanStok;
 use App\Models\Produk;
 use App\Models\StokProduk;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class PenjualanController extends Controller
 {
@@ -42,14 +46,112 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
+        $validated = $this->validatePenjualanPayload($request->all());
+        $clientReference = $request->input('client_reference');
+
+        if (is_string($clientReference) && $clientReference !== '') {
+            $existing = Penjualan::where('client_reference', $clientReference)->first();
+            if ($existing) {
+                return redirect()->route('transaksi.penjualan.index')->with('success', 'Transaksi sudah pernah diproses.');
+            }
+        }
+
+        $this->prosesSimpanPenjualan($validated, Auth::id(), $clientReference);
+
+        return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil disimpan');
+    }
+
+    public function syncOffline(Request $request): JsonResponse
+    {
         $request->validate([
+            'transactions' => 'required|array|min:1',
+        ]);
+
+        $results = [];
+        $syncedCount = 0;
+
+        foreach ($request->input('transactions', []) as $index => $transaction) {
+            try {
+                if (! is_array($transaction)) {
+                    throw ValidationException::withMessages([
+                        "transactions.$index" => 'Format transaksi tidak valid.',
+                    ]);
+                }
+
+                $validated = $this->validatePenjualanPayload($transaction);
+                $clientReference = $transaction['client_reference'] ?? null;
+
+                if (is_string($clientReference) && $clientReference !== '') {
+                    $existing = Penjualan::where('client_reference', $clientReference)->first();
+                    if ($existing) {
+                        $results[] = [
+                            'client_reference' => $clientReference,
+                            'status' => 'duplicate',
+                            'penjualan_id' => $existing->id,
+                            'nomor_penjualan' => $existing->nomor_penjualan,
+                            'message' => 'Transaksi sudah ada.',
+                        ];
+                        continue;
+                    }
+                }
+
+                $penjualan = $this->prosesSimpanPenjualan($validated, Auth::id(), $clientReference);
+
+                $results[] = [
+                    'client_reference' => $clientReference,
+                    'status' => 'synced',
+                    'penjualan_id' => $penjualan->id,
+                    'nomor_penjualan' => $penjualan->nomor_penjualan,
+                ];
+                $syncedCount++;
+            } catch (ValidationException $e) {
+                $results[] = [
+                    'client_reference' => $transaction['client_reference'] ?? null,
+                    'status' => 'failed',
+                    'message' => $e->getMessage(),
+                    'errors' => $e->errors(),
+                ];
+            } catch (Throwable $e) {
+                $results[] = [
+                    'client_reference' => $transaction['client_reference'] ?? null,
+                    'status' => 'failed',
+                    'message' => $e->getMessage(),
+                ];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'synced_count' => $syncedCount,
+            'results' => $results,
+        ]);
+    }
+
+    public function show(Penjualan $penjualan)
+    {
+        $penjualan->load(['pelanggan', 'details.produk']);
+
+        return view('pages.transaksi.penjualan.show', compact('penjualan'));
+    }
+
+    public function destroy(Penjualan $penjualan)
+    {
+        $penjualan->update(['deleted_at' => now()]);
+
+        return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil dihapus');
+    }
+
+    private function validatePenjualanPayload(array $payload): array
+    {
+        $validator = Validator::make($payload, [
             'pelanggan_id' => 'nullable|exists:pelanggan,id',
-            'metode_pembayaran' => 'required|in:TUNAI,DEBIT,KREDIT,TRANSFER,EWALLET,QRIS',
-            'jenis_diskon' => 'nullable|in:PERSENTASE,NOMINAL',
+            'metode_pembayaran' => ['required', Rule::in(['TUNAI', 'DEBIT', 'KREDIT', 'TRANSFER', 'EWALLET', 'QRIS'])],
+            'jenis_diskon' => ['nullable', Rule::in(['PERSENTASE', 'NOMINAL'])],
             'nilai_diskon' => 'nullable|numeric|min:0',
             'pajak_transaksi' => 'nullable|numeric|min:0',
             'jumlah_bayar' => 'required|numeric|min:0',
             'catatan' => 'nullable|string',
+            'client_reference' => 'nullable|string|max:100',
             'items' => 'required|array|min:1',
             'items.*.produk_id' => 'required|exists:produk,id',
             'items.*.jumlah' => 'required|numeric|min:0.01',
@@ -57,11 +159,18 @@ class PenjualanController extends Controller
             'items.*.persentase_diskon' => 'nullable|numeric|min:0',
             'items.*.persentase_pajak' => 'nullable|numeric|min:0',
             'items.*.batch_id' => 'nullable|exists:batch_produk,id',
+            'items.*.satuan_produk_id' => 'nullable|exists:satuan_produk,id',
+            'items.*.catatan' => 'nullable|string',
         ]);
 
-        $items = $request->input('items', []);
+        return $validator->validate();
+    }
 
-        DB::transaction(function () use ($request, $items) {
+    private function prosesSimpanPenjualan(array $data, ?int $userId, ?string $clientReference = null): Penjualan
+    {
+        $items = $data['items'];
+
+        return DB::transaction(function () use ($data, $items, $userId, $clientReference) {
             $nomor = 'SL' . date('Ymd') . str_pad(Penjualan::withTrashed()->count() + 1, 4, '0', STR_PAD_LEFT);
 
             $subtotal = 0;
@@ -78,20 +187,20 @@ class PenjualanController extends Controller
                 $pajakItem += $linePajak;
             }
 
-            $jenisDiskon = $request->jenis_diskon ?: 'PERSENTASE';
-            $nilaiDiskon = (float) ($request->nilai_diskon ?? 0);
+            $jenisDiskon = $data['jenis_diskon'] ?? 'PERSENTASE';
+            $nilaiDiskon = (float) ($data['nilai_diskon'] ?? 0);
             $diskonGlobal = $jenisDiskon === 'PERSENTASE'
                 ? ($subtotal * ($nilaiDiskon / 100))
                 : $nilaiDiskon;
 
-            $pajakTransaksi = (float) ($request->pajak_transaksi ?? 0);
+            $pajakTransaksi = (float) ($data['pajak_transaksi'] ?? 0);
             $pajakGlobal = ($subtotal - $diskonItem - $diskonGlobal) * ($pajakTransaksi / 100);
 
             $jumlahDiskon = $diskonItem + $diskonGlobal;
             $jumlahPajak = $pajakItem + $pajakGlobal;
             $totalAkhir = ($subtotal - $jumlahDiskon) + $jumlahPajak;
 
-            $jumlahBayar = (float) $request->jumlah_bayar;
+            $jumlahBayar = (float) ($data['jumlah_bayar'] ?? 0);
             $statusPembayaran = 'BELUM_BAYAR';
             if ($jumlahBayar >= $totalAkhir && $totalAkhir > 0) {
                 $statusPembayaran = 'LUNAS';
@@ -101,11 +210,12 @@ class PenjualanController extends Controller
 
             $penjualan = Penjualan::create([
                 'nomor_penjualan' => $nomor,
-                'pelanggan_id' => $request->pelanggan_id,
+                'client_reference' => $clientReference,
+                'pelanggan_id' => $data['pelanggan_id'] ?? null,
                 'tanggal_penjualan' => now(),
                 'jenis_penjualan' => 'RETAIL',
                 'status_pembayaran' => $statusPembayaran,
-                'metode_pembayaran' => $request->metode_pembayaran,
+                'metode_pembayaran' => $data['metode_pembayaran'],
                 'subtotal' => $subtotal,
                 'jenis_diskon' => $jenisDiskon,
                 'nilai_diskon' => $nilaiDiskon,
@@ -114,9 +224,9 @@ class PenjualanController extends Controller
                 'total_akhir' => $totalAkhir,
                 'jumlah_bayar' => $jumlahBayar,
                 'jumlah_kembalian' => max(0, $jumlahBayar - $totalAkhir),
-                'catatan' => $request->catatan,
-                'dilayani_oleh' => Auth::id(),
-                'dibuat_oleh' => Auth::id(),
+                'catatan' => $data['catatan'] ?? null,
+                'dilayani_oleh' => $userId,
+                'dibuat_oleh' => $userId,
             ]);
 
             foreach ($items as $item) {
@@ -135,9 +245,10 @@ class PenjualanController extends Controller
                 $stok = StokProduk::firstOrNew(['produk_id' => $produkId]);
                 $stok->jumlah = (float) ($stok->jumlah ?? 0);
                 $stok->jumlah_reservasi = (float) ($stok->jumlah_reservasi ?? 0);
+
                 if ($stok->jumlah < $jumlah) {
                     throw ValidationException::withMessages([
-                        'items' => 'Stok produk tidak mencukupi untuk salah satu item.'
+                        'items' => 'Stok produk tidak mencukupi untuk salah satu item.',
                     ]);
                 }
 
@@ -182,25 +293,11 @@ class PenjualanController extends Controller
                     'jumlah_sesudah' => $stok->jumlah,
                     'harga_satuan' => $harga,
                     'catatan' => 'Penjualan POS',
-                    'dibuat_oleh' => Auth::id(),
+                    'dibuat_oleh' => $userId,
                 ]);
             }
+
+            return $penjualan;
         });
-
-        return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil disimpan');
-    }
-
-    public function show(Penjualan $penjualan)
-    {
-        $penjualan->load(['pelanggan', 'details.produk']);
-
-        return view('pages.transaksi.penjualan.show', compact('penjualan'));
-    }
-
-    public function destroy(Penjualan $penjualan)
-    {
-        $penjualan->update(['deleted_at' => now()]);
-
-        return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil dihapus');
     }
 }

@@ -13,6 +13,9 @@
         <p class="text-muted mb-0">Transaksi penjualan cepat untuk kasir.</p>
     </div>
     <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-secondary" id="sync-offline-btn">
+            <i class="fa-solid fa-rotate me-2"></i>Sinkronkan (<span id="offline-queue-count">0</span>)
+        </button>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
             <i class="fa-solid fa-plus me-2"></i>Tambah Produk
         </button>
@@ -20,6 +23,14 @@
             <i class="fa-solid fa-arrow-left me-2"></i>Kembali
         </a>
     </div>
+</div>
+
+<div class="offline-status-card" id="offline-status-card">
+    <div class="d-flex align-items-center gap-2">
+        <span class="offline-dot" id="offline-dot"></span>
+        <strong id="offline-status-label">Memeriksa koneksi...</strong>
+    </div>
+    <small class="text-muted" id="offline-status-subtext">Antrian offline: 0 transaksi</small>
 </div>
 
 <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
@@ -79,6 +90,7 @@
 
 <form action="{{ route('transaksi.penjualan.store') }}" method="POST" id="pos-form">
     @csrf
+    <input type="hidden" name="client_reference" id="client_reference" value="">
     <div class="pos-shell">
         <div class="pos-panel w-100">
             <div class="panel-header">
@@ -91,7 +103,7 @@
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Pelanggan</label>
-                        <select name="pelanggan_id" class="form-select">
+                        <select name="pelanggan_id" class="form-select" id="pelanggan_id">
                             <option value="">Umum</option>
                             @foreach($pelanggan as $p)
                                 <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -100,7 +112,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Metode Pembayaran</label>
-                        <select name="metode_pembayaran" class="form-select" required>
+                        <select name="metode_pembayaran" class="form-select" id="metode_pembayaran" required>
                             <option value="TUNAI">Tunai</option>
                             <option value="DEBIT">Debit</option>
                             <option value="KREDIT">Kredit</option>
@@ -159,12 +171,12 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label">Catatan</label>
-                        <textarea name="catatan" class="form-control" rows="2"></textarea>
+                        <textarea name="catatan" id="catatan" class="form-control" rows="2"></textarea>
                     </div>
                 </div>
 
                 <div class="pos-actions mt-4">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="submit-pos-btn">
                         <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Transaksi
                     </button>
                     <a href="{{ route('transaksi.penjualan.index') }}" class="btn btn-outline-secondary">
@@ -179,18 +191,98 @@
 
 @push('scripts')
 <script>
+    const OFFLINE_QUEUE_KEY = 'apocare_pos_offline_queue_v1';
+    const syncUrl = @json(route('transaksi.penjualan.sync'));
+    const indexUrl = @json(route('transaksi.penjualan.index'));
+
     const cartBody = document.getElementById('cart-body');
     const cartEmpty = document.getElementById('cart-empty');
     const summarySubtotal = document.getElementById('summary-subtotal');
     const summaryPajak = document.getElementById('summary-pajak');
     const summaryTotal = document.getElementById('summary-total');
     const summaryKembalian = document.getElementById('summary-kembalian');
+    const queueCountEl = document.getElementById('offline-queue-count');
+    const statusLabelEl = document.getElementById('offline-status-label');
+    const statusSubTextEl = document.getElementById('offline-status-subtext');
+    const statusDotEl = document.getElementById('offline-dot');
+    const syncBtn = document.getElementById('sync-offline-btn');
+    const form = document.getElementById('pos-form');
+    const submitPosBtn = document.getElementById('submit-pos-btn');
 
     const pajakTransaksiInput = document.getElementById('pajak_transaksi');
     const jumlahBayarInput = document.getElementById('jumlah_bayar');
+    const pelangganInput = document.getElementById('pelanggan_id');
+    const metodePembayaranInput = document.getElementById('metode_pembayaran');
+    const catatanInput = document.getElementById('catatan');
+    const clientReferenceInput = document.getElementById('client_reference');
 
     const formatRupiah = (value) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value || 0);
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(value || 0);
+    };
+
+    const parseNumber = (value) => {
+        const parsed = parseFloat(value);
+        return Number.isNaN(parsed) ? 0 : parsed;
+    };
+
+    const generateClientReference = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return `POS-${window.crypto.randomUUID()}`;
+        }
+
+        return `POS-${Date.now()}-${Math.floor(Math.random() * 1_000_000)}`;
+    };
+
+    const getOfflineQueue = () => {
+        try {
+            const raw = localStorage.getItem(OFFLINE_QUEUE_KEY);
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (_) {
+            return [];
+        }
+    };
+
+    const setOfflineQueue = (queue) => {
+        localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(queue));
+        updateOfflineStatus();
+    };
+
+    const addToOfflineQueue = (transaction) => {
+        const queue = getOfflineQueue();
+        queue.push(transaction);
+        setOfflineQueue(queue);
+    };
+
+    const removeClientReferences = (clientReferences) => {
+        if (!Array.isArray(clientReferences) || clientReferences.length === 0) return;
+
+        const refSet = new Set(clientReferences);
+        const nextQueue = getOfflineQueue().filter((item) => !refSet.has(item.client_reference));
+        setOfflineQueue(nextQueue);
+    };
+
+    const updateOfflineStatus = () => {
+        const queue = getOfflineQueue();
+        const queueCount = queue.length;
+
+        queueCountEl.textContent = String(queueCount);
+        statusSubTextEl.textContent = `Antrian offline: ${queueCount} transaksi`;
+
+        if (navigator.onLine) {
+            statusLabelEl.textContent = 'Online - POS siap sinkronisasi';
+            statusDotEl.classList.remove('is-offline');
+            statusDotEl.classList.add('is-online');
+        } else {
+            statusLabelEl.textContent = 'Offline - transaksi akan disimpan lokal';
+            statusDotEl.classList.remove('is-online');
+            statusDotEl.classList.add('is-offline');
+        }
     };
 
     const recalcTotals = () => {
@@ -199,9 +291,9 @@
 
         const rows = cartBody.querySelectorAll('tr[data-produk-id]');
         rows.forEach((row) => {
-            const qty = parseFloat(row.querySelector('.cart-qty').value) || 0;
-            const harga = parseFloat(row.querySelector('.cart-price').value) || 0;
-            const pajak = parseFloat(row.querySelector('.cart-pajak').value) || 0;
+            const qty = parseNumber(row.querySelector('.cart-qty').value);
+            const harga = parseNumber(row.querySelector('.cart-price').value);
+            const pajak = parseNumber(row.querySelector('.cart-pajak').value);
 
             const lineSubtotal = qty * harga;
             const linePajak = lineSubtotal * (pajak / 100);
@@ -214,11 +306,11 @@
             row.querySelector('.cart-price-display').textContent = formatRupiah(harga);
         });
 
-        const pajakTransaksi = parseFloat(pajakTransaksiInput.value) || 0;
+        const pajakTransaksi = parseNumber(pajakTransaksiInput.value);
         const totalPajak = pajakItem + (subtotal * (pajakTransaksi / 100));
         const totalAkhir = subtotal + totalPajak;
 
-        const jumlahBayar = parseFloat(jumlahBayarInput.value.replace(/\D/g, '')) || 0;
+        const jumlahBayar = parseNumber(jumlahBayarInput.value);
         const kembalian = jumlahBayar - totalAkhir;
 
         summarySubtotal.textContent = formatRupiah(subtotal);
@@ -241,13 +333,14 @@
         let row = cartBody.querySelector(`tr[data-produk-id='${data.id}']`);
         if (row) {
             const qtyInput = row.querySelector('.cart-qty');
-            qtyInput.value = (parseFloat(qtyInput.value) || 0) + 1;
+            qtyInput.value = parseNumber(qtyInput.value) + 1;
             recalcTotals();
             return;
         }
 
-        if (cartEmpty) {
-            cartEmpty.remove();
+        const empty = document.getElementById('cart-empty');
+        if (empty) {
+            empty.remove();
         }
 
         row = document.createElement('tr');
@@ -272,6 +365,118 @@
         recalcTotals();
     };
 
+    const getCartItemsPayload = () => {
+        const rows = cartBody.querySelectorAll('tr[data-produk-id]');
+        return Array.from(rows).map((row) => ({
+            produk_id: parseInt(row.dataset.produkId, 10),
+            jumlah: parseNumber(row.querySelector('.cart-qty').value),
+            harga_satuan: parseNumber(row.querySelector('.cart-price').value),
+            persentase_pajak: parseNumber(row.querySelector('.cart-pajak').value),
+        }));
+    };
+
+    const buildTransactionPayload = () => {
+        const items = getCartItemsPayload();
+        if (items.length === 0) {
+            window.showToast('warning', 'Keranjang masih kosong.');
+            return null;
+        }
+
+        const clientReference = generateClientReference();
+        clientReferenceInput.value = clientReference;
+
+        return {
+            client_reference: clientReference,
+            pelanggan_id: pelangganInput.value ? parseInt(pelangganInput.value, 10) : null,
+            metode_pembayaran: metodePembayaranInput.value,
+            pajak_transaksi: parseNumber(pajakTransaksiInput.value),
+            jumlah_bayar: parseNumber(jumlahBayarInput.value),
+            catatan: catatanInput.value || null,
+            items,
+        };
+    };
+
+    const resetFormAfterSaved = () => {
+        const rows = cartBody.querySelectorAll('tr[data-produk-id]');
+        rows.forEach((row) => row.remove());
+
+        if (!document.getElementById('cart-empty')) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.id = 'cart-empty';
+            emptyRow.innerHTML = '<td colspan="6" class="text-center text-muted py-4">Belum ada item.</td>';
+            cartBody.appendChild(emptyRow);
+        }
+
+        pajakTransaksiInput.value = '0';
+        jumlahBayarInput.value = '0';
+        catatanInput.value = '';
+        clientReferenceInput.value = '';
+        recalcTotals();
+    };
+
+    const postTransactionsToServer = async (transactions) => {
+        const response = await fetch(syncUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ transactions })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        return response.json();
+    };
+
+    const syncOfflineQueue = async () => {
+        if (!navigator.onLine) {
+            window.showToast('warning', 'Masih offline. Sinkronisasi ditunda.');
+            return;
+        }
+
+        const queue = getOfflineQueue();
+        if (queue.length === 0) {
+            window.showToast('info', 'Tidak ada antrian offline.');
+            return;
+        }
+
+        syncBtn.disabled = true;
+        syncBtn.innerHTML = '<i class="fa-solid fa-rotate fa-spin me-2"></i>Sinkronisasi...';
+
+        try {
+            const response = await postTransactionsToServer(queue);
+            const results = Array.isArray(response.results) ? response.results : [];
+
+            const removableRefs = results
+                .filter((item) => item.status === 'synced' || item.status === 'duplicate')
+                .map((item) => item.client_reference)
+                .filter(Boolean);
+
+            removeClientReferences(removableRefs);
+
+            const failedCount = results.filter((item) => item.status === 'failed').length;
+            if (failedCount > 0) {
+                window.showToast('warning', `Sinkronisasi selesai, ${failedCount} transaksi gagal.`);
+            } else {
+                window.showToast('success', `Sinkronisasi berhasil: ${response.synced_count || removableRefs.length} transaksi.`);
+            }
+        } catch (error) {
+            window.showToast('error', 'Sinkronisasi gagal. Coba lagi saat koneksi stabil.');
+        } finally {
+            syncBtn.disabled = false;
+            syncBtn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i>Sinkronkan (<span id="offline-queue-count">0</span>)';
+            const freshCountEl = document.getElementById('offline-queue-count');
+            if (freshCountEl) {
+                freshCountEl.textContent = String(getOfflineQueue().length);
+            }
+            updateOfflineStatus();
+        }
+    };
+
     document.querySelectorAll('.add-to-cart').forEach((btn) => {
         btn.addEventListener('click', () => {
             addToCart({
@@ -293,14 +498,17 @@
     cartBody.addEventListener('click', (event) => {
         const removeBtn = event.target.closest('.remove-item');
         if (!removeBtn) return;
+
         const row = removeBtn.closest('tr');
         row.remove();
+
         if (!cartBody.querySelector('tr[data-produk-id]')) {
             const emptyRow = document.createElement('tr');
             emptyRow.id = 'cart-empty';
             emptyRow.innerHTML = '<td colspan="6" class="text-center text-muted py-4">Belum ada item.</td>';
             cartBody.appendChild(emptyRow);
         }
+
         reindexCart();
         recalcTotals();
     });
@@ -308,6 +516,59 @@
     pajakTransaksiInput.addEventListener('input', recalcTotals);
     jumlahBayarInput.addEventListener('input', recalcTotals);
 
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const payload = buildTransactionPayload();
+        if (!payload) return;
+
+        submitPosBtn.disabled = true;
+
+        try {
+            if (navigator.onLine) {
+                const result = await postTransactionsToServer([payload]);
+                const first = (result.results || [])[0];
+
+                if (first && (first.status === 'synced' || first.status === 'duplicate')) {
+                    window.showToast('success', 'Transaksi berhasil disimpan.');
+                    resetFormAfterSaved();
+                    window.location.href = indexUrl;
+                    return;
+                }
+
+                addToOfflineQueue(payload);
+                resetFormAfterSaved();
+                window.showToast('warning', 'Server menolak transaksi. Data disimpan ke antrian offline.');
+                return;
+            }
+
+            addToOfflineQueue(payload);
+            resetFormAfterSaved();
+            window.showToast('warning', 'Offline: transaksi disimpan lokal dan akan disinkronkan saat online.');
+        } catch (error) {
+            addToOfflineQueue(payload);
+            resetFormAfterSaved();
+            window.showToast('warning', 'Koneksi bermasalah. Transaksi dimasukkan ke antrian offline.');
+        } finally {
+            submitPosBtn.disabled = false;
+            updateOfflineStatus();
+        }
+    });
+
+    syncBtn.addEventListener('click', syncOfflineQueue);
+
+    window.addEventListener('online', async () => {
+        updateOfflineStatus();
+        await syncOfflineQueue();
+    });
+
+    window.addEventListener('offline', updateOfflineStatus);
+
+    updateOfflineStatus();
     recalcTotals();
+
+    if (navigator.onLine && getOfflineQueue().length > 0) {
+        syncOfflineQueue();
+    }
 </script>
 @endpush

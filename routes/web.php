@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('transaksi')->name('transaksi.')->group(function () {
+        Route::post('penjualan/sync', [PenjualanController::class, 'syncOffline'])
+            ->middleware('role:admin,apoteker,kasir')
+            ->name('penjualan.sync');
         Route::resource('penjualan', PenjualanController::class)
             ->middleware('role:admin,apoteker,kasir')
             ->except(['edit', 'update']);
