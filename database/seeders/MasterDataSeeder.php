@@ -265,7 +265,7 @@ class MasterDataSeeder extends Seeder
             'VIT' => 'VIT',
             'ALK' => 'ALKES',
             'KOS' => 'KOS',
-            'UMUM' => 'UMUM',
+            'UMU' => 'UMUM',
         ];
 
         foreach ($semuaProduk as $item) {

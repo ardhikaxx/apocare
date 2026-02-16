@@ -114,7 +114,7 @@ class ReturPembelianSeeder extends Seeder
             $refund = $retur['status'] === 'DISETUJUI' ? $lineTotal : 0;
 
             $returId = DB::table('retur_pembelian')->insertGetId([
-                'nomor_retur' => 'RB' . $now->format('Ymd') . str_pad($nomor, 2, '0', STR_PAD_LEFT),
+                'nomor_retur' => 'RB' . date('YmdHis') . str_pad($nomor, 2, '0', STR_PAD_LEFT),
                 'pembelian_id' => $detail->pembelian_id,
                 'pemasok_id' => $pembelian->pemasok_id,
                 'tanggal_retur' => $retur['tanggal_retur'],

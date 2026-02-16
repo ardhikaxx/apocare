@@ -113,7 +113,7 @@ class ReturPenjualanSeeder extends Seeder
             $refund = $retur['status'] === 'DISETUJUI' ? $lineTotal : 0;
 
             $returId = DB::table('retur_penjualan')->insertGetId([
-                'nomor_retur' => 'RJ' . $now->format('Ymd') . str_pad($nomor, 2, '0', STR_PAD_LEFT),
+                'nomor_retur' => 'RJ' . date('YmdHis') . str_pad($nomor, 2, '0', STR_PAD_LEFT),
                 'penjualan_id' => $detail->penjualan_id,
                 'pelanggan_id' => $penjualan->pelanggan_id,
                 'tanggal_retur' => $retur['tanggal_retur'],
