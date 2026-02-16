@@ -184,6 +184,9 @@
                 </div>
 
                 <div class="pos-actions mt-4">
+                    <button type="button" class="btn btn-info" id="preview-nota-btn">
+                        <i class="fa-solid fa-receipt me-2"></i>Preview Nota
+                    </button>
                     <button type="submit" class="btn btn-primary" id="submit-pos-btn">
                         <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Transaksi
                     </button>
@@ -195,6 +198,25 @@
         </div>
     </div>
 </form>
+
+<div class="modal fade" id="notaPreviewModal" tabindex="-1" aria-labelledby="notaPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notaPreviewModalLabel">Preview Nota</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="nota-preview-content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="save-from-preview">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Transaksi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -578,5 +600,97 @@
     if (navigator.onLine && getOfflineQueue().length > 0) {
         syncOfflineQueue();
     }
+
+    const previewNotaBtn = document.getElementById('preview-nota-btn');
+    const notaPreviewModal = document.getElementById('notaPreviewModal');
+    const notaPreviewContent = document.getElementById('nota-preview-content');
+    const saveFromPreviewBtn = document.getElementById('save-from-preview');
+
+    previewNotaBtn.addEventListener('click', function() {
+        const items = getCartItemsPayload();
+        if (items.length === 0) {
+            window.showToast('warning', 'Keranjang masih kosong.');
+            return;
+        }
+
+        const rows = cartBody.querySelectorAll('tr[data-produk-id]');
+        let html = `
+            <div style="font-family: monospace; font-size: 12px;">
+                <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px;">
+                    <strong>APOCARE</strong><br>
+                    Apotek Modern<br>
+                    Jl. Contoh No. 123<br>
+                </div>
+                <div style="border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 10px;">
+                    <div>${new Date().toLocaleString('id-ID')}</div>
+                    <div>Pelanggan: ${pelangganInput.options[pelangganInput.selectedIndex]?.text || 'Umum'}</div>
+                </div>
+                <table style="width: 100%; border-collapse: collapse;">
+        `;
+
+        let subtotal = 0;
+        rows.forEach(row => {
+            const nama = row.querySelector('.fw-semibold').textContent;
+            const qty = parseNumber(row.querySelector('.cart-qty').value);
+            const harga = parseNumber(row.querySelector('.cart-price').value);
+            const pajak = parseNumber(row.querySelector('.cart-pajak').value);
+            const lineTotal = (qty * harga) + (qty * harga * pajak / 100);
+            subtotal += lineTotal;
+
+            html += `
+                <tr>
+                    <td style="padding: 3px 0;">${nama}</td>
+                    <td style="text-align: right; padding: 3px 0;">${qty} x ${formatRupiah(harga)}</td>
+                    <td style="text-align: right; padding: 3px 0;">${formatRupiah(lineTotal)}</td>
+                </tr>
+            `;
+        });
+
+        const pajakTransaksi = parseNumber(pajakTransaksiInput.value);
+        const totalPajak = subtotal * (pajakTransaksi / 100);
+        const total = subtotal + totalPajak;
+        const jumlahBayar = parseNumber(jumlahBayarInput.value);
+        const kembalian = jumlahBayar - total;
+
+        html += `
+                </table>
+                <div style="border-top: 1px dashed #000; margin-top: 10px; padding-top: 10px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Subtotal:</span>
+                        <span>${formatRupiah(subtotal)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Pajak (${pajakTransaksi}%):</span>
+                        <span>${formatRupiah(totalPajak)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; margin-top: 5px;">
+                        <span>TOTAL:</span>
+                        <span>${formatRupiah(total)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <span>Bayar:</span>
+                        <span>${formatRupiah(jumlahBayar)}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Kembalian:</span>
+                        <span>${formatRupiah(kembalian)}</span>
+                    </div>
+                </div>
+                <div style="text-align: center; border-top: 1px dashed #000; margin-top: 10px; padding-top: 10px;">
+                    Terima kasih atas kunjungan Anda<br>
+                    Silahkan datang kembali
+                </div>
+            </div>
+        `;
+
+        notaPreviewContent.innerHTML = html;
+        const modal = new bootstrap.Modal(notaPreviewModal);
+        modal.show();
+    });
+
+    saveFromPreviewBtn.addEventListener('click', function() {
+        notaPreviewModal.querySelector('.btn-close').click();
+        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    });
 </script>
 @endpush
