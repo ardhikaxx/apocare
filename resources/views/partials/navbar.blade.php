@@ -3,13 +3,16 @@
         <button class="btn btn-soft" data-sidebar-toggle>
             <i class="fa-solid fa-bars"></i>
         </button>
-        <div class="navbar-greeting">
+        <div class="navbar-greeting d-none d-md-block">
             <div class="fw-semibold">Selamat datang kembali</div>
             <small class="text-muted">{{ now()->format('d M Y') }}</small>
         </div>
     </div>
-    <div class="d-flex align-items-center gap-3">
-        <div class="smart-search-wrapper position-relative">
+    <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-soft d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <div class="smart-search-wrapper position-relative d-none d-lg-block">
             <div class="input-group">
                 <span class="input-group-text bg-white border-end-0">
                     <i class="fa-solid fa-magnifying-glass text-muted"></i>
@@ -21,7 +24,7 @@
         </div>
         <div class="dropdown">
             <button class="btn btn-soft dropdown-toggle" data-bs-toggle="dropdown">
-                <i class="fa-solid fa-user-gear"></i><span class="navbar-username">{{ auth()->user()?->nama ?? 'Pengguna' }}</span>
+                <i class="fa-solid fa-user-gear"></i><span class="navbar-username d-none d-md-inline">{{ auth()->user()?->nama ?? 'Pengguna' }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="{{ route('profil.edit') }}"><i class="fa-solid fa-user me-2"></i>Profil</a></li>
@@ -35,6 +38,20 @@
                     </form>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div class="collapse d-lg-none" id="mobileSearch">
+        <div class="pt-2 pb-2">
+            <div class="smart-search-wrapper position-relative">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0 ps-0" id="mobileSearchInput" 
+                        placeholder="Cari produk, pelanggan, resep..." autocomplete="off">
+                </div>
+                <div class="smart-search-dropdown" id="mobileSearchResults"></div>
+            </div>
         </div>
     </div>
 </nav>
@@ -133,6 +150,8 @@
 (function() {
     const searchInput = document.getElementById('smartSearchInput');
     const resultsContainer = document.getElementById('smartSearchResults');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    const mobileResultsContainer = document.getElementById('mobileSearchResults');
     let debounceTimer;
 
     const categoryIcons = {
@@ -157,19 +176,19 @@
         pembelian: 'Pembelian'
     };
 
-    function showLoading() {
-        resultsContainer.innerHTML = '<div class="smart-search-empty"><i class="fa-solid fa-circle-notch fa-spin"></i> Mencari...</div>';
-        resultsContainer.classList.add('show');
+    function showLoading(resultsEl) {
+        resultsEl.innerHTML = '<div class="smart-search-empty"><i class="fa-solid fa-circle-notch fa-spin"></i> Mencari...</div>';
+        resultsEl.classList.add('show');
     }
 
-    function showEmpty() {
-        resultsContainer.innerHTML = '<div class="smart-search-empty">Tidak ada hasil ditemukan</div>';
-        resultsContainer.classList.add('show');
+    function showEmpty(resultsEl) {
+        resultsEl.innerHTML = '<div class="smart-search-empty">Tidak ada hasil ditemukan</div>';
+        resultsEl.classList.add('show');
     }
 
-    function renderResults(data) {
+    function renderResults(data, resultsEl) {
         if (Object.keys(data).length === 0) {
-            showEmpty();
+            showEmpty(resultsEl);
             return;
         }
 
@@ -200,22 +219,20 @@
             });
         }
 
-        resultsContainer.innerHTML = html;
-        resultsContainer.classList.add('show');
+        resultsEl.innerHTML = html;
+        resultsEl.classList.add('show');
     }
 
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        
+    function performSearch(query, inputEl, resultsEl) {
         clearTimeout(debounceTimer);
         
         if (query.length < 2) {
-            resultsContainer.classList.remove('show');
+            resultsEl.classList.remove('show');
             return;
         }
 
         debounceTimer = setTimeout(function() {
-            showLoading();
+            showLoading(resultsEl);
             
             fetch(`{{ route('app.search') }}?q=${encodeURIComponent(query)}`, {
                 headers: {
@@ -224,32 +241,60 @@
             })
             .then(response => response.json())
             .then(data => {
-                renderResults(data);
+                renderResults(data, resultsEl);
             })
             .catch(() => {
-                resultsContainer.innerHTML = '<div class="smart-search-empty">Terjadi kesalahan</div>';
-                resultsContainer.classList.add('show');
+                resultsEl.innerHTML = '<div class="smart-search-empty">Terjadi kesalahan</div>';
+                resultsEl.classList.add('show');
             });
         }, 300);
-    });
+    }
 
-    searchInput.addEventListener('focus', function() {
-        if (this.value.trim().length >= 2) {
-            resultsContainer.classList.add('show');
-        }
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            performSearch(this.value.trim(), searchInput, resultsContainer);
+        });
+
+        searchInput.addEventListener('focus', function() {
+            if (this.value.trim().length >= 2) {
+                resultsContainer.classList.add('show');
+            }
+        });
+    }
+
+    if (mobileSearchInput) {
+        mobileSearchInput.addEventListener('input', function() {
+            performSearch(this.value.trim(), mobileSearchInput, mobileResultsContainer);
+        });
+
+        mobileSearchInput.addEventListener('focus', function() {
+            if (this.value.trim().length >= 2) {
+                mobileResultsContainer.classList.add('show');
+            }
+        });
+    }
 
     document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+        if (searchInput && !searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
             resultsContainer.classList.remove('show');
+        }
+        if (mobileSearchInput && !mobileSearchInput.contains(e.target) && !mobileResultsContainer.contains(e.target)) {
+            mobileResultsContainer.classList.remove('show');
         }
     });
 
-    searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            resultsContainer.classList.remove('show');
-            searchInput.blur();
-        }
+    const allInputs = [searchInput, mobileSearchInput].filter(Boolean);
+    allInputs.forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (this === searchInput) {
+                    resultsContainer.classList.remove('show');
+                } else {
+                    mobileResultsContainer.classList.remove('show');
+                }
+                this.blur();
+            }
+        });
     });
 })();
 </script>
