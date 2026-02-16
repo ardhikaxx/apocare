@@ -12,24 +12,26 @@
         <h1 class="page-title">Tambah Resep</h1>
         <p class="text-muted mb-0">Input resep dokter dan detail obat.</p>
     </div>
-    <a href="{{ route('resep.index') }}" class="btn btn-outline-secondary">
-        <i class="fa-solid fa-arrow-left me-2"></i>Kembali
-    </a>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productModal">
+            <i class="fa-solid fa-plus me-2"></i>Tambah Produk
+        </button>
+        <a href="{{ route('resep.index') }}" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left me-2"></i>Kembali
+        </a>
+    </div>
 </div>
 
-<form action="{{ route('resep.store') }}" method="POST" id="resep-form">
-    @csrf
-    <div class="pos-shell">
-        <div class="pos-panel">
-            <div class="panel-header">
-                <div>
-                    <h5 class="mb-0">Daftar Produk</h5>
-                    <small class="text-muted">Klik tambah untuk masuk ke resep.</small>
-                </div>
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Pilih Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="panel-body">
+            <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-striped datatable">
+                    <table class="table table-striped datatable" id="product-table-modal">
                         <thead>
                             <tr>
                                 <th>Produk</th>
@@ -48,11 +50,12 @@
                                     <td class="text-end">
                                         <button type="button"
                                             class="btn btn-sm btn-primary add-resep"
+                                            data-bs-dismiss="modal"
                                             data-id="{{ $item->id }}"
                                             data-nama="{{ $item->nama }}"
                                             data-kode="{{ $item->kode }}"
                                             data-harga="{{ $item->harga_jual }}">
-                                            <i class="fa-solid fa-plus"></i>
+                                            <i class="fa-solid fa-plus"></i> Tambah
                                         </button>
                                     </td>
                                 </tr>
@@ -62,8 +65,13 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="pos-panel">
+<form action="{{ route('resep.store') }}" method="POST" id="resep-form">
+    @csrf
+    <div class="pos-shell">
+        <div class="pos-panel w-100">
             <div class="panel-header">
                 <div>
                     <h5 class="mb-0">Detail Resep</h5>
@@ -130,7 +138,7 @@
                         </thead>
                         <tbody id="resep-body">
                             <tr id="resep-empty">
-                                <td colspan="9" class="text-center text-muted">Belum ada item.</td>
+                                <td colspan="9" class="text-center text-muted py-4">Belum ada item.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -237,7 +245,7 @@
         if (!resepBody.querySelector('tr[data-produk-id]')) {
             const emptyRow = document.createElement('tr');
             emptyRow.id = 'resep-empty';
-            emptyRow.innerHTML = '<td colspan="9" class="text-center text-muted">Belum ada item.</td>';
+            emptyRow.innerHTML = '<td colspan="9" class="text-center text-muted py-4">Belum ada item.</td>';
             resepBody.appendChild(emptyRow);
         }
         reindexResep();
