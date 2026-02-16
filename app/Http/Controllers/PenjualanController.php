@@ -57,7 +57,11 @@ class PenjualanController extends Controller
             }
         }
 
-        $this->prosesSimpanPenjualan($validated, Auth::id(), $clientReference);
+        $penjualan = $this->prosesSimpanPenjualan($validated, Auth::id(), $clientReference);
+
+        if ($request->has('print_nota') && $request->print_nota) {
+            return redirect()->route('transaksi.penjualan.print', $penjualan);
+        }
 
         return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil disimpan');
     }
@@ -103,6 +107,7 @@ class PenjualanController extends Controller
                     'status' => 'synced',
                     'penjualan_id' => $penjualan->id,
                     'nomor_penjualan' => $penjualan->nomor_penjualan,
+                    'print_url' => route('transaksi.penjualan.print', $penjualan),
                 ];
                 $syncedCount++;
             } catch (ValidationException $e) {
@@ -133,6 +138,13 @@ class PenjualanController extends Controller
         $penjualan->load(['pelanggan', 'details.produk']);
 
         return view('pages.transaksi.penjualan.show', compact('penjualan'));
+    }
+
+    public function print(Penjualan $penjualan)
+    {
+        $penjualan->load(['pelanggan', 'details.produk']);
+
+        return view('print.nota-80mm', compact('penjualan'));
     }
 
     public function destroy(Penjualan $penjualan)

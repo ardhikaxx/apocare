@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
         Route::post('penjualan/sync', [PenjualanController::class, 'syncOffline'])
             ->middleware('role:admin,apoteker,kasir')
             ->name('penjualan.sync');
+        Route::get('penjualan/{penjualan}/print', [PenjualanController::class, 'print'])
+            ->middleware('role:admin,apoteker,kasir')
+            ->name('penjualan.print');
         Route::resource('penjualan', PenjualanController::class)
             ->middleware('role:admin,apoteker,kasir')
             ->except(['edit', 'update']);

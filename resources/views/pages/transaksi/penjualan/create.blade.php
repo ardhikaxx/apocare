@@ -192,6 +192,12 @@
                 </div>
 
                 <div class="pos-actions mt-4">
+                    <div class="form-check mb-0 me-3">
+                        <input class="form-check-input" type="checkbox" id="print_nota" name="print_nota" value="1">
+                        <label class="form-check-label" for="print_nota">
+                            Cetak Nota
+                        </label>
+                    </div>
                     <button type="button" class="btn btn-info" id="preview-nota-btn">
                         <i class="fa-solid fa-receipt me-2"></i>Preview Nota
                     </button>
@@ -560,6 +566,7 @@
         const payload = buildTransactionPayload();
         if (!payload) return;
 
+        const printNota = document.getElementById('print_nota').checked;
         submitPosBtn.disabled = true;
 
         try {
@@ -570,7 +577,13 @@
                 if (first && (first.status === 'synced' || first.status === 'duplicate')) {
                     window.showToast('success', 'Transaksi berhasil disimpan.');
                     resetFormAfterSaved();
-                    window.location.href = indexUrl;
+                    
+                    if (printNota && first.print_url) {
+                        window.open(first.print_url, '_blank');
+                        window.location.href = indexUrl;
+                    } else {
+                        window.location.href = indexUrl;
+                    }
                     return;
                 }
 
