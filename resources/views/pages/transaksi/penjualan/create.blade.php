@@ -110,7 +110,6 @@
                                 <th>Item</th>
                                 <th>Qty</th>
                                 <th class="text-end">Harga</th>
-                                <th>Diskon (%)</th>
                                 <th>Pajak (%)</th>
                                 <th class="text-end">Subtotal</th>
                                 <th></th>
@@ -118,7 +117,7 @@
                         </thead>
                         <tbody id="cart-body">
                             <tr id="cart-empty">
-                                <td colspan="7" class="text-center text-muted py-4">Belum ada item.</td>
+                                <td colspan="6" class="text-center text-muted py-4">Belum ada item.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -128,14 +127,6 @@
                     <div class="summary-line">
                         <span>Subtotal</span>
                         <strong id="summary-subtotal">Rp 0</strong>
-                    </div>
-                    <div class="summary-line">
-                        <span>Diskon Item</span>
-                        <strong id="summary-diskon-item">Rp 0</strong>
-                    </div>
-                    <div class="summary-line">
-                        <span>Diskon Transaksi</span>
-                        <strong id="summary-diskon">Rp 0</strong>
                     </div>
                     <div class="summary-line">
                         <span>Pajak</span>
@@ -149,17 +140,6 @@
                 </div>
 
                 <div class="row g-3 mt-2">
-                    <div class="col-md-6">
-                        <label class="form-label">Jenis Diskon</label>
-                        <select name="jenis_diskon" id="jenis_diskon" class="form-select">
-                            <option value="PERSENTASE">Persentase</option>
-                            <option value="NOMINAL">Nominal</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Nilai Diskon</label>
-                        <input type="number" name="nilai_diskon" id="nilai_diskon" class="form-control" value="0" min="0" step="1">
-                    </div>
                     <div class="col-md-6">
                         <label class="form-label">Pajak Transaksi (%)</label>
                         <input type="number" name="pajak_transaksi" id="pajak_transaksi" class="form-control" value="0" min="0" step="1">
@@ -194,14 +174,10 @@
     const cartBody = document.getElementById('cart-body');
     const cartEmpty = document.getElementById('cart-empty');
     const summarySubtotal = document.getElementById('summary-subtotal');
-    const summaryDiskonItem = document.getElementById('summary-diskon-item');
-    const summaryDiskon = document.getElementById('summary-diskon');
     const summaryPajak = document.getElementById('summary-pajak');
     const summaryTotal = document.getElementById('summary-total');
     const summaryKembalian = document.getElementById('summary-kembalian');
 
-    const jenisDiskonInput = document.getElementById('jenis_diskon');
-    const nilaiDiskonInput = document.getElementById('nilai_diskon');
     const pajakTransaksiInput = document.getElementById('pajak_transaksi');
     const jumlahBayarInput = document.getElementById('jumlah_bayar');
 
@@ -211,47 +187,35 @@
 
     const recalcTotals = () => {
         let subtotal = 0;
-        let diskonItem = 0;
         let pajakItem = 0;
 
         const rows = cartBody.querySelectorAll('tr[data-produk-id]');
         rows.forEach((row) => {
             const qty = parseFloat(row.querySelector('.cart-qty').value) || 0;
             const harga = parseFloat(row.querySelector('.cart-price').value) || 0;
-            const diskon = parseFloat(row.querySelector('.cart-diskon').value) || 0;
             const pajak = parseFloat(row.querySelector('.cart-pajak').value) || 0;
 
             const lineSubtotal = qty * harga;
-            const lineDiskon = lineSubtotal * (diskon / 100);
-            const linePajak = (lineSubtotal - lineDiskon) * (pajak / 100);
-            const lineTotal = lineSubtotal - lineDiskon + linePajak;
+            const linePajak = lineSubtotal * (pajak / 100);
+            const lineTotal = lineSubtotal + linePajak;
 
             subtotal += lineSubtotal;
-            diskonItem += lineDiskon;
             pajakItem += linePajak;
 
             row.querySelector('.line-subtotal').textContent = formatRupiah(lineTotal);
             row.querySelector('.cart-price-display').textContent = formatRupiah(harga);
         });
 
-        const jenisDiskon = jenisDiskonInput.value;
-        const nilaiDiskon = parseFloat(nilaiDiskonInput.value) || 0;
-        const diskonGlobal = jenisDiskon === 'PERSENTASE' ? subtotal * (nilaiDiskon / 100) : nilaiDiskon;
         const pajakTransaksi = parseFloat(pajakTransaksiInput.value) || 0;
-        const pajakGlobal = (subtotal - diskonItem - diskonGlobal) * (pajakTransaksi / 100);
+        const totalPajak = pajakItem + (subtotal * (pajakTransaksi / 100));
+        const totalAkhir = subtotal + totalPajak;
 
-        const totalDiskon = diskonItem + diskonGlobal;
-        const totalPajak = pajakItem + pajakGlobal;
-        const totalAkhir = (subtotal - totalDiskon) + totalPajak;
+        const jumlahBayar = parseFloat(jumlahBayarInput.value.replace(/\D/g, '')) || 0;
+        const kembalian = jumlahBayar - totalAkhir;
 
         summarySubtotal.textContent = formatRupiah(subtotal);
-        summaryDiskonItem.textContent = formatRupiah(diskonItem);
-        summaryDiskon.textContent = formatRupiah(diskonGlobal);
         summaryPajak.textContent = formatRupiah(totalPajak);
         summaryTotal.textContent = formatRupiah(totalAkhir);
-
-        const bayar = parseFloat(jumlahBayarInput.value) || 0;
-        const kembalian = Math.max(0, bayar - totalAkhir);
         summaryKembalian.textContent = formatRupiah(kembalian);
     };
 
@@ -261,7 +225,6 @@
             row.querySelector('.input-produk-id').name = `items[${index}][produk_id]`;
             row.querySelector('.cart-qty').name = `items[${index}][jumlah]`;
             row.querySelector('.cart-price').name = `items[${index}][harga_satuan]`;
-            row.querySelector('.cart-diskon').name = `items[${index}][persentase_diskon]`;
             row.querySelector('.cart-pajak').name = `items[${index}][persentase_pajak]`;
         });
     };
@@ -290,7 +253,6 @@
             <td><input type="number" class="form-control form-control-sm cart-qty" value="1" min="1" step="1"></td>
             <td class="text-end cart-price-display">${formatRupiah(data.harga)}</td>
             <td><input type="hidden" class="cart-price" value="${data.harga}"></td>
-            <td><input type="number" class="form-control form-control-sm cart-diskon" value="0" min="0" step="1"></td>
             <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="1"></td>
             <td class="text-end line-subtotal">${formatRupiah(data.harga)}</td>
             <td class="text-center">
@@ -315,7 +277,7 @@
     });
 
     cartBody.addEventListener('input', (event) => {
-        if (event.target.matches('.cart-qty, .cart-price, .cart-diskon, .cart-pajak')) {
+        if (event.target.matches('.cart-qty, .cart-price, .cart-pajak')) {
             recalcTotals();
         }
     });
@@ -328,15 +290,13 @@
         if (!cartBody.querySelector('tr[data-produk-id]')) {
             const emptyRow = document.createElement('tr');
             emptyRow.id = 'cart-empty';
-            emptyRow.innerHTML = '<td colspan="7" class="text-center text-muted">Belum ada item.</td>';
+            emptyRow.innerHTML = '<td colspan="6" class="text-center text-muted py-4">Belum ada item.</td>';
             cartBody.appendChild(emptyRow);
         }
         reindexCart();
         recalcTotals();
     });
 
-    jenisDiskonInput.addEventListener('change', recalcTotals);
-    nilaiDiskonInput.addEventListener('input', recalcTotals);
     pajakTransaksiInput.addEventListener('input', recalcTotals);
     jumlahBayarInput.addEventListener('input', recalcTotals);
 
