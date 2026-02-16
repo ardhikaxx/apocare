@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Models\Pelanggan;
 use App\Models\Dokter;
-use App\Models\Karyawan;
 use App\Models\Resep;
 use App\Models\Pemasok;
 use App\Models\Penjualan;
 use App\Models\Pembelian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -42,88 +42,91 @@ class SearchController extends Controller
 
     private function searchProduk($query)
     {
-        return Produk::where('kode_produk', 'like', "%{$query}%")
-            ->orWhere('nama_produk', 'like', "%{$query}%")
+        return Produk::where('kode', 'like', "%{$query}%")
+            ->orWhere('nama', 'like', "%{$query}%")
             ->orWhere('barcode', 'like', "%{$query}%")
             ->limit(5)
             ->get()
             ->map(function ($item) {
+                $stok = $item->stokProduk()->sum('jumlah_tersedia') ?? 0;
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_produk,
-                    'nama' => $item->nama_produk,
+                    'kode' => $item->kode,
+                    'nama' => $item->nama,
                     'harga' => $item->harga_jual,
-                    'stok' => $item->stokProduk->sum('jumlah_sisa') ?? 0,
-                    'url' => route('master.produk.show', $item->id),
+                    'stok' => $stok,
+                    'url' => route('master.produk.index'),
                 ];
             });
     }
 
     private function searchPelanggan($query)
     {
-        return Pelanggan::where('kode_pelanggan', 'like', "%{$query}%")
-            ->orWhere('nama_pelanggan', 'like', "%{$query}%")
-            ->orWhere('no_telp', 'like', "%{$query}%")
+        return Pelanggan::where('kode', 'like', "%{$query}%")
+            ->orWhere('nama', 'like', "%{$query}%")
+            ->orWhere('telepon', 'like', "%{$query}%")
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_pelanggan,
-                    'nama' => $item->nama_pelanggan,
-                    'no_telp' => $item->no_telp,
-                    'url' => route('pelanggan.show', $item->id),
+                    'kode' => $item->kode,
+                    'nama' => $item->nama,
+                    'telepon' => $item->telepon,
+                    'url' => route('pelanggan.index'),
                 ];
             });
     }
 
     private function searchDokter($query)
     {
-        return Dokter::where('kode_dokter', 'like', "%{$query}%")
-            ->orWhere('nama_dokter', 'like', "%{$query}%")
-            ->orWhere('no_sip', 'like', "%{$query}%")
+        return Dokter::where('kode', 'like', "%{$query}%")
+            ->orWhere('nama', 'like', "%{$query}%")
+            ->orWhere('nomor_sip', 'like', "%{$query}%")
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_dokter,
-                    'nama' => $item->nama_dokter,
-                    'no_sip' => $item->no_sip,
-                    'url' => route('dokter.show', $item->id),
+                    'kode' => $item->kode,
+                    'nama' => $item->nama,
+                    'nomor_sip' => $item->nomor_sip,
+                    'url' => route('dokter.index'),
                 ];
             });
     }
 
     private function searchKaryawan($query)
     {
-        return Karyawan::where('kode_karyawan', 'like', "%{$query}%")
-            ->orWhere('nama_karyawan', 'like', "%{$query}%")
-            ->orWhere('no_telp', 'like', "%{$query}%")
+        return DB::table('karyawan')
+            ->join('pengguna', 'karyawan.pengguna_id', '=', 'pengguna.id')
+            ->where('karyawan.nomor_karyawan', 'like', "%{$query}%")
+            ->orWhere('pengguna.nama', 'like', "%{$query}%")
+            ->select('karyawan.id', 'karyawan.nomor_karyawan as kode', 'pengguna.nama', 'karyawan.jabatan')
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_karyawan,
-                    'nama' => $item->nama_karyawan,
+                    'kode' => $item->kode,
+                    'nama' => $item->nama,
                     'jabatan' => $item->jabatan,
-                    'url' => route('karyawan.show', $item->id),
+                    'url' => route('karyawan.index'),
                 ];
             });
     }
 
     private function searchResep($query)
     {
-        return Resep::where('kode_resep', 'like', "%{$query}%")
-            ->orWhere('nama_pasien', 'like', "%{$query}%")
+        return Resep::where('nomor_resep', 'like', "%{$query}%")
+            ->with(['pelanggan'])
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_resep,
-                    'nama_pasien' => $item->nama_pasien,
+                    'kode' => $item->nomor_resep,
+                    'nama_pasien' => $item->pelanggan?->nama ?? '-',
                     'status' => $item->status,
                     'url' => route('resep.show', $item->id),
                 ];
@@ -132,34 +135,34 @@ class SearchController extends Controller
 
     private function searchPemasok($query)
     {
-        return Pemasok::where('kode_pemasok', 'like', "%{$query}%")
-            ->orWhere('nama_pemasok', 'like', "%{$query}%")
-            ->orWhere('no_telp', 'like', "%{$query}%")
+        return Pemasok::where('kode', 'like', "%{$query}%")
+            ->orWhere('nama', 'like', "%{$query}%")
+            ->orWhere('telepon', 'like', "%{$query}%")
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_pemasok,
-                    'nama' => $item->nama_pemasok,
-                    'url' => route('master.pemasok.show', $item->id),
+                    'kode' => $item->kode,
+                    'nama' => $item->nama,
+                    'url' => route('master.pemasok.index'),
                 ];
             });
     }
 
     private function searchPenjualan($query)
     {
-        return Penjualan::where('kode_penjualan', 'like', "%{$query}%")
-            ->orWhere('no_invoice', 'like', "%{$query}%")
+        return Penjualan::where('nomor_penjualan', 'like', "%{$query}%")
+            ->with(['pelanggan'])
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_penjualan,
-                    'invoice' => $item->no_invoice,
-                    'total' => $item->total_bayar,
-                    'tanggal' => $item->tgl_penjualan,
+                    'kode' => $item->nomor_penjualan,
+                    'pelanggan' => $item->pelanggan?->nama ?? '-',
+                    'total' => $item->total_akhir,
+                    'tanggal' => $item->tanggal_penjualan,
                     'url' => route('transaksi.penjualan.show', $item->id),
                 ];
             });
@@ -167,17 +170,17 @@ class SearchController extends Controller
 
     private function searchPembelian($query)
     {
-        return Pembelian::where('kode_pembelian', 'like', "%{$query}%")
-            ->orWhere('no_invoice', 'like', "%{$query}%")
+        return Pembelian::where('nomor_pembelian', 'like', "%{$query}%")
+            ->with(['pemasok'])
             ->limit(5)
             ->get()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'kode' => $item->kode_pembelian,
-                    'invoice' => $item->no_invoice,
-                    'total' => $item->total_bayar,
-                    'tanggal' => $item->tgl_pembelian,
+                    'kode' => $item->nomor_pembelian,
+                    'pemasok' => $item->pemasok?->nama ?? '-',
+                    'total' => $item->total_akhir,
+                    'tanggal' => $item->tanggal_pembelian,
                     'url' => route('transaksi.pembelian.show', $item->id),
                 ];
             });
