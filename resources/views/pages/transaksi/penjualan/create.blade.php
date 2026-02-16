@@ -170,11 +170,19 @@
                 <div class="row g-3 mt-2">
                     <div class="col-md-6">
                         <label class="form-label">Pajak Transaksi (%)</label>
-                        <input type="number" name="pajak_transaksi" id="pajak_transaksi" class="form-control" value="0" min="0" step="1">
+                        <input type="text" data-numeric="true" name="pajak_transaksi" id="pajak_transaksi" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Jumlah Bayar</label>
-                        <input type="number" name="jumlah_bayar" id="jumlah_bayar" class="form-control" value="0" min="0" step="1" required>
+                        <input type="text" data-numeric="true" name="jumlah_bayar" id="jumlah_bayar" class="form-control" value="0" min="0" step="1" required>
+                        <div class="mt-2 d-flex flex-wrap gap-1">
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="exact">Uang Pas</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="5000">5.000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="10000">10.000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="20000">20.000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="50000">50.000</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary quick-amount" data-amount="100000">100.000</button>
+                        </div>
                         <small class="text-muted">Kembalian: <span id="summary-kembalian">Rp 0</span></small>
                     </div>
                     <div class="col-12">
@@ -600,6 +608,23 @@
     if (navigator.onLine && getOfflineQueue().length > 0) {
         syncOfflineQueue();
     }
+
+    const quickAmountBtns = document.querySelectorAll('.quick-amount');
+    quickAmountBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const amount = this.dataset.amount;
+            const currentTotal = parseNumber(summaryTotal.textContent.replace(/[^0-9]/g, ''));
+            
+            if (amount === 'exact') {
+                jumlahBayarInput.value = currentTotal;
+            } else {
+                jumlahBayarInput.value = amount;
+            }
+            
+            recalcTotals();
+            jumlahBayarInput.focus();
+        });
+    });
 
     const previewNotaBtn = document.getElementById('preview-nota-btn');
     const notaPreviewModal = document.getElementById('notaPreviewModal');
