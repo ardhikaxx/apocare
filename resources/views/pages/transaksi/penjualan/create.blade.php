@@ -109,7 +109,7 @@
                             <tr>
                                 <th>Item</th>
                                 <th>Qty</th>
-                                <th>Harga</th>
+                                <th class="text-end">Harga</th>
                                 <th>Diskon (%)</th>
                                 <th>Pajak (%)</th>
                                 <th class="text-end">Subtotal</th>
@@ -118,7 +118,7 @@
                         </thead>
                         <tbody id="cart-body">
                             <tr id="cart-empty">
-                                <td colspan="7" class="text-center text-muted">Belum ada item.</td>
+                                <td colspan="7" class="text-center text-muted py-4">Belum ada item.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -231,6 +231,7 @@
             pajakItem += linePajak;
 
             row.querySelector('.line-subtotal').textContent = formatRupiah(lineTotal);
+            row.querySelector('.cart-price-display').textContent = formatRupiah(harga);
         });
 
         const jenisDiskon = jenisDiskonInput.value;
@@ -287,7 +288,8 @@
                 <input type="hidden" class="input-produk-id" value="${data.id}">
             </td>
             <td><input type="number" class="form-control form-control-sm cart-qty" value="1" min="1" step="1"></td>
-            <td><input type="number" class="form-control form-control-sm cart-price" value="${data.harga}" min="0" step="1"></td>
+            <td class="text-end cart-price-display">${formatRupiah(data.harga)}</td>
+            <td><input type="hidden" class="cart-price" value="${data.harga}"></td>
             <td><input type="number" class="form-control form-control-sm cart-diskon" value="0" min="0" step="1"></td>
             <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="1"></td>
             <td class="text-end line-subtotal">${formatRupiah(data.harga)}</td>
