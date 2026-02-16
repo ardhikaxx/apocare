@@ -249,10 +249,10 @@
                 <div class="fw-semibold">${data.nama}</div>
                 <div class="text-muted small">${data.kode}</div>
                 <input type="hidden" class="input-produk-id" value="${data.id}">
+                <input type="hidden" class="cart-price" value="${data.harga}">
             </td>
             <td><input type="number" class="form-control form-control-sm cart-qty" value="1" min="1" step="1"></td>
             <td class="text-end cart-price-display">${formatRupiah(data.harga)}</td>
-            <td><input type="hidden" class="cart-price" value="${data.harga}"></td>
             <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="1"></td>
             <td class="text-end line-subtotal">${formatRupiah(data.harga)}</td>
             <td class="text-center">
