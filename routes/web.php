@@ -127,13 +127,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/pelanggan/export/csv', [PelangganController::class, 'exportCsv'])
         ->middleware('role:admin,apoteker,kasir')
         ->name('pelanggan.export.csv');
-    Route::get('/pelanggan/export/pdf', [PelangganController::class, 'exportPdf'])
-        ->middleware('role:admin,apoteker,kasir')
-        ->name('pelanggan.export.pdf');
+    
     Route::resource('/pelanggan', PelangganController::class)
         ->middleware('role:admin,apoteker,kasir')
         ->except(['show']);
 
+    
     Route::resource('/dokter', DokterController::class)
         ->middleware('role:admin,apoteker')
         ->except(['show']);
@@ -145,6 +144,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/resep', ResepController::class)
         ->middleware('role:admin,apoteker,kasir')
         ->except(['edit', 'update']);
+
+    Route::patch('/resep/{resep}/tahap', [ResepController::class, 'updateTahap'])
+        ->middleware('role:admin,apoteker,kasir')
+        ->name('resep.tahap.update');
     Route::get('/resep/{resep}/penjualan', [ResepController::class, 'createPenjualan'])
         ->middleware('role:admin,apoteker,kasir')
         ->name('resep.penjualan.create');

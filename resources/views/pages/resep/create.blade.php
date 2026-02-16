@@ -103,13 +103,8 @@
                         <input type="date" name="tanggal_resep" class="form-control" value="{{ date('Y-m-d') }}" required>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">Status</label>
-                        <select name="status" class="form-select" required>
-                            <option value="PENDING">PENDING</option>
-                            <option value="SEBAGIAN">SEBAGIAN</option>
-                            <option value="SELESAI">SELESAI</option>
-                            <option value="BATAL">BATAL</option>
-                        </select>
+                        <label class="form-label">Tahap Awal</label>
+                        <input type="text" class="form-control" value="DITERIMA (otomatis)" readonly>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Diagnosa</label>

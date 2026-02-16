@@ -39,7 +39,7 @@ class ResepSeeder extends Seeder
                 'items' => [
                     ['produk_index' => 0, 'dosis' => '500mg', 'frekuensi' => '3x sehari', 'durasi' => '5 hari', 'cara_pakai' => 'Setelah makan', 'jumlah_resep' => 15, 'jumlah_diberikan' => 15, 'harga_satuan' => 2000, 'instruksi' => 'Diminum setelah makan pagi, siang, malam'],
                     ['produk_index' => 1, 'dosis' => '100mg', 'frekuensi' => '3x sehari', 'durasi' => '5 hari', 'cara_pakai' => 'Sebelum makan', 'jumlah_resep' => 15, 'jumlah_diberikan' => 15, 'harga_satuan' => 1500, 'instruksi' => 'Diminum sebelum makan'],
-                    ['produk_index' => 2, 'dosis' => '1 tablet', 'frekuensi' => 'Jika demam', 'durasi' => '5 hari', 'cara_pakai' => 'Jika demam', 'jumlah_resep' => 10, 'jumlah_diberikan' => 10, 'harga_satuan' => 2500, 'instruksi' => 'Diminum jika suhu > 37.5°C'],
+                    ['produk_index' => 2, 'dosis' => '1 tablet', 'frekuensi' => 'Jika demam', 'durasi' => '5 hari', 'cara_pakai' => 'Jika demam', 'jumlah_resep' => 10, 'jumlah_diberikan' => 10, 'harga_satuan' => 2500, 'instruksi' => 'Diminum jika suhu > 37.5 derajat C'],
                 ]
             ],
             [

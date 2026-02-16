@@ -8,17 +8,7 @@
 
 **APOCARE - Integrated Pharmacy Management System** merupakan aplikasi berbasis web yang digunakan untuk mengelola data, proses bisnis, dan operasional pada sebuah apotek secara menyeluruh dan terintegrasi. Aplikasi ini dirancang untuk membantu pemilik apotek, apoteker, dan staf dalam mengelola berbagai aktivitas operasional sehari-hari secara efisien, akurat, dan terstruktur.
 
-Sistem APOCARE memiliki empat jenis pengguna utama dengan peran dan tanggung jawab yang berbeda-beda, yaitu Admin, Apoteker, Kasir, dan Gudang. Masing-masing pengguna memiliki akses terhadap fitur-fitur yang sesuai dengan tugas dan tanggung jawabnya dalam ekosistem apotek.
-
 Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas penting yaitu kategori produk, supplier atau pemasok, batch untuk tracking kadaluarsa, dan satuan produk untuk konversi unit. Transaksi penjualan dan pembelian terhubung dengan pelanggan dan pemasok masing-masing, sehingga setiap pergerakan barang dapat dilacak dengan akurat mulai dari masuknya barang dari supplier hingga penjualan kepada pelanggan akhir.
-
-### Tujuan Pembangunan Sistem
-
-1. **Efisiensi Operasional** - Mengotomatisasi proses-proses manual yang sebelumnya memakan waktu lama, seperti pencatatan stok, pembuatan laporan, dan pencarian data produk.
-2. **Akurasi Data** - Mengurangi risiko kesalahan manusia dalam perhitungan stok, harga, dan transaksi keuangan.
-3. **Pengambilan Keputusan** - Menyediakan laporan-laporan yang akurat dan real-time untuk mendukung pengambilan keputusan strategis.
-4. **Kepatuhan Regulasi** - Membantu apotek dalam memenuhi persyaratan regulasi yang berlaku, seperti pencatatan resep dokter dan pelaporan pajak.
-5. **Pelayanan Pelanggan** - Mempercepat proses pelayanan kepada pelanggan dengan sistem POS yang cepat dan akurat.
 
 ### Fitur Utama
 
@@ -41,6 +31,7 @@ Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas pe
 - **Penjualan** - Transaksi penjualan obat (POS)
 - **Pembelian** - Transaksi pembelian dari pemasok
 - **Resep** - Kelola resep dokter
+- **Antrian Resep** - Alur kerja bertahap (DITERIMA -> DIRACIK -> DIVERIFIKASI -> DISERAHKAN) lengkap dengan board kanban dan update tahap real-time
 - **Mode Offline POS** - Transaksi tetap tersimpan saat tidak ada jaringan internet dan otomatis sinkron saat online kembali
 ### 4. Persediaan (Inventory)
 - **Stok Produk** - Monitoring stok per produk & batch
@@ -61,10 +52,6 @@ Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas pe
 - **Export ke PDF** menggunakan DomPDF
 
 ---
-
-## User Roles (Peran) & Hak Akses
-
-Sistem Apocare menggunakan sistem Role-Based Access Control (RBAC) untuk mengelola akses pengguna. Setiap pengguna memiliki peran (role) tertentu yang menentukan fitur dan menu apa saja yang dapat diakses.
 
 ### Struktur Peran (Roles)
 

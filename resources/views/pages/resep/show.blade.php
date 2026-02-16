@@ -9,7 +9,7 @@
         <p class="text-muted mb-0">{{ $resep->nomor_resep }}</p>
     </div>
     <div class="d-flex gap-2">
-        @if($resep->status !== 'SELESAI')
+        @if(in_array($resep->tahap_antrian, ['DIVERIFIKASI','DISERAHKAN']) && $resep->status !== 'SELESAI')
             <a href="{{ route('resep.penjualan.create', $resep) }}" class="btn btn-success">
                 <i class="fa-solid fa-cash-register me-2"></i>Buat Penjualan
             </a>
@@ -28,9 +28,14 @@
                 <div class="mb-2"><strong>Pasien:</strong> {{ $resep->pelanggan->nama ?? '-' }}</div>
                 <div class="mb-2"><strong>Dokter:</strong> {{ $resep->dokter->nama ?? '-' }}</div>
                 <div class="mb-2"><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($resep->tanggal_resep)->format('d/m/Y') }}</div>
+                <div class="mb-2"><strong>Tahap Antrian:</strong> {{ $resep->tahap_antrian ?? 'DITERIMA' }}</div>
                 <div class="mb-2"><strong>Status:</strong> {{ $resep->status }}</div>
                 <div class="mb-2"><strong>Total Item:</strong> {{ $resep->total_item }}</div>
                 <div class="mb-2"><strong>Total Harga:</strong> Rp {{ number_format($resep->total_harga, 0, ',', '.') }}</div>
+                <div class="mb-2"><strong>Waktu Diterima:</strong> {{ $resep->waktu_diterima ? \Carbon\Carbon::parse($resep->waktu_diterima)->format('d/m/Y H:i') : '-' }}</div>
+                <div class="mb-2"><strong>Waktu Diracik:</strong> {{ $resep->waktu_diracik ? \Carbon\Carbon::parse($resep->waktu_diracik)->format('d/m/Y H:i') : '-' }}</div>
+                <div class="mb-2"><strong>Waktu Verifikasi:</strong> {{ $resep->waktu_verifikasi ? \Carbon\Carbon::parse($resep->waktu_verifikasi)->format('d/m/Y H:i') : '-' }}</div>
+                <div class="mb-2"><strong>Waktu Diserahkan:</strong> {{ $resep->waktu_diserahkan ? \Carbon\Carbon::parse($resep->waktu_diserahkan)->format('d/m/Y H:i') : '-' }}</div>
                 <div class="mb-0"><strong>Diagnosa:</strong> {{ $resep->diagnosa ?? '-' }}</div>
             </div>
         </div>
