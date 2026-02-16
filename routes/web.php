@@ -24,6 +24,7 @@ use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\ResepController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\AuditTrailController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -127,12 +128,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/pelanggan/export/csv', [PelangganController::class, 'exportCsv'])
         ->middleware('role:admin,apoteker,kasir')
         ->name('pelanggan.export.csv');
-    
+    Route::get('/pelanggan/export/pdf', [PelangganController::class, 'exportPdf'])
+        ->middleware('role:admin,apoteker,kasir')
+        ->name('pelanggan.export.pdf');
     Route::resource('/pelanggan', PelangganController::class)
         ->middleware('role:admin,apoteker,kasir')
         ->except(['show']);
 
-    
     Route::resource('/dokter', DokterController::class)
         ->middleware('role:admin,apoteker')
         ->except(['show']);
@@ -212,6 +214,10 @@ Route::middleware('auth')->group(function () {
             ->middleware('role:admin,apoteker,kasir')
             ->name('pelanggan');
     });
+
+    Route::get('/audit-trail', [AuditTrailController::class, 'index'])
+        ->middleware('role:admin')
+        ->name('audit.index');
 
     Route::prefix('pengguna')->name('pengguna.')->middleware('role:admin')->group(function () {
         Route::resource('peran', PeranController::class)->except(['show']);

@@ -150,6 +150,8 @@
                     Peran</a>
                 <a class="nav-link sub-nav-link" href="{{ route('pengguna.hak-akses.index') }}"><i class="fa-solid fa-key"></i>
                     Hak Akses</a>
+                <a class="nav-link sub-nav-link" href="{{ route('audit.index') }}"><i class="fa-solid fa-clock-rotate-left"></i>
+                    Audit Trail</a>
             </div>
         </li>
     </ul>
