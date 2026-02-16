@@ -234,6 +234,52 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             window.initDataTables();
+            
+            document.querySelectorAll('input[type="number"][step="1"]').forEach(input => {
+                const formatValue = (value) => {
+                    const num = parseInt(value.replace(/\./g, '')) || 0;
+                    return num.toLocaleString('id-ID');
+                };
+                
+                const unformatValue = (value) => {
+                    return value.replace(/\./g, '');
+                };
+                
+                if (input.value) {
+                    input.value = formatValue(input.value);
+                }
+                
+                input.addEventListener('input', (e) => {
+                    const cursorPosition = e.target.selectionStart;
+                    const oldLength = e.target.value.length;
+                    
+                    e.target.value = formatValue(e.target.value);
+                    
+                    const newLength = e.target.value.length;
+                    const newPosition = cursorPosition + (newLength - oldLength);
+                    e.target.setSelectionRange(newPosition, newPosition);
+                });
+                
+                input.addEventListener('blur', (e) => {
+                    if (e.target.value) {
+                        e.target.value = formatValue(e.target.value);
+                    }
+                });
+                
+                input.addEventListener('focus', (e) => {
+                    if (e.target.value) {
+                        e.target.value = unformatValue(e.target.value);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    form.querySelectorAll('input[type="number"][step="1"]').forEach(input => {
+                        input.value = input.value.replace(/\./g, '');
+                    });
+                });
+            });
         });
     </script>
     @if (session('success'))
