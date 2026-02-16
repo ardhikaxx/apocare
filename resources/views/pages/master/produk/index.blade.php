@@ -24,9 +24,10 @@
             $columns = ['Favorit', 'Kode', 'Nama Produk', 'Kategori', 'Harga Jual', 'Stok Minimum', 'Status', 'Aksi'];
             $rows = $produk->map(function ($item) {
                 $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $favoritId = 'favorit-form-' . $item->id;
                 $favorit = $item->is_favorit 
-                    ? '<a href="' . route('master.produk.favorit', $item) . '" class="btn btn-sm btn-warning" title="Hapus dari favorit"><i class="fa-solid fa-star"></i></a>'
-                    : '<a href="' . route('master.produk.favorit', $item) . '" class="btn btn-sm btn-outline-warning" title="Tambah ke favorit"><i class="fa-regular fa-star"></i></a>';
+                    ? '<form id="' . $favoritId . '" method="POST" action="' . route('master.produk.favorit', $item) . '">' . csrf_field() . method_field('PATCH') . '<button type="submit" class="btn btn-sm btn-warning" title="Hapus dari favorit"><i class="fa-solid fa-star"></i></button></form>'
+                    : '<form id="' . $favoritId . '" method="POST" action="' . route('master.produk.favorit', $item) . '">' . csrf_field() . method_field('PATCH') . '<button type="submit" class="btn btn-sm btn-outline-warning" title="Tambah ke favorit"><i class="fa-regular fa-star"></i></button></form>';
                 $deleteId = 'delete-form-' . $item->id;
                 $aksi = '<div class="d-flex gap-2">'
                     . '<a class="btn btn-sm btn-action-edit" href="' . route('master.produk.edit', $item) . '"><i class="fa-solid fa-pen"></i></a>'
