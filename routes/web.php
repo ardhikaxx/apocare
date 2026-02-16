@@ -167,15 +167,51 @@ Route::middleware('auth')->group(function () {
         Route::get('penjualan', [LaporanController::class, 'penjualan'])
             ->middleware('role:admin,apoteker,kasir')
             ->name('penjualan');
+        Route::get('penjualan/export/excel', [LaporanController::class, 'exportPenjualanExcel'])
+            ->middleware('role:admin,apoteker,kasir')
+            ->name('penjualan.export.excel');
+        Route::get('penjualan/export/csv', [LaporanController::class, 'exportPenjualanCsv'])
+            ->middleware('role:admin,apoteker,kasir')
+            ->name('penjualan.export.csv');
+        Route::get('penjualan/export/pdf', [LaporanController::class, 'exportPenjualanPdf'])
+            ->middleware('role:admin,apoteker,kasir')
+            ->name('penjualan.export.pdf');
         Route::get('pembelian', [LaporanController::class, 'pembelian'])
             ->middleware('role:admin,apoteker,gudang')
             ->name('pembelian');
+        Route::get('pembelian/export/excel', [LaporanController::class, 'exportPembelianExcel'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('pembelian.export.excel');
+        Route::get('pembelian/export/csv', [LaporanController::class, 'exportPembelianCsv'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('pembelian.export.csv');
+        Route::get('pembelian/export/pdf', [LaporanController::class, 'exportPembelianPdf'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('pembelian.export.pdf');
         Route::get('persediaan', [LaporanController::class, 'persediaan'])
             ->middleware('role:admin,apoteker,gudang')
             ->name('persediaan');
+        Route::get('persediaan/export/excel', [LaporanController::class, 'exportPersediaanExcel'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('persediaan.export.excel');
+        Route::get('persediaan/export/csv', [LaporanController::class, 'exportPersediaanCsv'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('persediaan.export.csv');
+        Route::get('persediaan/export/pdf', [LaporanController::class, 'exportPersediaanPdf'])
+            ->middleware('role:admin,apoteker,gudang')
+            ->name('persediaan.export.pdf');
         Route::get('keuangan', [LaporanController::class, 'keuangan'])
             ->middleware('role:admin')
             ->name('keuangan');
+        Route::get('keuangan/export/excel', [LaporanController::class, 'exportKeuanganExcel'])
+            ->middleware('role:admin')
+            ->name('keuangan.export.excel');
+        Route::get('keuangan/export/csv', [LaporanController::class, 'exportKeuanganCsv'])
+            ->middleware('role:admin')
+            ->name('keuangan.export.csv');
+        Route::get('keuangan/export/pdf', [LaporanController::class, 'exportKeuanganPdf'])
+            ->middleware('role:admin')
+            ->name('keuangan.export.pdf');
         Route::get('pelanggan', [LaporanController::class, 'pelanggan'])
             ->middleware('role:admin,apoteker,kasir')
             ->name('pelanggan');
