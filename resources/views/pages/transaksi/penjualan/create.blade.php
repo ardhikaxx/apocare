@@ -110,6 +110,13 @@
             <div class="panel-body">
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
+                        <label class="form-label">Cari Produk (Barcode/Nama)</label>
+                        <div class="position-relative">
+                            <input type="text" class="form-control" id="quick-product-search" placeholder="Scan barcode atau ketik nama produk..." autocomplete="off">
+                            <div class="quick-search-dropdown" id="quick-search-results"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Pelanggan</label>
                         <select name="pelanggan_id" class="form-select" id="pelanggan_id">
                             <option value="">Umum</option>
@@ -118,6 +125,8 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Metode Pembayaran</label>
                         <select name="metode_pembayaran" class="form-select" id="metode_pembayaran" required>
@@ -206,6 +215,66 @@
         </div>
     </div>
 </form>
+
+<style>
+.quick-search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1050;
+    display: none;
+}
+.quick-search-dropdown.show {
+    display: block;
+}
+.quick-search-item {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f3f5;
+    transition: background 0.15s;
+}
+.quick-search-item:hover {
+    background: #f8f9fa;
+}
+.quick-search-item:last-child {
+    border-bottom: none;
+}
+.quick-search-info {
+    flex: 1;
+    min-width: 0;
+}
+.quick-search-title {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.quick-search-subtitle {
+    font-size: 0.75rem;
+    color: #868e96;
+}
+.quick-search-price {
+    font-weight: 600;
+    color: #0ca678;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+.quick-search-empty {
+    padding: 1rem;
+    text-align: center;
+    color: #868e96;
+}
+</style>
 
 <div class="modal fade" id="notaPreviewModal" tabindex="-1" aria-labelledby="notaPreviewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -732,5 +801,104 @@ form.addEventListener('submit', async (event) => {
         notaPreviewModal.querySelector('.btn-close').click();
         form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
     });
+
+    // Quick Product Search - Auto Complete
+    const quickSearchInput = document.getElementById('quick-product-search');
+    const quickSearchResults = document.getElementById('quick-search-results');
+    const produkData = {!! json_encode($produk->map(function($p) {
+        return [
+            'id' => $p->id,
+            'kode' => $p->kode,
+            'barcode' => $p->barcode,
+            'nama' => $p->nama,
+            'harga' => (float) $p->harga_jual,
+            'pajak' => (float) ($p->persentase_pajak ?? 0),
+            'stok' => (int) ($p->stokProduk->first()->jumlah ?? 0),
+            'is_favorit' => (bool) $p->is_favorit
+        ];
+    })->toArray()) !!};
+
+    function renderQuickSearch(results) {
+        if (results.length === 0) {
+            quickSearchResults.innerHTML = '<div class="quick-search-empty">Produk tidak ditemukan</div>';
+            quickSearchResults.classList.add('show');
+            return;
+        }
+
+        let html = '';
+        results.forEach(item => {
+            const isFavorit = item.is_favorit ? '<i class="fa-solid fa-star text-warning me-1"></i>' : '';
+            html += `
+                <div class="quick-search-item" data-id="${item.id}">
+                    <div class="quick-search-info">
+                        <div class="quick-search-title">${isFavorit}${item.nama}</div>
+                        <div class="quick-search-subtitle">${item.kode} | ${item.barcode || '-'} | Stok: ${item.stok}</div>
+                    </div>
+                    <div class="quick-search-price">${formatRupiah(item.harga)}</div>
+                </div>
+            `;
+        });
+        quickSearchResults.innerHTML = html;
+        quickSearchResults.classList.add('show');
+    }
+
+    quickSearchInput.addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        
+        if (query.length < 1) {
+            quickSearchResults.classList.remove('show');
+            return;
+        }
+
+        const results = produkData.filter(item => 
+            item.nama.toLowerCase().includes(query) ||
+            item.kode.toLowerCase().includes(query) ||
+            (item.barcode && item.barcode.toLowerCase().includes(query))
+        ).slice(0, 10);
+
+        renderQuickSearch(results);
+    });
+
+    quickSearchInput.addEventListener('focus', function() {
+        if (this.value.trim().length > 0) {
+            this.dispatchEvent(new Event('input'));
+        }
+    });
+
+    quickSearchResults.addEventListener('click', function(e) {
+        const item = e.target.closest('.quick-search-item');
+        if (!item) return;
+
+        const produk = produkData.find(p => p.id == item.dataset.id);
+        if (produk) {
+            addToCart(produk);
+            quickSearchInput.value = '';
+            quickSearchResults.classList.remove('show');
+            quickSearchInput.focus();
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!quickSearchInput.contains(e.target) && !quickSearchResults.contains(e.target)) {
+            quickSearchResults.classList.remove('show');
+        }
+    });
+
+    quickSearchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            quickSearchResults.classList.remove('show');
+            quickSearchInput.blur();
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const firstItem = quickSearchResults.querySelector('.quick-search-item');
+            if (firstItem) {
+                firstItem.click();
+            }
+        }
+    });
+
+    // Focus quick search on page load
+    setTimeout(() => quickSearchInput.focus(), 100);
 </script>
 @endpush
