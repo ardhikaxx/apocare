@@ -158,15 +158,15 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Nilai Diskon</label>
-                        <input type="number" name="nilai_diskon" id="nilai_diskon" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="nilai_diskon" id="nilai_diskon" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Pajak Transaksi (%)</label>
-                        <input type="number" name="pajak_transaksi" id="pajak_transaksi" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="pajak_transaksi" id="pajak_transaksi" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Jumlah Bayar</label>
-                        <input type="number" name="jumlah_bayar" id="jumlah_bayar" class="form-control" value="0" min="0" step="0.01" required>
+                        <input type="number" name="jumlah_bayar" id="jumlah_bayar" class="form-control" value="0" min="0" step="1" required>
                         <small class="text-muted">Kembalian: <span id="summary-kembalian">Rp 0</span></small>
                     </div>
                     <div class="col-12">
@@ -286,10 +286,10 @@
                 <div class="text-muted small">${data.kode}</div>
                 <input type="hidden" class="input-produk-id" value="${data.id}">
             </td>
-            <td><input type="number" class="form-control form-control-sm cart-qty" value="1" min="0.01" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm cart-price" value="${data.harga}" min="0" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm cart-diskon" value="0" min="0" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="0.01"></td>
+            <td><input type="number" class="form-control form-control-sm cart-qty" value="1" min="1" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm cart-price" value="${data.harga}" min="0" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm cart-diskon" value="0" min="0" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm cart-pajak" value="${data.pajak}" min="0" step="1"></td>
             <td class="text-end line-subtotal">${formatRupiah(data.harga)}</td>
             <td class="text-center">
                 <button type="button" class="btn btn-sm btn-action-delete remove-item"><i class="fa-solid fa-trash"></i></button>

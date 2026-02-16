@@ -143,13 +143,9 @@
                     <input type="hidden" name="items[${index}][produk_id]" value="${detail.produk_id}">
                 </td>
                 <td>
-                    <input type="number" class="form-control form-control-sm qty-retur" name="items[${index}][jumlah]" value="0" min="0" step="0.01">
-                </td>
-                <td>
-                    <input type="number" class="form-control form-control-sm harga-retur" name="items[${index}][harga_satuan]" value="${detail.harga}" min="0" step="0.01">
-                </td>
-                <td>
-                    <input type="number" class="form-control form-control-sm pajak-retur" name="items[${index}][persentase_pajak]" value="${detail.pajak}" min="0" step="0.01">
+                    <input type="number" class="form-control form-control-sm qty-retur" name="items[${index}][jumlah]" value="0" min="0" step="1">
+                    <input type="number" class="form-control form-control-sm harga-retur" name="items[${index}][harga_satuan]" value="${detail.harga}" min="0" step="1">
+                    <input type="number" class="form-control form-control-sm pajak-retur" name="items[${index}][persentase_pajak]" value="${detail.pajak}" min="0" step="1">
                 </td>
                 <td class="text-end line-total">${formatRupiah(0)}</td>
             `;

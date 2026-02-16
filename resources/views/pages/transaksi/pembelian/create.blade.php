@@ -181,23 +181,23 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Nilai Diskon</label>
-                        <input type="number" name="nilai_diskon" id="po-nilai-diskon" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="nilai_diskon" id="po-nilai-diskon" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Pajak Transaksi (%)</label>
-                        <input type="number" name="pajak_transaksi" id="po-pajak-transaksi" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="pajak_transaksi" id="po-pajak-transaksi" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Biaya Kirim</label>
-                        <input type="number" name="biaya_kirim" id="po-input-biaya-kirim" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="biaya_kirim" id="po-input-biaya-kirim" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Biaya Lain</label>
-                        <input type="number" name="biaya_lain" id="po-input-biaya-lain" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="biaya_lain" id="po-input-biaya-lain" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Jumlah Bayar</label>
-                        <input type="number" name="jumlah_bayar" class="form-control" value="0" min="0" step="0.01">
+                        <input type="number" name="jumlah_bayar" class="form-control" value="0" min="0" step="1">
                     </div>
                     <div class="col-12">
                         <label class="form-label">Catatan</label>
@@ -316,11 +316,11 @@
                 <div class="text-muted small">${data.kode}</div>
                 <input type="hidden" class="input-produk-id" value="${data.id}">
             </td>
-            <td><input type="number" class="form-control form-control-sm po-qty" value="1" min="0.01" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm po-qty-terima" value="0" min="0" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm po-harga" value="${data.harga}" min="0" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm po-diskon" value="0" min="0" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm po-pajak" value="0" min="0" step="0.01"></td>
+            <td><input type="number" class="form-control form-control-sm po-qty" value="1" min="1" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm po-qty-terima" value="0" min="0" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm po-harga" value="${data.harga}" min="0" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm po-diskon" value="0" min="0" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm po-pajak" value="0" min="0" step="1"></td>
             <td><input type="text" class="form-control form-control-sm po-batch" placeholder="Batch"></td>
             <td><input type="date" class="form-control form-control-sm po-prod"></td>
             <td><input type="date" class="form-control form-control-sm po-exp"></td>

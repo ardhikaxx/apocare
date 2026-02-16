@@ -201,8 +201,8 @@
             <td><input type="text" class="form-control form-control-sm resep-frekuensi" placeholder="3x sehari"></td>
             <td><input type="text" class="form-control form-control-sm resep-durasi" placeholder="5 hari"></td>
             <td><input type="text" class="form-control form-control-sm resep-cara" placeholder="Sesudah makan"></td>
-            <td><input type="number" class="form-control form-control-sm resep-qty" value="1" min="0.01" step="0.01"></td>
-            <td><input type="number" class="form-control form-control-sm resep-harga" value="${data.harga}" min="0" step="0.01"></td>
+            <td><input type="number" class="form-control form-control-sm resep-qty" value="1" min="1" step="1"></td>
+            <td><input type="number" class="form-control form-control-sm resep-harga" value="${data.harga}" min="0" step="1"></td>
             <td class="resep-total">${formatRupiah(data.harga)}</td>
             <td class="text-center">
                 <button type="button" class="btn btn-sm btn-action-delete remove-resep"><i class="fa-solid fa-trash"></i></button>

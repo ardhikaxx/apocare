@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 @include('partials.breadcrumb', ['breadcrumbs' => [
@@ -44,23 +44,23 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Harga Beli</label>
-                    <input type="number" step="0.01" name="harga_beli" class="form-control" value="{{ old('harga_beli', $produk->harga_beli) }}">
+                    <input type="number" step="1" name="harga_beli" class="form-control" value="{{ old('harga_beli', $produk->harga_beli) }}">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Harga Jual</label>
-                    <input type="number" step="0.01" name="harga_jual" class="form-control" value="{{ old('harga_jual', $produk->harga_jual) }}">
+                    <input type="number" step="1" name="harga_jual" class="form-control" value="{{ old('harga_jual', $produk->harga_jual) }}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Stok Minimum</label>
-                    <input type="number" name="stok_minimum" class="form-control" value="{{ old('stok_minimum', $produk->stok_minimum) }}">
+                    <input type="number" step="1" name="stok_minimum" class="form-control" value="{{ old('stok_minimum', $produk->stok_minimum) }}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Stok Maksimum</label>
-                    <input type="number" name="stok_maksimum" class="form-control" value="{{ old('stok_maksimum', $produk->stok_maksimum) }}">
+                    <input type="number" step="1" name="stok_maksimum" class="form-control" value="{{ old('stok_maksimum', $produk->stok_maksimum) }}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Titik Pesan Ulang</label>
-                    <input type="number" name="titik_pesan_ulang" class="form-control" value="{{ old('titik_pesan_ulang', $produk->titik_pesan_ulang) }}">
+                    <input type="number" step="1" name="titik_pesan_ulang" class="form-control" value="{{ old('titik_pesan_ulang', $produk->titik_pesan_ulang) }}">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Jenis Produk</label>

@@ -191,9 +191,9 @@
                 <input type="hidden" class="input-produk-id" value="${data.id}">
             </td>
             <td><input type="number" class="form-control form-control-sm op-sistem" value="${data.stok}" readonly></td>
-            <td><input type="number" class="form-control form-control-sm op-hitung" value="${data.stok}" step="0.01"></td>
-            <td class="op-selisih">0.00</td>
-            <td><input type="number" class="form-control form-control-sm op-harga" value="${data.harga}" step="0.01"></td>
+            <td><input type="number" class="form-control form-control-sm op-hitung" value="${data.stok}" step="1"></td>
+            <td><input type="text" class="form-control form-control-sm op-keterangan" placeholder="Keterangan"></td>
+            <td><input type="number" class="form-control form-control-sm op-harga" value="${data.harga}" step="1"></td>
             <td class="op-total">${formatRupiah(0)}</td>
             <td><input type="text" class="form-control form-control-sm op-catatan" placeholder="Catatan"></td>
             <td class="text-center">

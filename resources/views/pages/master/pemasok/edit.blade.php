@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 @include('partials.breadcrumb', ['breadcrumbs' => [
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Limit Kredit</label>
-                    <input type="number" step="0.01" name="limit_kredit" class="form-control" value="{{ old('limit_kredit', $pemasok->limit_kredit) }}">
+                    <input type="number" step="1" name="limit_kredit" class="form-control" value="{{ old('limit_kredit', $pemasok->limit_kredit) }}">
                 </div>
                 <div class="col-12">
                     <label class="form-label">Alamat</label>
