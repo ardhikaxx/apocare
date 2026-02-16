@@ -49,8 +49,8 @@
                             @foreach($pembelian->details as $detail)
                                 <tr>
                                     <td>{{ $detail->produk->nama ?? '-' }}</td>
-                                    <td>{{ number_format($detail->jumlah_pesan, 2, ',', '.') }}</td>
-                                    <td>{{ number_format($detail->jumlah_terima, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_pesan) }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_terima) }}</td>
                                     <td>Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($detail->total, 0, ',', '.') }}</td>
                                 </tr>

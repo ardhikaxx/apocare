@@ -12,10 +12,10 @@
 
 @php
 $stats = [
-    ['label' => 'Total Item', 'value' => number_format($totalItem), 'icon' => 'fa-solid fa-box'],
-    ['label' => 'Stok Minimum', 'value' => number_format($stokMinimum), 'icon' => 'fa-solid fa-arrow-down'],
-    ['label' => 'Reserved', 'value' => number_format($totalReserved, 2, ',', '.'), 'icon' => 'fa-solid fa-lock'],
-    ['label' => 'Batch Expired', 'value' => number_format($batchExpired), 'icon' => 'fa-solid fa-calendar-xmark']
+    ['label' => 'Total Item', 'value' => formatAngka($totalItem), 'icon' => 'fa-solid fa-box'],
+    ['label' => 'Stok Minimum', 'value' => formatAngka($stokMinimum), 'icon' => 'fa-solid fa-arrow-down'],
+    ['label' => 'Reserved', 'value' => formatAngka($totalReserved), 'icon' => 'fa-solid fa-lock'],
+    ['label' => 'Batch Expired', 'value' => formatAngka($batchExpired), 'icon' => 'fa-solid fa-calendar-xmark']
 ];
 @endphp
 
@@ -90,8 +90,8 @@ $stats = [
                             <td>{{ $item->produk->kategori->nama ?? '-' }}</td>
                             <td>{{ $batchTerdekat->nomor_batch ?? '-' }}</td>
                             <td>{{ $batchTerdekat?->tanggal_kadaluarsa ? \Carbon\Carbon::parse($batchTerdekat->tanggal_kadaluarsa)->format('d/m/Y') : '-' }}</td>
-                            <td>{{ number_format($item->jumlah, 2, ',', '.') }}</td>
-                            <td>{{ number_format($item->jumlah_tersedia, 2, ',', '.') }}</td>
+                            <td>{{ formatAngka($item->jumlah) }}</td>
+                            <td>{{ formatAngka($item->jumlah_tersedia) }}</td>
                             <td><span class="badge bg-{{ $badge }}">{{ $status }}</span></td>
                             <td>{{ $item->produk->lokasi_rak ?? '-' }}</td>
                             <td class="text-end">

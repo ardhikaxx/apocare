@@ -24,9 +24,9 @@
                 return [
                     $item->produk->nama ?? '-',
                     $item->produk->kategori->nama ?? '-',
-                    number_format($item->jumlah, 2, ',', '.'),
-                    'Rp ' . number_format($harga, 0, ',', '.'),
-                    'Rp ' . number_format($nilai, 0, ',', '.'),
+                    formatAngka($item->jumlah),
+                    'Rp ' . formatAngka($harga),
+                    'Rp ' . formatAngka($nilai),
                 ];
             })->toArray();
         @endphp

@@ -46,9 +46,9 @@
                             @foreach($opname->detail as $detail)
                                 <tr>
                                     <td>{{ $detail->produk->nama ?? '-' }}</td>
-                                    <td>{{ number_format($detail->jumlah_sistem, 2, ',', '.') }}</td>
-                                    <td>{{ number_format($detail->jumlah_hitung, 2, ',', '.') }}</td>
-                                    <td>{{ number_format($detail->selisih, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_sistem) }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_hitung) }}</td>
+                                    <td>{{ formatAngka($detail->selisih) }}</td>
                                     <td>{{ $detail->status }}</td>
                                     <td>Rp {{ number_format($detail->total_nilai_selisih, 0, ',', '.') }}</td>
                                 </tr>

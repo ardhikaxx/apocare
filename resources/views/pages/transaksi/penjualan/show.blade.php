@@ -51,7 +51,7 @@
                             @foreach($penjualan->details as $detail)
                                 <tr>
                                     <td>{{ $detail->produk->nama ?? '-' }}</td>
-                                    <td>{{ number_format($detail->jumlah, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($detail->jumlah) }}</td>
                                     <td>Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($detail->jumlah_diskon, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($detail->jumlah_pajak, 0, ',', '.') }}</td>

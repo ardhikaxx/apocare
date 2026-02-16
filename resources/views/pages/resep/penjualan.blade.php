@@ -67,7 +67,7 @@
                                         <td>{{ $detail->produk->nama ?? '-' }}</td>
                                         <td>{{ $detail->dosis ?? '-' }}</td>
                                         <td>{{ $detail->frekuensi ?? '-' }}</td>
-                                        <td>{{ number_format($detail->jumlah_resep, 2, ',', '.') }}</td>
+                                        <td>{{ formatAngka($detail->jumlah_resep) }}</td>
                                         <td>Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
                                         <td>Rp {{ number_format($detail->total, 0, ',', '.') }}</td>
                                     </tr>

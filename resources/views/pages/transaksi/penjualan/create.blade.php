@@ -50,7 +50,7 @@
                                         <div class="text-muted small">{{ $item->kode }}</div>
                                     </td>
                                     <td>{{ $item->kategori->nama ?? '-' }}</td>
-                                    <td>{{ number_format($stok, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($stok) }}</td>
                                     <td>Rp {{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                     <td class="text-end">
                                         <button type="button"

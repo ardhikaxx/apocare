@@ -46,9 +46,9 @@
                             @foreach($penyesuaian->detail as $detail)
                                 <tr>
                                     <td>{{ $detail->produk->nama ?? '-' }}</td>
-                                    <td>{{ number_format($detail->jumlah_sistem, 2, ',', '.') }}</td>
-                                    <td>{{ number_format($detail->jumlah_aktual, 2, ',', '.') }}</td>
-                                    <td>{{ number_format($detail->selisih, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_sistem) }}</td>
+                                    <td>{{ formatAngka($detail->jumlah_aktual) }}</td>
+                                    <td>{{ formatAngka($detail->selisih) }}</td>
                                     <td>Rp {{ number_format($detail->harga_satuan, 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($detail->total_nilai, 0, ',', '.') }}</td>
                                 </tr>

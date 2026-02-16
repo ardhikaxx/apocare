@@ -21,9 +21,9 @@
                 <div class="mb-2"><strong>Kode:</strong> {{ $stok->produk->kode ?? '-' }}</div>
                 <div class="mb-2"><strong>Kategori:</strong> {{ $stok->produk->kategori->nama ?? '-' }}</div>
                 <div class="mb-2"><strong>Lokasi:</strong> {{ $stok->produk->lokasi_rak ?? '-' }}</div>
-                <div class="mb-2"><strong>Stok:</strong> {{ number_format($stok->jumlah, 2, ',', '.') }}</div>
-                <div class="mb-2"><strong>Reserved:</strong> {{ number_format($stok->jumlah_reservasi, 2, ',', '.') }}</div>
-                <div class="mb-0"><strong>Tersedia:</strong> {{ number_format($stok->jumlah_tersedia, 2, ',', '.') }}</div>
+                <div class="mb-2"><strong>Stok:</strong> {{ formatAngka($stok->jumlah) }}</div>
+                <div class="mb-2"><strong>Reserved:</strong> {{ formatAngka($stok->jumlah_reservasi) }}</div>
+                <div class="mb-0"><strong>Tersedia:</strong> {{ formatAngka($stok->jumlah_tersedia) }}</div>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
                                     <td>{{ $batch->nomor_batch }}</td>
                                     <td>{{ $batch->tanggal_produksi ? \Carbon\Carbon::parse($batch->tanggal_produksi)->format('d/m/Y') : '-' }}</td>
                                     <td>{{ $batch->tanggal_kadaluarsa ? \Carbon\Carbon::parse($batch->tanggal_kadaluarsa)->format('d/m/Y') : '-' }}</td>
-                                    <td>{{ number_format($batch->jumlah, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($batch->jumlah) }}</td>
                                     <td>Rp {{ number_format($batch->harga_beli, 0, ',', '.') }}</td>
                                 </tr>
                             @empty

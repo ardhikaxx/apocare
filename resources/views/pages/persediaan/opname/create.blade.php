@@ -48,7 +48,7 @@
                                         <div class="fw-semibold">{{ $item->nama }}</div>
                                         <div class="text-muted small">{{ $item->kode }}</div>
                                     </td>
-                                    <td>{{ number_format($stok, 2, ',', '.') }}</td>
+                                    <td>{{ formatAngka($stok) }}</td>
                                     <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
                                     <td class="text-end">
                                         <button type="button"
