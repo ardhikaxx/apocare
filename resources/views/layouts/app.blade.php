@@ -236,13 +236,16 @@
             window.initDataTables();
             
             document.querySelectorAll('input[type="number"][step="1"]').forEach(input => {
+                input.type = 'text';
+                input.dataset.numeric = 'true';
+                
                 const formatValue = (value) => {
-                    const num = parseInt(value.replace(/\./g, '')) || 0;
+                    const num = parseInt(value.replace(/\D/g, '')) || 0;
                     return num.toLocaleString('id-ID');
                 };
                 
                 const unformatValue = (value) => {
-                    return value.replace(/\./g, '');
+                    return value.replace(/\D/g, '');
                 };
                 
                 if (input.value) {
@@ -251,13 +254,20 @@
                 
                 input.addEventListener('input', (e) => {
                     const cursorPosition = e.target.selectionStart;
-                    const oldLength = e.target.value.length;
+                    const oldValue = e.target.value;
+                    const oldUnformatted = unformatValue(oldValue);
                     
-                    e.target.value = formatValue(e.target.value);
+                    const unformatted = unformatValue(e.target.value);
+                    e.target.value = formatValue(unformatted);
                     
-                    const newLength = e.target.value.length;
-                    const newPosition = cursorPosition + (newLength - oldLength);
-                    e.target.setSelectionRange(newPosition, newPosition);
+                    const newUnformatted = unformatValue(e.target.value);
+                    if (unformatted !== newUnformatted) {
+                        const diff = newUnformatted.length - oldUnformatted.length;
+                        const newPosition = Math.max(0, Math.min(cursorPosition + diff, e.target.value.length));
+                        setTimeout(() => {
+                            e.target.setSelectionRange(newPosition, newPosition);
+                        }, 0);
+                    }
                 });
                 
                 input.addEventListener('blur', (e) => {
@@ -275,8 +285,8 @@
             
             document.querySelectorAll('form').forEach(form => {
                 form.addEventListener('submit', (e) => {
-                    form.querySelectorAll('input[type="number"][step="1"]').forEach(input => {
-                        input.value = input.value.replace(/\./g, '');
+                    form.querySelectorAll('input[data-numeric="true"]').forEach(input => {
+                        input.value = input.value.replace(/\D/g, '');
                     });
                 });
             });
