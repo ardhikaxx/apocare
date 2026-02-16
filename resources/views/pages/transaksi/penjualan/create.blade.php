@@ -192,17 +192,11 @@
                 </div>
 
                 <div class="pos-actions mt-4">
-                    <div class="form-check mb-0 me-3">
-                        <input class="form-check-input" type="checkbox" id="print_nota" name="print_nota" value="1">
-                        <label class="form-check-label" for="print_nota">
-                            Cetak Nota
-                        </label>
-                    </div>
                     <button type="button" class="btn btn-info" id="preview-nota-btn">
                         <i class="fa-solid fa-receipt me-2"></i>Preview Nota
                     </button>
                     <button type="submit" class="btn btn-primary" id="submit-pos-btn">
-                        <i class="fa-solid fa-floppy-disk me-2"></i>Simpan Transaksi
+                        <i class="fa-solid fa-floppy-disk me-2"></i>Simpan & Print
                     </button>
                     <a href="{{ route('transaksi.penjualan.index') }}" class="btn btn-outline-secondary">
                         Batal
@@ -560,14 +554,14 @@
     pajakTransaksiInput.addEventListener('input', recalcTotals);
     jumlahBayarInput.addEventListener('input', recalcTotals);
 
-    form.addEventListener('submit', async (event) => {
+form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const payload = buildTransactionPayload();
         if (!payload) return;
 
-        const printNota = document.getElementById('print_nota').checked;
         submitPosBtn.disabled = true;
+        submitPosBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Menyimpan...';
 
         try {
             if (navigator.onLine) {
@@ -578,9 +572,14 @@
                     window.showToast('success', 'Transaksi berhasil disimpan.');
                     resetFormAfterSaved();
                     
-                    if (printNota && first.print_url) {
-                        window.open(first.print_url, '_blank');
-                        window.location.href = indexUrl;
+                    if (first.print_url) {
+                        const printWindow = window.open(first.print_url, '_blank');
+                        printWindow.onload = function() {
+                            printWindow.print();
+                            setTimeout(() => {
+                                window.location.href = indexUrl;
+                            }, 1000);
+                        };
                     } else {
                         window.location.href = indexUrl;
                     }
@@ -590,19 +589,22 @@
                 addToOfflineQueue(payload);
                 resetFormAfterSaved();
                 window.showToast('warning', 'Server menolak transaksi. Data disimpan ke antrian offline.');
+                submitPosBtn.disabled = false;
+                submitPosBtn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Simpan & Print';
                 return;
             }
 
             addToOfflineQueue(payload);
             resetFormAfterSaved();
             window.showToast('warning', 'Offline: transaksi disimpan lokal dan akan disinkronkan saat online.');
+            submitPosBtn.disabled = false;
+            submitPosBtn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Simpan & Print';
         } catch (error) {
             addToOfflineQueue(payload);
             resetFormAfterSaved();
             window.showToast('warning', 'Koneksi bermasalah. Transaksi dimasukkan ke antrian offline.');
-        } finally {
             submitPosBtn.disabled = false;
-            updateOfflineStatus();
+            submitPosBtn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Simpan & Print';
         }
     });
 

@@ -59,11 +59,7 @@ class PenjualanController extends Controller
 
         $penjualan = $this->prosesSimpanPenjualan($validated, Auth::id(), $clientReference);
 
-        if ($request->has('print_nota') && $request->print_nota) {
-            return redirect()->route('transaksi.penjualan.print', $penjualan);
-        }
-
-        return redirect()->route('transaksi.penjualan.index')->with('success', 'Penjualan berhasil disimpan');
+        return redirect()->route('transaksi.penjualan.print', $penjualan);
     }
 
     public function syncOffline(Request $request): JsonResponse

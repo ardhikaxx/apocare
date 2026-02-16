@@ -221,6 +221,9 @@
     <script>
         window.onload = function() {
             window.print();
+            setTimeout(function() {
+                window.location.href = '{{ route("transaksi.penjualan.index") }}';
+            }, 2000);
         }
     </script>
 </body>
