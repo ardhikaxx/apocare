@@ -33,7 +33,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Jumlah Bayar</label>
-                        <input type="number" name="jumlah_bayar" class="form-control" value="{{ $resep->total_harga }}" min="0" step="0.01" required>
+                        <input type="number" step="1" name="jumlah_bayar" class="form-control" value="{{ (int)$resep->total_harga }}" min="0" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Catatan</label>
