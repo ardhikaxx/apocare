@@ -51,6 +51,12 @@ Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas pe
 - **Export ke Excel** menggunakan Maatwebsite Excel
 - **Export ke PDF** menggunakan DomPDF
 
+### 7. Backup Database
+- **Backup Otomatis** - Dijadwalkan每天 pukul 01:00 WIB
+- **Backup Manual** - Bisa buat backup kapan saja via UI
+- **Manajemen Backup** - Download dan hapus file backup
+- **Auto Cleanup** - Sistem otomatis hapus backup lama (maksimal 30 file)
+
 ---
 
 ### Struktur Peran (Roles)
@@ -156,6 +162,16 @@ php artisan serve
 ```
 
 Akses aplikasi di `http://localhost:8000`
+
+8. **Setup Scheduler** (Untuk auto backup)
+```bash
+# Windows Task Scheduler - Run command below:
+php artisan schedule:run
+```
+Atau tambahkan cron job:
+```
+* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
+```
 
 ---
 

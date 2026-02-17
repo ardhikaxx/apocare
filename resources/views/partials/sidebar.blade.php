@@ -152,6 +152,8 @@
                     Hak Akses</a>
                 <a class="nav-link sub-nav-link" href="{{ route('audit.index') }}"><i class="fa-solid fa-clock-rotate-left"></i>
                     Audit Trail</a>
+                <a class="nav-link sub-nav-link" href="{{ route('backup.index') }}"><i class="fa-solid fa-database"></i>
+                    Backup DB</a>
             </div>
         </li>
     </ul>

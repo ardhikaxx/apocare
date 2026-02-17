@@ -1,0 +1,97 @@
+@extends('layouts.app')
+
+@section('title', 'Backup Database')
+
+@section('content')
+<div class="page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+        <h1 class="page-title">Backup Database</h1>
+        <p class="text-muted mb-0">Kelola backup database secara manual atau otomatis.</p>
+    </div>
+    <div>
+        <a href="{{ route('backup.create') }}" class="btn btn-success">
+            <i class="fa-solid fa-plus me-2"></i>Buat Backup Sekarang
+        </a>
+    </div>
+</div>
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Daftar Backup</h5>
+    </div>
+    <div class="card-body">
+        @if(count($backups) > 0)
+        <div class="table-responsive">
+            <table class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Tanggal Dibuat</th>
+                        <th>Ukuran</th>
+                        <th class="text-end">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($backups as $backup)
+                    <tr>
+                        <td>
+                            <i class="fa-solid fa-database me-2 text-primary"></i>
+                            {{ $backup['filename'] }}
+                        </td>
+                        <td>{{ \Carbon\Carbon::parse($backup['created'])->format('d/m/Y H:i:s') }}</td>
+                        <td>{{ $backup['size'] }}</td>
+                        <td class="text-end">
+                            <a href="{{ route('backup.download', $backup['filename']) }}" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                            <form action="{{ route('backup.destroy', $backup['filename']) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus backup ini?')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <div class="text-center py-5">
+            <i class="fa-solid fa-database fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Belum ada backup database.</p>
+            <a href="{{ route('backup.create') }}" class="btn btn-primary">Buat Backup Pertama</a>
+        </div>
+        @endif
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Informasi</h5>
+    </div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>Backup otomatis dilakukan setiap hari pukul 01:00 pagi.</li>
+            <li>Backup disimpan di <code>storage/app/backups</code>.</li>
+            <li>Sistem akan menyimpan maksimal 30 backup terakhir.</li>
+            <li>Untuk menjalankan scheduler, pastikan ada cron job yang menjalankan <code>php artisan schedule:run</code>.</li>
+        </ul>
+    </div>
+</div>
+@endsection

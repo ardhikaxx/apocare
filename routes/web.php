@@ -26,6 +26,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AuditTrailController;
+use App\Http\Controllers\BackupController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -232,4 +233,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/audit', [AuditTrailController::class, 'index'])
         ->middleware('role:admin')
         ->name('audit.index');
+
+    Route::get('/backup', [BackupController::class, 'index'])
+        ->middleware('role:admin')
+        ->name('backup.index');
+    Route::post('/backup', [BackupController::class, 'create'])
+        ->middleware('role:admin')
+        ->name('backup.create');
+    Route::get('/backup/{filename}/download', [BackupController::class, 'download'])
+        ->middleware('role:admin')
+        ->name('backup.download');
+    Route::delete('/backup/{filename}', [BackupController::class, 'destroy'])
+        ->middleware('role:admin')
+        ->name('backup.destroy');
 });
