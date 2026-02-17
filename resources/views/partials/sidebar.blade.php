@@ -55,6 +55,8 @@
                         class="fa-solid fa-sliders"></i> Penyesuaian</a>
                 <a class="nav-link sub-nav-link" href="{{ route('persediaan.opname.index') }}"><i
                         class="fa-solid fa-clipboard-check"></i> Opname</a>
+                <a class="nav-link sub-nav-link" href="{{ route('harga.index') }}"><i
+                        class="fa-solid fa-tags"></i> Set Harga</a>
             </div>
         </li>
     </ul>

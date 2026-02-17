@@ -48,8 +48,13 @@
                     <input type="number" step="1" name="harga_beli" class="form-control" value="{{ old('harga_beli', 0) }}">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Harga Jual</label>
-                    <input type="number" step="1" name="harga_jual" class="form-control" value="{{ old('harga_jual', 0) }}">
+                    <label class="form-label">Persentase Markup (%)</label>
+                    <input type="number" step="0.01" name="persentase_markup" class="form-control" value="{{ old('persentase_markup', 20) }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Harga Jual (Auto)</label>
+                    <input type="number" step="1" name="harga_jual" class="form-control" value="{{ old('harga_jual', 0) }}" readonly>
+                    <small class="text-muted">Akan dihitung otomatis berdasarkan markup</small>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Stok Minimum</label>

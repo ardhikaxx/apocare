@@ -17,7 +17,7 @@ class Produk extends Model
         'keterangan', 'jenis_produk', 'golongan_obat', 'perlu_resep', 'harga_beli', 'harga_jual',
         'stok_minimum', 'stok_maksimum', 'titik_pesan_ulang', 'lokasi_rak', 'kondisi_penyimpanan',
         'gambar', 'status_aktif', 'konsinyasi', 'persentase_pajak', 'catatan', 'is_favorit',
-        'no_ijin_edar', 'is_expired', 'tanggal_expired',
+        'no_ijin_edar', 'is_expired', 'tanggal_expired', 'persentase_markup',
         'dibuat_oleh', 'diubah_oleh'
     ];
 
@@ -28,6 +28,7 @@ class Produk extends Model
         'konsinyasi' => 'boolean',
         'is_expired' => 'boolean',
         'tanggal_expired' => 'date',
+        'persentase_markup' => 'decimal:2',
     ];
 
     public function kategori(): BelongsTo
@@ -58,5 +59,22 @@ class Produk extends Model
     public function satuanProduk(): HasMany
     {
         return $this->hasMany(SatuanProduk::class);
+    }
+
+    public function getHargaJualOtomatis(): float
+    {
+        $markup = $this->persentase_markup ?? 20;
+        return $this->harga_beli + ($this->harga_beli * $markup / 100);
+    }
+
+    public function getSelisihHarga(): float
+    {
+        return $this->harga_jual - $this->harga_beli;
+    }
+
+    public function getMarginPersen(): float
+    {
+        if ($this->harga_beli == 0) return 0;
+        return (($this->harga_jual - $this->harga_beli) / $this->harga_beli) * 100;
     }
 }

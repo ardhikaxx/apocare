@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\HargaController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\KaryawanController;
@@ -260,4 +261,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/session/history', [SessionController::class, 'history'])
         ->middleware('role:admin')
         ->name('session.history');
+
+    Route::get('/harga', [HargaController::class, 'index'])
+        ->middleware('role:admin|apoteker')
+        ->name('harga.index');
+    Route::post('/harga/update-persentase', [HargaController::class, 'updatePersentase'])
+        ->middleware('role:admin|apoteker')
+        ->name('harga.update-persentase');
+    Route::post('/harga/update-semua', [HargaController::class, 'updateSemua'])
+        ->middleware('role:admin|apoteker')
+        ->name('harga.update-semua');
+    Route::post('/harga/simpan-pengaturan', [HargaController::class, 'simpanPengaturan'])
+        ->middleware('role:admin')
+        ->name('harga.simpan-pengaturan');
 });

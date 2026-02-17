@@ -37,6 +37,10 @@ class ProdukController extends Controller
         ]);
 
         $kode = $request->kode ?: ('PRD-' . str_pad((Produk::withTrashed()->max('id') ?? 0) + 1, 6, '0', STR_PAD_LEFT));
+        
+        $hargaBeli = $request->harga_beli ?? 0;
+        $persentaseMarkup = $request->persentase_markup ?? 20;
+        $hargaJual = $hargaBeli + ($hargaBeli * $persentaseMarkup / 100);
 
         Produk::create([
             'kode' => $kode,
@@ -50,8 +54,9 @@ class ProdukController extends Controller
             'jenis_produk' => $request->jenis_produk ?? 'umum',
             'golongan_obat' => $request->golongan_obat,
             'perlu_resep' => $request->perlu_resep ?? false,
-            'harga_beli' => $request->harga_beli,
-            'harga_jual' => $request->harga_jual,
+            'harga_beli' => $hargaBeli,
+            'harga_jual' => $hargaJual,
+            'persentase_markup' => $persentaseMarkup,
             'stok_minimum' => $request->stok_minimum ?? 0,
             'stok_maksimum' => $request->stok_maksimum ?? 0,
             'titik_pesan_ulang' => $request->titik_pesan_ulang ?? 0,
