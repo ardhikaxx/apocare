@@ -25,7 +25,7 @@ class DatabaseBackup extends Command
         $password = config('database.connections.mysql.password');
         $host = config('database.connections.mysql.host');
 
-        $filename = 'apocare_backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $filename = 'apocare_backup_' . date('d-m-Y_H-i-s') . '.sql';
         $filepath = $backupPath . '/' . $filename;
 
         $mysqldump = $this->findMySqlDump();
