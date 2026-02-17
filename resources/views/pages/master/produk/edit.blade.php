@@ -62,19 +62,35 @@
                     <label class="form-label">Titik Pesan Ulang</label>
                     <input type="number" step="1" name="titik_pesan_ulang" class="form-control" value="{{ old('titik_pesan_ulang', (int)$produk->titik_pesan_ulang) }}">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Jenis Produk</label>
+                <div class="col-md-4">
+                    <label class="form-label">Golongan Produk</label>
                     <select name="jenis_produk" class="form-select">
-                        @foreach(['Obat','Alkes','Vitamin','Kosmetik','Umum'] as $jenis)
-                            <option value="{{ $jenis }}" @selected($produk->jenis_produk === $jenis)>{{ $jenis }}</option>
-                        @endforeach
+                        <option value="umum" @selected($produk->jenis_produk === 'umum')>Obat Umum</option>
+                        <option value="keras" @selected($produk->jenis_produk === 'keras')>Obat Keras (Obt, QQ, K, dll)</option>
+                        <option value="psikotropika" @selected($produk->jenis_produk === 'psikotropika')>Psikotropika</option>
+                        <option value="golongan" @selected($produk->jenis_produk === 'golongan')>Golongan (Narcotic)</option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label class="form-label">No. IJin Edar (BPOM)</label>
+                    <input type="text" name="no_ijin_edar" class="form-control" value="{{ old('no_ijin_edar', $produk->no_ijin_edar) }}" placeholder="DKLxxxxxxxxxxx">
+                </div>
+                <div class="col-md-4">
                     <label class="form-label">Perlu Resep</label>
                     <select name="perlu_resep" class="form-select">
                         <option value="0" @selected(!$produk->perlu_resep)>Tidak</option>
                         <option value="1" @selected($produk->perlu_resep)>Ya</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Expired</label>
+                    <input type="date" name="tanggal_expired" class="form-control" value="{{ old('tanggal_expired', $produk->tanggal_expired?->format('Y-m-d')) }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Status Aktif</label>
+                    <select name="status_aktif" class="form-select">
+                        <option value="1" @selected($produk->status_aktif)>Aktif</option>
+                        <option value="0" @selected(!$produk->status_aktif)>Nonaktif</option>
                     </select>
                 </div>
                 <div class="col-12">

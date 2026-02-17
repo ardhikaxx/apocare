@@ -52,10 +52,27 @@ Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas pe
 - **Export ke PDF** menggunakan DomPDF
 
 ### 7. Backup Database
-- **Backup Otomatis** - Dijadwalkan每天 pukul 01:00 WIB
+- **Backup Otomatis** - Dijadwalkan setiap hari pukul 01:00 WIB
 - **Backup Manual** - Bisa buat backup kapan saja via UI
 - **Manajemen Backup** - Download dan hapus file backup
 - **Auto Cleanup** - Sistem otomatis hapus backup lama (maksimal 30 file)
+
+### 8. Auto Nonaktif Expired
+- **Auto Nonaktif** - Produk expired otomatis dinonaktifkan
+- **Scheduled Task** - Berjalan setiap pukul 00:00
+- **Tracking Expired** - Monitor produk mendekati kadaluarsa
+
+### 9. Tracking Obat Keras
+- **Golongan Produk** - Umum, Keras, Psikotropika, Narcotic
+- **No. IJin Edar** - Input nomor BPOM
+- **Visual Badge** - Indicator warna di tabel produk
+- **Expired Warning** - Warning 30 hari sebelum expired
+
+### 10. Session Management
+- **Monitor Aktif** - Lihat user yang sedang online
+- **Force Logout** - Admin bisa putuskan sesi user
+- **Riwayat Login** - Track history login user
+- **IP Tracking** - Catat IP saat login
 
 ---
 

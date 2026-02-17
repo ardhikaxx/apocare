@@ -31,7 +31,12 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user instanceof Pengguna) {
-                $user->update(['login_terakhir' => now()]);
+                $user->update([
+                    'login_terakhir' => now(),
+                    'last_login_at' => now(),
+                    'last_login_ip' => $request->ip(),
+                    'is_online' => true,
+                ]);
                 return redirect()->route($this->resolveRedirectByRole($user));
             }
 

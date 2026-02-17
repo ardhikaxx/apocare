@@ -13,6 +13,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PeranController;
 use App\Http\Controllers\HakAksesController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ReturController;
@@ -246,4 +247,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/backup/{filename}', [BackupController::class, 'destroy'])
         ->middleware('role:admin')
         ->name('backup.destroy');
+
+    Route::get('/session', [SessionController::class, 'index'])
+        ->middleware('role:admin')
+        ->name('session.index');
+    Route::get('/session/refresh', [SessionController::class, 'refresh'])
+        ->middleware('role:admin')
+        ->name('session.refresh');
+    Route::post('/session/{pengguna}/force-logout', [SessionController::class, 'forceLogout'])
+        ->middleware('role:admin')
+        ->name('session.force-logout');
+    Route::get('/session/history', [SessionController::class, 'history'])
+        ->middleware('role:admin')
+        ->name('session.history');
 });

@@ -47,7 +47,7 @@ class ProdukController extends Controller
             'satuan_id' => $request->satuan_id,
             'produsen' => $request->produsen,
             'keterangan' => $request->keterangan,
-            'jenis_produk' => $request->jenis_produk ?? 'Obat',
+            'jenis_produk' => $request->jenis_produk ?? 'umum',
             'golongan_obat' => $request->golongan_obat,
             'perlu_resep' => $request->perlu_resep ?? false,
             'harga_beli' => $request->harga_beli,
@@ -59,6 +59,8 @@ class ProdukController extends Controller
             'kondisi_penyimpanan' => $request->kondisi_penyimpanan,
             'status_aktif' => $request->status_aktif ?? true,
             'persentase_pajak' => $request->persentase_pajak ?? 0,
+            'no_ijin_edar' => $request->no_ijin_edar,
+            'tanggal_expired' => $request->tanggal_expired,
             'dibuat_oleh' => Auth::id(),
         ]);
 
@@ -91,7 +93,7 @@ class ProdukController extends Controller
             'satuan_id' => $request->satuan_id,
             'produsen' => $request->produsen,
             'keterangan' => $request->keterangan,
-            'jenis_produk' => $request->jenis_produk ?? $produk->jenis_produk,
+            'jenis_produk' => $request->jenis_produk ?? 'umum',
             'golongan_obat' => $request->golongan_obat,
             'perlu_resep' => $request->perlu_resep ?? false,
             'harga_beli' => $request->harga_beli,
@@ -103,6 +105,8 @@ class ProdukController extends Controller
             'kondisi_penyimpanan' => $request->kondisi_penyimpanan,
             'status_aktif' => $request->status_aktif ?? true,
             'persentase_pajak' => $request->persentase_pajak ?? 0,
+            'no_ijin_edar' => $request->no_ijin_edar,
+            'tanggal_expired' => $request->tanggal_expired,
             'diubah_oleh' => Auth::id(),
         ]);
 

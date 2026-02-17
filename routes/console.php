@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:database-backup')->dailyAt('01:00');
+Schedule::command('app:auto-nonaktif-expired')->dailyAt('00:00');

@@ -154,6 +154,8 @@
                     Audit Trail</a>
                 <a class="nav-link sub-nav-link" href="{{ route('backup.index') }}"><i class="fa-solid fa-database"></i>
                     Backup DB</a>
+                <a class="nav-link sub-nav-link" href="{{ route('session.index') }}"><i class="fa-solid fa-users"></i>
+                    Kelola Sesi</a>
             </div>
         </li>
     </ul>

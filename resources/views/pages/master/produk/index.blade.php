@@ -21,9 +21,35 @@
     <div class="card-header">Daftar Produk</div>
     <div class="card-body">
         @php
-            $columns = ['Favorit', 'Kode', 'Nama Produk', 'Kategori', 'Harga Jual', 'Stok Minimum', 'Status', 'Aksi'];
+            $columns = ['Favorit', 'Kode', 'Nama Produk', 'Golongan', 'Expired', 'Harga Jual', 'Stok Minimum', 'Status', 'Aksi'];
             $rows = $produk->map(function ($item) {
-                $status = $item->status_aktif ? '<span class="badge-soft success">Aktif</span>' : '<span class="badge-soft warning">Nonaktif</span>';
+                $status = $item->status_aktif ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-warning text-dark">Nonaktif</span>';
+                
+                $golonganColors = [
+                    'umum' => 'bg-secondary',
+                    'keras' => 'bg-danger',
+                    'psikotropika' => 'bg-warning text-dark',
+                    'golongan' => 'bg-dark'
+                ];
+                $golonganLabels = [
+                    'umum' => 'Obat Umum',
+                    'keras' => 'Obat Keras',
+                    'psikotropika' => 'Psikotropika',
+                    'golongan' => 'Narcotic'
+                ];
+                $golongan = '<span class="badge ' . ($golonganColors[$item->jenis_produk] ?? 'bg-secondary') . '">' . ($golonganLabels[$item->jenis_produk] ?? $item->jenis_produk) . '</span>';
+                
+                $expiredBadge = '';
+                if ($item->is_expired) {
+                    $expiredBadge = '<span class="badge bg-danger">Expired</span>';
+                } elseif ($item->tanggal_expired && $item->tanggal_expired->isPast()) {
+                    $expiredBadge = '<span class="badge bg-danger">Expired</span>';
+                } elseif ($item->tanggal_expired && $item->tanggal_expired->diffInDays(now()) <= 30) {
+                    $expiredBadge = '<span class="badge bg-warning text-dark">Exp: ' . $item->tanggal_expired->format('d/m/y') . '</span>';
+                } else {
+                    $expiredBadge = '<span class="badge bg-light text-dark">' . ($item->tanggal_expired ? $item->tanggal_expired->format('d/m/Y') : '-') . '</span>';
+                }
+                
                 $favoritId = 'favorit-form-' . $item->id;
                 $favorit = $item->is_favorit 
                     ? '<form id="' . $favoritId . '" method="POST" action="' . route('master.produk.favorit', $item) . '">' . csrf_field() . method_field('PATCH') . '<button type="submit" class="btn btn-sm btn-warning" title="Hapus dari favorit"><i class="fa-solid fa-star"></i></button></form>'
@@ -40,7 +66,8 @@
                     $favorit,
                     $item->kode,
                     $item->nama,
-                    $item->kategori ? $item->kategori->nama : '-',
+                    $golongan,
+                    $expiredBadge,
                     'Rp ' . number_format($item->harga_jual ?? 0, 0, ',', '.'),
                     $item->stok_minimum ?? 0,
                     $status,

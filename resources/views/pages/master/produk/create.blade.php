@@ -63,21 +63,35 @@
                     <label class="form-label">Titik Pesan Ulang</label>
                     <input type="number" step="1" name="titik_pesan_ulang" class="form-control" value="{{ old('titik_pesan_ulang', 0) }}">
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Jenis Produk</label>
+                <div class="col-md-4">
+                    <label class="form-label">Golongan Produk</label>
                     <select name="jenis_produk" class="form-select">
-                        <option value="Obat">Obat</option>
-                        <option value="Alkes">Alkes</option>
-                        <option value="Vitamin">Vitamin</option>
-                        <option value="Kosmetik">Kosmetik</option>
-                        <option value="Umum">Umum</option>
+                        <option value="umum">Obat Umum</option>
+                        <option value="keras">Obat Keras (Obt, QQ, K, dll)</option>
+                        <option value="psikotropika">Psikotropika</option>
+                        <option value="golongan">Golongan (Narcotic)</option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label class="form-label">No. IJin Edar (BPOM)</label>
+                    <input type="text" name="no_ijin_edar" class="form-control" value="{{ old('no_ijin_edar') }}" placeholder="DKLxxxxxxxxxxx">
+                </div>
+                <div class="col-md-4">
                     <label class="form-label">Perlu Resep</label>
                     <select name="perlu_resep" class="form-select">
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Expired</label>
+                    <input type="date" name="tanggal_expired" class="form-control" value="{{ old('tanggal_expired') }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Status Aktif</label>
+                    <select name="status_aktif" class="form-select">
+                        <option value="1">Aktif</option>
+                        <option value="0">Nonaktif</option>
                     </select>
                 </div>
                 <div class="col-12">

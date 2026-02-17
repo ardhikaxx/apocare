@@ -17,6 +17,7 @@ class Pengguna extends Authenticatable
     protected $fillable = [
         'nama', 'email', 'username', 'password', 'role_id',
         'telepon', 'alamat', 'foto', 'status_aktif', 'login_terakhir',
+        'last_login_at', 'last_login_ip', 'is_online',
         'dibuat_oleh', 'diubah_oleh'
     ];
     protected $hidden = ['password'];
@@ -24,6 +25,8 @@ class Pengguna extends Authenticatable
     protected $casts = [
         'status_aktif' => 'boolean',
         'login_terakhir' => 'datetime',
+        'last_login_at' => 'datetime',
+        'is_online' => 'boolean',
     ];
 
     public function role(): BelongsTo

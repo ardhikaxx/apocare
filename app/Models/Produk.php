@@ -17,7 +17,17 @@ class Produk extends Model
         'keterangan', 'jenis_produk', 'golongan_obat', 'perlu_resep', 'harga_beli', 'harga_jual',
         'stok_minimum', 'stok_maksimum', 'titik_pesan_ulang', 'lokasi_rak', 'kondisi_penyimpanan',
         'gambar', 'status_aktif', 'konsinyasi', 'persentase_pajak', 'catatan', 'is_favorit',
+        'no_ijin_edar', 'is_expired', 'tanggal_expired',
         'dibuat_oleh', 'diubah_oleh'
+    ];
+
+    protected $casts = [
+        'is_favorit' => 'boolean',
+        'perlu_resep' => 'boolean',
+        'status_aktif' => 'boolean',
+        'konsinyasi' => 'boolean',
+        'is_expired' => 'boolean',
+        'tanggal_expired' => 'date',
     ];
 
     public function kategori(): BelongsTo
