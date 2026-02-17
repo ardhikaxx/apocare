@@ -58,7 +58,7 @@
 
 <style>
 .smart-search-wrapper {
-    width: 300px;
+    width: 380px;
 }
 .smart-search-dropdown {
     position: absolute;
