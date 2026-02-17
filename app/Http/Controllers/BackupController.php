@@ -24,7 +24,7 @@ class BackupController extends Controller
         $backups = [];
 
         foreach ($files as $file) {
-            if (str_starts_with($file->getFilename(), 'apocare_backup_')) {
+            if (preg_match('/^apocare_backup_\d{2}-\d{2}-\d{4}_/', $file->getFilename())) {
                 $backups[] = [
                     'filename' => $file->getFilename(),
                     'size' => $this->formatBytes($file->getSize()),
@@ -67,7 +67,7 @@ class BackupController extends Controller
             $password = config('database.connections.mysql.password');
             $host = config('database.connections.mysql.host');
 
-            $filename = 'apocare_backup_' . date('Y-m-d_H-i-s') . '.sql';
+            $filename = 'apocare_backup_' . date('d-m-Y_H-i-s') . '.sql';
             $filepath = $backupPath . '/' . $filename;
 
             $mysqldump = $this->findMySqlDump();

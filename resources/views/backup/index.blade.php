@@ -51,7 +51,11 @@ function handleBackupSubmit(form) {
         window.location.reload();
     })
     .catch(error => {
-        alert('Terjadi kesalahan!');
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: 'Terjadi kesalahan saat membuat backup!'
+        });
         btn.disabled = false;
         btn.innerHTML = originalText;
     });
@@ -68,6 +72,25 @@ document.querySelectorAll('.backup-form').forEach(function(form) {
         handleBackupSubmit(this);
     });
 });
+
+function confirmDelete(form) {
+    event.preventDefault();
+    Swal.fire({
+        title: 'Hapus Backup?',
+        text: "File backup yang dihapus tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+    return false;
+}
 </script>
 @endpush
 
@@ -94,7 +117,7 @@ document.querySelectorAll('.backup-form').forEach(function(form) {
                             <i class="fa-solid fa-database me-2 text-primary"></i>
                             {{ $backup['filename'] }}
                         </td>
-                        <td>{{ \Carbon\Carbon::parse($backup['created'])->format('d/m/Y H:i:s') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($backup['created'])->translatedFormat('d F Y, H:i:s') }}</td>
                         <td>{{ $backup['size'] }}</td>
                         <td class="text-end">
                             <a href="{{ route('backup.download', $backup['filename']) }}" class="btn btn-sm btn-primary">
@@ -103,7 +126,7 @@ document.querySelectorAll('.backup-form').forEach(function(form) {
                             <form action="{{ route('backup.destroy', $backup['filename']) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus backup ini?')">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirmDelete(this.form)">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
