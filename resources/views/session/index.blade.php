@@ -65,7 +65,7 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <div class="avatar-circle bg-primary text-white me-2">
+                                <div class="avatar-circle px-3 py-2 rounded-circle text-white me-2" style="background-color: var(--brand-primary);">
                                     {{ strtoupper(substr($session->nama, 0, 1)) }}
                                 </div>
                                 <div>
@@ -80,10 +80,10 @@
                                     'Admin' => 'danger',
                                     'Apoteker' => 'success',
                                     'Kasir' => 'info',
-                                    'Gudang' => 'warning'
+                                    'Gudang' => 'secondary'
                                 ];
                             @endphp
-                            <span class="badge bg-{{ $roleColors[$session->role->nama] ?? 'secondary' }}">
+                            <span class="badge bg-{{ $roleColors[$session->role->nama] ?? 'secondary' }} text-white">
                                 {{ $session->role->nama ?? '-' }}
                             </span>
                         </td>
@@ -96,12 +96,9 @@
                         </td>
                         <td class="text-end">
                             @if($session->id !== Auth::id())
-                            <form action="{{ route('session.force-logout', $session->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin memaksa logout user ini?')">
-                                    <i class="fa-solid fa-sign-out-alt"></i>
-                                </button>
-                            </form>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmForceLogout({{ $session->id }}, '{{ $session->nama }}')">
+                                <i class="fa-solid fa-sign-out-alt"></i>
+                            </button>
                             @else
                             <span class="badge bg-primary">Anda</span>
                             @endif
@@ -143,5 +140,46 @@ function refreshSessions() {
 }
 
 setInterval(refreshSessions, 30000);
+
+function confirmForceLogout(userId, userName) {
+    event.preventDefault();
+    Swal.fire({
+        title: 'Force Logout?',
+        text: 'User ' + userName + ' akan dipaksa logout dari sistem!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Logout!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('{{ url("session") }}/' + userId + '/force-logout', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'User telah di-logout'
+                }).then(() => {
+                    location.reload();
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Terjadi kesalahan'
+                });
+            });
+        }
+    });
+}
 </script>
 @endpush
