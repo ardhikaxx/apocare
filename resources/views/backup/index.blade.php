@@ -9,9 +9,12 @@
         <p class="text-muted mb-0">Kelola backup database secara manual atau otomatis.</p>
     </div>
     <div>
-        <a href="{{ route('backup.create') }}" class="btn btn-success">
-            <i class="fa-solid fa-plus me-2"></i>Buat Backup Sekarang
-        </a>
+        <form action="{{ route('backup.create') }}" method="POST" class="d-inline" id="backupForm">
+            @csrf
+            <button type="submit" class="btn btn-success" id="backupBtn">
+                <i class="fa-solid fa-database me-2"></i>Buat Backup Sekarang
+            </button>
+        </form>
     </div>
 </div>
 
@@ -28,6 +31,45 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 @endif
+
+@push('scripts')
+<script>
+function handleBackupSubmit(form) {
+    var btn = form.querySelector('button');
+    var originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Membuat Backup...';
+    
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'text/html'
+        }
+    })
+    .then(response => {
+        window.location.reload();
+    })
+    .catch(error => {
+        alert('Terjadi kesalahan!');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    });
+}
+
+document.getElementById('backupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    handleBackupSubmit(this);
+});
+
+document.querySelectorAll('.backup-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleBackupSubmit(this);
+    });
+});
+</script>
+@endpush
 
 <div class="card">
     <div class="card-header">
@@ -75,7 +117,10 @@
         <div class="text-center py-5">
             <i class="fa-solid fa-database fa-3x text-muted mb-3"></i>
             <p class="text-muted">Belum ada backup database.</p>
-            <a href="{{ route('backup.create') }}" class="btn btn-primary">Buat Backup Pertama</a>
+            <form action="{{ route('backup.create') }}" method="POST" class="d-inline backup-form">
+                @csrf
+                <button type="submit" class="btn btn-primary backup-btn">Buat Backup Pertama</button>
+            </form>
         </div>
         @endif
     </div>
