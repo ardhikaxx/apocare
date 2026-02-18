@@ -95,7 +95,7 @@
                         <input type="number" id="persentaseMarkup" class="form-control" value="{{ $pengaturan->persentase_markup_default ?? 20 }}">
                     </div>
                     <div class="col-md-4 d-flex align-items-end">
-                        <button type="button" class="btn btn-info w-100" onclick="hitungHarga()">
+                        <button type="button" class="btn btn-primary w-100" onclick="hitungHarga()">
                             <i class="fa-solid fa-calculator me-2"></i>Hitung
                         </button>
                     </div>
