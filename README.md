@@ -1,160 +1,80 @@
-﻿# Apocare - Integrated Pharmacy Management System
+# 💊 Website Apocare - Integrated Pharmacy Management System
 
-![Laravel](https://img.shields.io/badge/Laravel-12.x-blue.svg)
-![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
+[![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)](./LICENSE)
+[![Author](https://img.shields.io/badge/Author-Yanuar%20Ardhika%20Rahmadhani%20Ubaidillah-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ardhikaxx)
 
-## Deskripsi Sistem
-
-**APOCARE - Integrated Pharmacy Management System** merupakan aplikasi berbasis web yang digunakan untuk mengelola data, proses bisnis, dan operasional pada sebuah apotek secara menyeluruh dan terintegrasi. Aplikasi ini dirancang untuk membantu pemilik apotek, apoteker, dan staf dalam mengelola berbagai aktivitas operasional sehari-hari secara efisien, akurat, dan terstruktur.
-
-Dalam sistem APOCARE, produk menjadi pusat penghubung antara berbagai entitas penting yaitu kategori produk, supplier atau pemasok, batch untuk tracking kadaluarsa, dan satuan produk untuk konversi unit. Transaksi penjualan dan pembelian terhubung dengan pelanggan dan pemasok masing-masing, sehingga setiap pergerakan barang dapat dilacak dengan akurat mulai dari masuknya barang dari supplier hingga penjualan kepada pelanggan akhir.
-
-### Fitur Utama
-
-### 1. Authentication & Authorization
-- Login & Register
-- Forgot Password & Reset Password
-- Role-Based Access Control (RBAC)
-- Manajemen Hak Akses per modul
-
-### 2. Master Data
-- **Produk** - Kelola data obat & produk farmasi
-- **Kategori** - Kategori produk (obat bebas, obat keras, dll)
-- **Satuan** - Satuan produk (tablet, kapsul, ml, dll)
-- **Pemasok** - Kelola data supplier
-- **Pelanggan** - Kelola data pelanggan
-- **Dokter** - Kelola data dokter
-- **Karyawan** - Kelola data karyawan/apoteker
-
-### 3. Transaksi
-- **Penjualan** - Transaksi penjualan obat (POS)
-- **Pembelian** - Transaksi pembelian dari pemasok
-- **Resep** - Kelola resep dokter
-- **Antrian Resep** - Alur kerja bertahap (DITERIMA -> DIRACIK -> DIVERIFIKASI -> DISERAHKAN) lengkap dengan board kanban dan update tahap real-time
-- **Mode Offline POS** - Transaksi tetap tersimpan saat tidak ada jaringan internet dan otomatis sinkron saat online kembali
-### 4. Persediaan (Inventory)
-- **Stok Produk** - Monitoring stok per produk & batch
-- **Stok Opname** - Pencocokan stok fisik dengan sistem
-- **Penyesuaian Stok** - Koreksi stok (rusak, expired, dll)
-
-### 5. Retur
-- **Retur Penjualan** - Retur dari pelanggan
-- **Retur Pembelian** - Retur ke pemasok
-
-### 6. Laporan & Export
-- Laporan Penjualan
-- Laporan Pembelian
-- Laporan Persediaan/Stok
-- Laporan Keuangan
-- Laporan Pelanggan
-- **Export ke Excel** menggunakan Maatwebsite Excel
-- **Export ke PDF** menggunakan DomPDF
-
-### 7. Backup Database
-- **Backup Otomatis** - Dijadwalkan setiap hari pukul 01:00 WIB
-- **Backup Manual** - Bisa buat backup kapan saja via UI
-- **Manajemen Backup** - Download dan hapus file backup
-- **Auto Cleanup** - Sistem otomatis hapus backup lama (maksimal 30 file)
-
-### 8. Auto Nonaktif Expired
-- **Auto Nonaktif** - Produk expired otomatis dinonaktifkan
-- **Scheduled Task** - Berjalan setiap pukul 00:00
-- **Tracking Expired** - Monitor produk mendekati kadaluarsa
-
-### 9. Tracking Obat Keras
-- **Golongan Produk** - Umum, Keras, Psikotropika, Narcotic
-- **No. IJin Edar** - Input nomor BPOM
-- **Visual Badge** - Indicator warna di tabel produk
-- **Expired Warning** - Warning 30 hari sebelum expired
-
-### 10. Session Management
-- **Monitor Aktif** - Lihat user yang sedang online
-- **Force Logout** - Admin bisa putuskan sesi user
-- **Riwayat Login** - Track history login user
-- **IP Tracking** - Catat IP saat login
+Aplikasi **Apocare** adalah sistem manajemen apotek terintegrasi: master obat, stok masuk/keluar, e-resep, kasir/POS, supplier, hingga laporan & audit log. Dirancang untuk operasional apotek kecil–menengah yang praktis dan akuntabel.
 
 ---
 
-### Struktur Peran (Roles)
+## ✨ Fitur Utama
 
-Sistem terdiri dari 4 peran utama dengan pembagian tugas yang jelas:
+### 1. 🔑 Autentikasi & RBAC
+- Role Apoteker, Kasir, dan Admin dengan middleware, Policy & Gate.
 
-| Peran | Deskripsi |
-|-------|-----------|
-| **Admin** | Mengelola seluruh aspek sistem termasuk pengguna, hak akses, dan semua modul |
-| **Apoteker** | Bertanggung jawab atas pengelolaan obat, penjualan dengan resep, dan persediaan |
-| **Kasir** | Melakukan transaksi penjualan, melayani pelanggan, dan mengelola data pelanggan |
-| **Gudang** | Mengelola stok barang, pembelian, dan retur pembelian |
+### 2. 💊 Master Obat
+- Kode, kategori, satuan, stok, stok minimum, harga beli/jual, batch & kedaluwarsa.
 
-### Pembagian Akses per Modul
+### 3. 📦 Stok Masuk & Opname
+- Pencatatan stok dari supplier (atomik), riwayat pergerakan, dan stok opname berselisih.
 
-#### Admin
-- **Akses Penuh**: Semua fitur dan modul
-- **Khusus**: Manajemen pengguna, peran (roles), dan hak akses (permissions)
+### 4. 🧾 E-Resep & Kasir/POS
+- Resep terhubung stok real-time; kasir multi-metode bayar dengan struk cetak.
 
-#### Apoteker
-- Master Data: Produk, Kategori, Satuan, Pemasok, Pelanggan, Dokter, Karyawan
-- Persediaan: Monitoring stok, Penyesuaian stok, Stok opname
-- Transaksi: Penjualan (termasuk resep), Pembelian, Retur penjualan
-- Laporan: Semua jenis laporan (penjualan, pembelian, persediaan, keuangan)
-- Resep: Kelola resep dokter
+### 5. 🏭 Supplier
+- Master supplier untuk riwayat pengadaan.
 
-#### Kasir
-- Transaksi: Penjualan (POS), Retur penjualan
-- Pelanggan: Tambah, edit, lihat data pelanggan
-- Resep: Kelola resep dokter
-- Laporan: Laporan penjualan, laporan pelanggan
-
-#### Gudang
-- Master Data: Produk, Kategori, Satuan, Pemasok
-- Persediaan: Monitoring stok, Penyesuaian stok, Stok opname
-- Transaksi: Pembelian, Retur pembelian
-- Laporan: Laporan pembelian, laporan persediaan
+### 6. 📊 Laporan & Audit Log
+- Pendapatan, obat terlaris, stok menipis; audit login/CRUD/transaksi.
 
 ---
 
-## Tech Stack
+## 👥 Hak Akses Pengguna (Role-Based Access Control)
 
-- **Backend**: Laravel 12.x (PHP 8.2+)
-- **Frontend**: Bootstrap 5, Vanilla JS
-- **Database**: MySQL/MariaDB
-- **Export**: Maatwebsite Excel, DomPDF
-- **Authentication**: Laravel Breeze / Custom Auth
+| Role | Akses & Wewenang |
+| :--- | :--- |
+| **Admin** | Pengguna, master, laporan, audit log. |
+| **Apoteker** | Obat, stok, resep, supplier. |
+| **Kasir** | POS, pembayaran, struk. |
+
+> Otorisasi ditegakkan di backend (middleware/Policy) — bukan sekadar menyembunyikan menu.
 
 ---
 
-## Installation
+## 🛠️ Tech Stack & Dependensi
 
-### Prerequisites
-- PHP 8.2+
-- Composer
-- MySQL/MariaDB
-- Node.js & NPM
+* **Backend**: Laravel 12.x (PHP 8.2+)
+* **Database**: MySQL 8.0+
+* **Frontend**: Blade, {css}, SweetAlert2, vanilla JS/Chart.js
+* **Testing**: PHPUnit / Pest
+* **Code Style**: Laravel Pint (PSR-12)
 
-### Steps
+---
 
-1. **Clone Repository**
+## ⚙️ Panduan Instalasi & Menjalankan Aplikasi
+
+### 1. Kloning Repositori
 ```bash
-git clone https://github.com/ardhikaxx/apocare.git
+git clone https://github.com/ardhikaxx/apocare
 cd apocare
 ```
 
-2. **Install Dependencies**
+### 2. Install Dependensi PHP
 ```bash
 composer install
-npm install
 ```
 
-3. **Setup Environment**
+### 3. Konfigurasi Environment (`.env`)
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
-
-4. **Configure Database**
-Edit file `.env` dengan konfigurasi database:
-```
+Sesuaikan koneksi database MySQL di file `.env`:
+```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -163,80 +83,57 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-5. **Run Migration & Seeder**
+### 4. Migrasi & Seeding
 ```bash
 php artisan migrate --seed
 ```
-
-6. **Build Assets**
+Development (database boleh dikosongkan):
 ```bash
-npm run build
+php artisan migrate:fresh --seed
 ```
 
-7. **Run Server**
+### 5. Jalankan Server Lokal
 ```bash
 php artisan serve
 ```
-
-Akses aplikasi di `http://localhost:8000`
-
-8. **Setup Scheduler** (Untuk auto backup)
-```bash
-# Windows Task Scheduler - Run command below:
-php artisan schedule:run
-```
-Atau tambahkan cron job:
-```
-* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
-```
+Buka: `http://127.0.0.1:8000`
 
 ---
 
-## Default Users (After Seeding)
+## 📚 Dokumentasi Sistem
 
-| Email | Password | Role |
-|-------|----------|------|
-| admin@apocare.com | password | Admin |
-| apoteker@apocare.com | password | Apoteker |
-| kasir@apocare.com | password | Kasir |
-| gudang@apocare.com | password | Gudang |
-
----
-
-
-## Donasi
-
-Jika project ini bermanfaat, Anda dapat mendukung pengembangan selanjutnya melalui donasi:
-
-<div align="center">
-
-<img src="public/assets/qris.png" alt="QRIS" width="250" />
-
-**Scan QRIS di atas untuk berdonasi**
-
-Setiap donasi akan digunakan untuk:
-- Pengembangan fitur baru
-- Perbaikan bug & maintenance
-- Infrastruktur server
-
-</div>
-
-## License
-
-This project is licensed under the MIT License.
+* [⚖️ **LICENSE**](./LICENSE) — Lisensi resmi **Proprietary Software License (All Rights Reserved)**.
+* [🛡️ **SECURITY.md**](./SECURITY.md) — Kebijakan keamanan & pelaporan celah (*Responsible Disclosure*).
+* [🤝 **CONTRIBUTING.md**](./CONTRIBUTING.md) — Pedoman kontribusi kode & standar.
+* [📜 **CODE_OF_CONDUCT.md**](./CODE_OF_CONDUCT.md) — Pedoman perilaku komunitas pengembang.
+* [💬 **SUPPORT.md**](./SUPPORT.md) — Kanal bantuan teknis & komunikasi resmi pengembang.
+* [📋 **CHANGELOG.md**](./CHANGELOG.md) — Riwayat rilis fitur terstruktur (*Keep a Changelog* & SemVer).
+* [📚 **CITATION.md**](./CITATION.md) — Format sitasi karya untuk keperluan akademik.
 
 ---
 
-## Contributing
+## 💖 Dukungan & Donasi
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Jika proyek **Website Apocare - Integrated Pharmacy Management System** ini bermanfaat bagi Anda dan telah menghemat banyak jam kerja Anda, Anda dapat menunjukkan apresiasi dengan memberikan traktiran kopi (donasi) melalui pemindaian kode QRIS di bawah ini:
+
+<p align="center">
+  <img src="./qris.png" alt="QRIS Donasi" width="300"/>
+</p>
+
+> Donasi sepenuhnya bersifat sukarela dan tidak mengikat. Aplikasi tetap dapat digunakan secara utuh tanpa donasi.
 
 ---
 
-## Author
+## ⚠️ Ketentuan Penggunaan
 
-- **GitHub**: [ardhikaxx/apocare](https://github.com/ardhikaxx/apocare)
+Proyek ini dilindungi lisensi **Proprietary Software License (All Rights Reserved)**. Anda **dilarang** menyalin, memodifikasi, mendistribusikan ulang, atau menjual kode ini tanpa izin tertulis dari pemilik hak cipta. Lihat [LICENSE](./LICENSE) untuk detail lengkap.
 
 ---
 
-**Apocare** - Integrated Pharmacy Management System - 2026
+## 👨‍💻 Pengembang & Hak Cipta
+
+Dirancang dan dikembangkan dengan penuh dedikasi oleh:
+**[Yanuar Ardhika Rahmadhani Ubaidillah (@ardhikaxx)](https://github.com/ardhikaxx)**
+*Lead Software Architect & Maintainer*
+
+> **Copyright (c) 2024 - 2026 Yanuar Ardhika Rahmadhani Ubaidillah (@ardhikaxx). All Rights Reserved.**
